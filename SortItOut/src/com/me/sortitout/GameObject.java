@@ -70,7 +70,6 @@ public class GameObject {
 	private ApplicationHandler appHandler;
     
 	public GameObject(ApplicationHandler applicationHandler, float screenWidth, float screenHeight) {
-		// TODO Auto-generated constructor stub
 		appHandler = applicationHandler;
 		width = screenWidth;
 		heigh = screenHeight;
@@ -135,7 +134,6 @@ public class GameObject {
         polygonShape.dispose();
 	}
 	private void setWorldBounds() {
-		// TODO Auto-generated method stub
 		
 		Vector2 lowerLeftCorner = new Vector2(startpointX, startpointY);
 		Vector2 lowerRightCorner = new Vector2(widthInMeters-startpointX, startpointY);
@@ -167,7 +165,6 @@ public class GameObject {
 	}
 	
 	public int Shuffle() {
-		// TODO Auto-generated method stub
 		ArrayList<Integer> tmpList = new ArrayList<Integer>();
 		for (int i=0; i<15; i++) {
 			tmpList.add(i);

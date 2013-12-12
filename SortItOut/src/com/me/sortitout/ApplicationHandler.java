@@ -14,15 +14,12 @@ public class ApplicationHandler extends Game {
 	public static IReqHandler ExternalHandler;
 	
 	public ApplicationHandler(IReqHandler irh) {
-		// TODO Auto-generated constructor stub
 		ApplicationHandler.ExternalHandler = irh;
 	}
 	public ApplicationHandler() {
-		// TODO Auto-generated constructor stub
 	}
 	@Override
 	public void create() {
-		// TODO Auto-generated method stub
 		Gdx.input.setCatchBackKey(true);
 		Gdx.input.setCatchMenuKey(true);
 		

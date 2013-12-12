@@ -8,6 +8,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -35,9 +36,9 @@ public class GameScreen implements Screen {
 	private Dialog gameOverDialog;
 	private Label label1;
 	private Label label2;
+	private Sprite BackSprite;
 	
 	public GameScreen(ApplicationHandler applicationHandler) {
-		// TODO Auto-generated constructor stub
 		appHandler = applicationHandler;
 		game = applicationHandler.getGameObject();
 		create();
@@ -113,8 +114,7 @@ public class GameScreen implements Screen {
 		batch.setProjectionMatrix(camera.combined);
 
 		//Table.drawDebug(stage);
-		//Matrix4 cameraCopy = camera.combined.cpy();
-		//debugRenderer.render(game.world, cameraCopy.scl(game.BOX_TO_WORLD,game.BOX_TO_WORLD, 1f));
+
 		batch.begin();
 		skin.getTiledDrawable("background").draw(batch, 0, 0, stage.getWidth(), stage.getHeight());
 		//drawing blocks

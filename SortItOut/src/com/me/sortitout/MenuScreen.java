@@ -28,7 +28,6 @@ public class MenuScreen implements Screen {
 	private Sound ButtonSound = Gdx.audio.newSound(Gdx.files.internal("sounds/button.wav"));
 	
 	public MenuScreen(ApplicationHandler applicationHandler) {
-		// TODO Auto-generated constructor stub
 		appHandler = applicationHandler;
 		create();
 	}
@@ -119,7 +118,6 @@ public class MenuScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		// TODO Auto-generated method stub
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1);    
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
@@ -129,14 +127,12 @@ public class MenuScreen implements Screen {
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
 		Gdx.input.setInputProcessor(stage);
 		menuMusic.play();
 	}
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
 		menuMusic.pause();
 	}
 
