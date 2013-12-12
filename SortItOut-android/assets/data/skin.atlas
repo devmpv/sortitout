@@ -1,0 +1,44 @@
+
+skin.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+button-disabled
+  rotate: false
+  xy: 1, 133
+  size: 130, 64
+  split: 26, 23, 21, 22
+  orig: 130, 64
+  offset: 0, 0
+  index: -1
+button-down
+  rotate: false
+  xy: 1, 67
+  size: 130, 64
+  split: 34, 26, 26, 21
+  orig: 130, 64
+  offset: 0, 0
+  index: -1
+button
+  rotate: false
+  xy: 1, 1
+  size: 130, 64
+  split: 28, 26, 23, 22
+  orig: 130, 64
+  offset: 0, 0
+  index: -1
+default-window
+  rotate: false
+  xy: 1, 133
+  size: 130, 64
+  split: 26, 23, 21, 22
+  orig: 130, 64
+  offset: 0, 0
+  index: -1
+white
+  rotate: false
+  xy: 174, 48
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1

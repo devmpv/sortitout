@@ -207,7 +207,7 @@ public class GameObject {
 			float x = Gdx.input.getAccelerometerX();
 			float y = Gdx.input.getAccelerometerY();
 			Vector2 gVec2 = new Vector2((Math.abs(x)>3f) ? x : 0, Math.abs(y)>3f ? y : 0);
-			world.setGravity(gVec2.mul(-5f*BLOCK_SIZE));
+			world.setGravity(gVec2.scl(5f*BLOCK_SIZE));
 		}
 	}
 	public void WorldStep (float delta){

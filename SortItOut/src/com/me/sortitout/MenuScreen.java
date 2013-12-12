@@ -7,7 +7,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -41,41 +40,36 @@ public class MenuScreen implements Screen {
 			stage = new Stage();
 	        Gdx.input.setInputProcessor(stage);
 	        
-	        Texture bk = new Texture("textures/Carpet.png");
-	        bk.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
 	        Table table = new Table();
-	        table.debug();
-	        table.setFillParent(true);
-	        
+	        table.setFillParent(true);       
 	        stage.addActor(table);
-	        
-	        skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-	        skin.add("background", bk);
-	        table.setBackground(skin.getDrawable("background"));
+	        skin = new Skin(Gdx.files.internal("data/skin.json"));
+	        skin.add("background", new Texture("textures/bubble1.png"));
+	        table.setBackground(skin.getTiledDrawable("background"));
 
 	        exitDialog = 
-	        	new Dialog("Exit game", skin, "default") {
+	        	new Dialog("", skin, "default") {
 					protected void result (Object obj) {
 						if (obj.equals(true)){
 							Gdx.app.exit();
 						}
 					}
-				}.text("Are you sure?").button("Exit game", true).button("Continue", false).key(Keys.ENTER, true)
+				}.text("Are you sure?").button("Exit", true).button("Back", false).key(Keys.ENTER, true)
 				.key(Keys.ESCAPE, false);
 	        final TextButton button1 = new TextButton("New game", skin);
 	        final Widget widget1 = new Widget();
 	        final TextButton button2 = new TextButton("Continue", skin);
 	        button2.setDisabled(true);
 	        final TextButton button3 = new TextButton("Exit", skin);
-	        table.add(button1).width(250).height(70);
+	        table.add(button1).minWidth(250).maxHeight(70);
 	        table.row();
-	        table.add(widget1).width(250).height(30);
+	        table.add(widget1);
 	        table.row();
-	        table.add(button2).width(250).height(70);
+	        table.add(button2).minWidth(250).maxHeight(70);
 	        table.row();
-	        table.add(widget1).width(250).height(30);
+	        table.add(widget1);
 	        table.row();
-	        table.add(button3).width(250).height(70);
+	        table.add(button3).minWidth(250).maxHeight(70);
 	        // Add widgets to the table here.
 
 	        button1.addListener(new ClickListener() {

@@ -1,0 +1,36 @@
+{  
+     com.badlogic.gdx.graphics.g2d.BitmapFont: {  
+      normaltext: { file: gamefont.fnt },  
+      titletext: { file: gamefont.fnt },  
+     },  
+     com.badlogic.gdx.graphics.Color: {  
+      red: { a: 1, b: 0, g: 0, r: 1 },  
+      green: { a: 1, b: 0, g: 1, r: 0 },  
+      blue: { a: 1, b: 1, g: 0, r: 0 },  
+      white: { hex: "FFFFFF" },  
+      black: { hex: "000000" } 
+     },  
+     com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+	dialogDim: { name: white, color: { r: 0, g: 0, b: 0, a: 0.45 } }
+     },
+     com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {  
+      default: { font: normaltext, fontColor: white },  
+      normal-text: { font: normaltext, fontColor: white },  
+      title-text: { font: titletext, fontColor: red },  
+     },
+     com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {  
+      default: { up: button, down: button-down, disabled: button-disabled },  
+      transparent: { },  
+     },  
+     com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: { background: button-disabled, font: normaltext, fontColor: white },
+	controls: { background: button-disabled, font: normaltext, fontColor: white }
+     },
+     com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {  
+      default: { up: button, down: button-down, disabled: button-disabled, font: normaltext, fontColor: white},  
+     },
+	com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+	default: { titleFont: titletext, background: default-window, titleFontColor: white },
+	dialog: { titleFont: titletext, background: default-window, titleFontColor: white, stageBackground: dialogDim }
+     }   
+   }  
