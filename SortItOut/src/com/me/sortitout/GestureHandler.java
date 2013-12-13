@@ -10,7 +10,6 @@ import com.badlogic.gdx.utils.GdxNativesLoader;
 
 public class GestureHandler implements GestureListener {
 	
-	private ApplicationHandler appHandler;
 	private GameObject gameObject;
 	//private float ScreenWidth; 
 	private float ScreenHeight;
@@ -18,14 +17,13 @@ public class GestureHandler implements GestureListener {
 	//OrthographicCamera camera;
 	public boolean Init(ApplicationHandler ahandler) {
 				
-		appHandler = ahandler;
 		gameObject = ahandler.getGameObject();
 		//ScreenWidth = gameObject.getScreenWidth();
 		ScreenHeight = gameObject.getScreenHeight();
 		//Loading native libraries
 		GdxNativesLoader.load();
 		tpointer = new Rectangle();
-		tpointer.width = GameObject.BLOCK_SIZE*gameObject.WORLD_TO_BOX;
+		tpointer.width = gameObject.BLOCK_SIZE_PIX;
 		tpointer.height = tpointer.width;
 		return true;
 	}
@@ -47,7 +45,6 @@ public class GestureHandler implements GestureListener {
 	@Override
 	public boolean longPress(float x, float y) {
 		// TODO Auto-generated method stub
-		appHandler.getGameScreen().showDialog();
 		return false;
 	}
 

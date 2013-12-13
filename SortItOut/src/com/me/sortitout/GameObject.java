@@ -3,7 +3,6 @@ package com.me.sortitout;
 import java.util.ArrayList;
 import java.util.Collections;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Peripheral;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -35,8 +34,11 @@ public class GameObject {
     //Variable
     float WORLD_TO_BOX;
 	float BOX_TO_WORLD;
+	float BLOCK_HALF_PIX;
+	float BLOCK_SIZE_PIX;
 	//
 	private boolean accelerometer = false;
+	private boolean active = false;
 	//Physics world bounds
 	private float startpointX = BLOCK_SIZE*0.1f;
 	private float startpointY = BLOCK_SIZE*0.1f;
@@ -57,6 +59,7 @@ public class GameObject {
 	Sound newPosSound = Gdx.audio.newSound(Gdx.files.internal("sounds/stuck.wav"));
 	Sound gameOverSound = Gdx.audio.newSound(Gdx.files.internal("sounds/tada.wav"));
 	Sound edgeSound = Gdx.audio.newSound(Gdx.files.internal("sounds/edge_hit.wav"));
+	Sound ButtonSound = Gdx.audio.newSound(Gdx.files.internal("sounds/button.wav"));
 	//Resources
 	public World world;
 	private TextureAtlas atlas;
@@ -76,7 +79,8 @@ public class GameObject {
 		//Scaling to screen
 		BOX_TO_WORLD = screenWidth/widthInMeters;
 		WORLD_TO_BOX = 1/BOX_TO_WORLD;
-		
+		BLOCK_HALF_PIX = BLOCK_HALF*BOX_TO_WORLD;
+		BLOCK_SIZE_PIX = BLOCK_SIZE*BOX_TO_WORLD;
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
 		PolygonShape polygonShape = new PolygonShape();
@@ -129,7 +133,6 @@ public class GameObject {
         contactHandler = new ContactHandler();
         contactHandler.Init(this);
         world.setContactListener(contactHandler);
-        accelerometer = Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer);
         //Dispose disposable
         polygonShape.dispose();
 	}
@@ -196,6 +199,7 @@ public class GameObject {
 				good = true;
 			}
 		}
+		active = true;
 		startTimer();
 		return ShuffleCount;
 	}
@@ -204,7 +208,7 @@ public class GameObject {
 			float x = Gdx.input.getAccelerometerX();
 			float y = Gdx.input.getAccelerometerY();
 			Vector2 gVec2 = new Vector2((Math.abs(x)>3f) ? x : 0, Math.abs(y)>3f ? y : 0);
-			world.setGravity(gVec2.scl(5f*BLOCK_SIZE));
+			world.setGravity(gVec2.scl(-5f*BLOCK_SIZE));
 		}
 	}
 	public void WorldStep (float delta){
@@ -297,6 +301,14 @@ public class GameObject {
 	public void GameOver() {
 		// TODO Auto-generated method stub
 		gameOverSound.play();
+		active = false;
 		appHandler.getGameScreen().showDialog();
+	}
+	public void setAccelerometer(boolean a) {
+		this.accelerometer = a;
+		world.setGravity(new Vector2());
+	}
+	public boolean isActive() {
+		return active;
 	}
 }

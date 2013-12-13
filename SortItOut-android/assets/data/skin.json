@@ -11,26 +11,25 @@
       black: { hex: "000000" } 
      },  
      com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
-	dialogDim: { name: white, color: { r: 0, g: 0, b: 0, a: 0.45 } }
+	dialogDim: { name: empty, color: { r: 0, g: 0, b: 0, a: 0.45 } }
      },
      com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {  
-      default: { font: normaltext, fontColor: white },  
+      default: { background: button, font: normaltext, fontColor: white },  
       normal-text: { font: normaltext, fontColor: white },  
       title-text: { font: titletext, fontColor: red },  
      },
      com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {  
-      default: { up: button, down: button-down, disabled: button-disabled },  
+      default: { up: button, down: button-down, disabled: button-disabled }, 
+      button-snd: {up: button-snd, checked: button-snd-disabled},
+      button-gra: {up: button-gra, checked: button-gra-disabled, disabled: button-gra-disabled},
+      button-exit: {up: button-exit, down: button-exit-down},
       transparent: { },  
      },  
-     com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
-	default: { background: button-disabled, font: normaltext, fontColor: white },
-	controls: { background: button-disabled, font: normaltext, fontColor: white }
-     },
      com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {  
-      default: { up: button, down: button-down, disabled: button-disabled, font: normaltext, fontColor: white},  
+      default: { up: button, down: button-down, disabled: button-disabled, font: normaltext, fontColor: white },  
      },
 	com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
-	default: { titleFont: titletext, background: default-window, titleFontColor: white },
-	dialog: { titleFont: titletext, background: default-window, titleFontColor: white, stageBackground: dialogDim }
+	default: { titleFont: titletext, background: window, titleFontColor: white },
+	dialog: { titleFont: titletext, background: window, titleFontColor: white, stageBackground: dialogDim }
      }   
    }  

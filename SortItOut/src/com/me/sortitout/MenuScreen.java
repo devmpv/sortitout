@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -23,9 +22,8 @@ public class MenuScreen implements Screen {
 	private Stage stage;
 	private ApplicationHandler appHandler;
 	private Dialog exitDialog;
-	public boolean isActive = false;
+	private TextButton buttonContinue;
 	private Music menuMusic = Gdx.audio.newMusic(Gdx.files.internal("music/menu.mp3"));
-	private Sound ButtonSound = Gdx.audio.newSound(Gdx.files.internal("sounds/button.wav"));
 	
 	public MenuScreen(ApplicationHandler applicationHandler) {
 		appHandler = applicationHandler;
@@ -51,6 +49,8 @@ public class MenuScreen implements Screen {
 					protected void result (Object obj) {
 						if (obj.equals(true)){
 							Gdx.app.exit();
+						}else {
+							appHandler.getGameObject().ButtonSound.play();
 						}
 					}
 				}.text("Are you sure?").button("Exit", true).button("Back", false).key(Keys.ENTER, true)
@@ -58,17 +58,18 @@ public class MenuScreen implements Screen {
 	        final TextButton button1 = new TextButton("New game", skin);
 	        final Widget widget1 = new Widget();
 	        final TextButton button2 = new TextButton("Continue", skin);
+	        buttonContinue = button2;
 	        button2.setDisabled(true);
 	        final TextButton button3 = new TextButton("Exit", skin);
-	        table.add(button1).minWidth(250).maxHeight(70);
+	        table.add(button1).minWidth(250).maxHeight(80);
 	        table.row();
 	        table.add(widget1);
 	        table.row();
-	        table.add(button2).minWidth(250).maxHeight(70);
+	        table.add(button2).minWidth(250).maxHeight(80);
 	        table.row();
 	        table.add(widget1);
 	        table.row();
-	        table.add(button3).minWidth(250).maxHeight(70);
+	        table.add(button3).minWidth(250).maxHeight(80);
 	        // Add widgets to the table here.
 
 	        button1.addListener(new ClickListener() {
@@ -76,7 +77,7 @@ public class MenuScreen implements Screen {
 	        			//super.touchDown(event, x, y, pointer, button);
 	        			appHandler.getGameObject().Shuffle();
 	        			button2.setDisabled(false);
-	        			ButtonSound.play();
+	        			appHandler.getGameObject().ButtonSound.play();
 	        			appHandler.showGame();
 	            	}
 	        	});
@@ -84,7 +85,7 @@ public class MenuScreen implements Screen {
         		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
         			//super.touchDown(event, x, y, pointer, button);
         			if (!button2.isDisabled()) {
-        				ButtonSound.play();
+        				appHandler.getGameObject().ButtonSound.play();
         				appHandler.showGame();
         			}
             	}
@@ -92,7 +93,7 @@ public class MenuScreen implements Screen {
 	        button3.addListener(new ClickListener() {
 	        	public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
         			//super.touchDown(event, x, y, pointer, button);
-	        		ButtonSound.play();
+	        		appHandler.getGameObject().ButtonSound.play();
 	        		exitDialog.show(stage);
             	}
         	});
@@ -113,7 +114,6 @@ public class MenuScreen implements Screen {
 
 	public void dispose() {
 	        stage.dispose();
-	        isActive = false;
 	}
 
 	@Override
@@ -128,6 +128,7 @@ public class MenuScreen implements Screen {
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(stage);
+		buttonContinue.setDisabled(!appHandler.getGameObject().isActive());
 		menuMusic.play();
 	}
 
@@ -138,14 +139,12 @@ public class MenuScreen implements Screen {
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
 
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-		
 	}
 
 }

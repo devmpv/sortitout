@@ -5,10 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Input.Peripheral;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -19,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Widget;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class GameScreen implements Screen {
 
@@ -36,7 +37,6 @@ public class GameScreen implements Screen {
 	private Dialog gameOverDialog;
 	private Label label1;
 	private Label label2;
-	private Sprite BackSprite;
 	
 	public GameScreen(ApplicationHandler applicationHandler) {
 		appHandler = applicationHandler;
@@ -50,20 +50,27 @@ public class GameScreen implements Screen {
 	    //
 	    stage.addActor(gameScene);
 	    skin = new Skin(Gdx.files.internal("data/skin.json"));
-	    skin.add("background", new Texture("textures/bubble1.png"));
 	    gameScene.setFillParent(true);
 	    gameScene.bottom();
-	    final Button button1 = new Button(skin);
-	    final Button button2 = new Button(skin);
-	    final Button button3 = new Button(skin);
+	    final Button buttonAudio = new Button(skin, "button-snd");
+	    final Button buttonGravity = new Button(skin, "button-gra");
+	    final Button buttonExit = new Button(skin, "button-exit");
+	    if (!Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer)){
+	    	buttonGravity.setDisabled(true);
+	    } else {	    	
+	    	game.setAccelerometer(true);
+	    }
 	    gameOverDialog = new Dialog("", skin, "default") {
 						protected void result (Object obj) {
 							if (obj.equals(true)){
+								game.ButtonSound.play();
 								game.Shuffle();
 								Gdx.input.setInputProcessor(multiplexer);
 								accelerometer = true;
 								label1.setVisible(true);
 							} else {
+								game.ButtonSound.play();
+								gameOverDialog.hide();
 								appHandler.showMenu();
 							}
 						}
@@ -71,13 +78,39 @@ public class GameScreen implements Screen {
 		label1 = new Label("", skin);
 		label2 = new Label("", skin);
 		gameScene.add(gameControls).center();
-		gameControls.add(label1).width(GameObject.BLOCK_SIZE*game.BOX_TO_WORLD).height(GameObject.BLOCK_HALF*game.BOX_TO_WORLD);
-		gameControls.add(button1).width(GameObject.BLOCK_HALF*game.BOX_TO_WORLD).height(GameObject.BLOCK_HALF*game.BOX_TO_WORLD);;
-		gameControls.add(button2).width(GameObject.BLOCK_HALF*game.BOX_TO_WORLD).height(GameObject.BLOCK_HALF*game.BOX_TO_WORLD);;
-		gameControls.add(button3).width(GameObject.BLOCK_HALF*game.BOX_TO_WORLD).height(GameObject.BLOCK_HALF*game.BOX_TO_WORLD);;
-		gameControls.add(label2).width(GameObject.BLOCK_SIZE*game.BOX_TO_WORLD).height(GameObject.BLOCK_HALF*game.BOX_TO_WORLD);
+		gameControls.add(label1).width(game.BLOCK_SIZE_PIX).height(game.BLOCK_HALF_PIX);
+		gameControls.add(buttonAudio).width(game.BLOCK_HALF_PIX).height(game.BLOCK_HALF_PIX);;
+		gameControls.add(buttonGravity).width(game.BLOCK_HALF_PIX).height(game.BLOCK_HALF_PIX);;
+		gameControls.add(buttonExit).width(game.BLOCK_HALF_PIX).height(game.BLOCK_HALF_PIX);;
+		gameControls.add(label2).width(game.BLOCK_SIZE_PIX).height(game.BLOCK_HALF_PIX);
 		gameScene.row();
-		gameScene.add(new Image(skin.getDrawable("button-disabled"))).width(game.getScreenWidth()).height(game.getScreenWidth());
+		gameScene.add(new Widget()).minHeight(game.BLOCK_HALF_PIX).maxHeight(game.BLOCK_HALF_PIX);
+		gameScene.row();
+		gameScene.add(new Image(skin.getDrawable("empty"))).width(game.getScreenWidth()).height(game.getScreenWidth());
+		
+		buttonAudio.addListener(new ClickListener() {
+    		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+    			//super.touchDown(event, x, y, pointer, button);
+    			game.ButtonSound.play();
+    			if (buttonAudio.isChecked()){
+
+    			}
+        	}
+    	});
+		buttonGravity.addListener(new ClickListener() {
+			public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+			//super.touchDown(event, x, y, pointer, button);
+				game.ButtonSound.play();
+				game.setAccelerometer(!buttonGravity.isChecked());
+    		}
+		});
+		buttonExit.addListener(new ClickListener() {
+			public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+			//super.touchDown(event, x, y, pointer, button);
+				game.ButtonSound.play();
+				appHandler.showMenu();
+			}
+		});
 		
 		/*ShaderProgram.pedantic = true;
 		shader = new ShaderProgram(Gdx.files.internal("shaders/simple1.vert"),
@@ -109,14 +142,19 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		
+		game.WorldStep(delta);
+		
+		label1.setText(game.getTime());
+		label2.setText(String.valueOf(game.getMoves()));
+		stage.act(Gdx.graphics.getDeltaTime());
+		
 		Gdx.gl.glClearColor(220, 220, 220, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		batch.setProjectionMatrix(camera.combined);
-
+		
 		//Table.drawDebug(stage);
-
 		batch.begin();
-		skin.getTiledDrawable("background").draw(batch, 0, 0, stage.getWidth(), stage.getHeight());
+		//skin.getTiledDrawable("background").draw(batch, 0, 0, stage.getWidth(), stage.getHeight());
 		//drawing blocks
 		Item item;
 		ArrayList<Item> cItemList;
@@ -131,13 +169,8 @@ public class GameScreen implements Screen {
 		}
 		//font.draw(batch, (Float.toString(1/delta).substring(0, 4)), 100, 550);
 		batch.end();
-		
-		label1.setText(game.getTime());
-		label2.setText(String.valueOf(game.getMoves()));
-		stage.act(Gdx.graphics.getDeltaTime());
-		
+	
 		stage.draw();
-        game.WorldStep(delta);
 	}
 
 	@Override
