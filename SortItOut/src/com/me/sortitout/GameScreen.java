@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class GameScreen implements Screen {
@@ -44,6 +43,7 @@ public class GameScreen implements Screen {
 		create();
 	}
 	public void create() {	
+		float buttonSize = game.BLOCK_HALF_PIX + game.BLOCK_HALF_PIX/2; 
 		stage = new Stage();
 	    Table gameScene = new Table();
 	    Table gameControls = new Table();
@@ -78,13 +78,11 @@ public class GameScreen implements Screen {
 		label1 = new Label("", skin);
 		label2 = new Label("", skin);
 		gameScene.add(gameControls).center();
-		gameControls.add(label1).width(game.BLOCK_SIZE_PIX).height(game.BLOCK_HALF_PIX);
-		gameControls.add(buttonAudio).width(game.BLOCK_HALF_PIX).height(game.BLOCK_HALF_PIX);;
-		gameControls.add(buttonGravity).width(game.BLOCK_HALF_PIX).height(game.BLOCK_HALF_PIX);;
-		gameControls.add(buttonExit).width(game.BLOCK_HALF_PIX).height(game.BLOCK_HALF_PIX);;
-		gameControls.add(label2).width(game.BLOCK_SIZE_PIX).height(game.BLOCK_HALF_PIX);
-		gameScene.row();
-		gameScene.add(new Widget()).minHeight(game.BLOCK_HALF_PIX).maxHeight(game.BLOCK_HALF_PIX);
+		gameControls.add(label1).width(game.BLOCK_SIZE_PIX).height(buttonSize);
+		gameControls.add(buttonAudio).width(buttonSize).height(buttonSize);
+		gameControls.add(buttonGravity).width(buttonSize).height(buttonSize);
+		gameControls.add(buttonExit).width(buttonSize).height(buttonSize);
+		gameControls.add(label2).width(game.BLOCK_SIZE_PIX).height(buttonSize);
 		gameScene.row();
 		gameScene.add(new Image(skin.getDrawable("empty"))).width(game.getScreenWidth()).height(game.getScreenWidth());
 		

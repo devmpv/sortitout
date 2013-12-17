@@ -34,6 +34,8 @@ public class MenuScreen implements Screen {
 		
 	        //float dWidth = appHandler.getGameObject().getScreenWidth(); 
 	        //float dHeight = GameObject.BLOCK_SIZE*appHandler.getGameObject().BOX_TO_WORLD*3;
+			float buttonWidth=appHandler.getGameObject().BLOCK_SIZE_PIX*2;
+			float buttonHeight=appHandler.getGameObject().BLOCK_HALF_PIX + appHandler.getGameObject().BLOCK_HALF_PIX/2;
 			stage = new Stage();
 	        Gdx.input.setInputProcessor(stage);
 	        
@@ -61,15 +63,15 @@ public class MenuScreen implements Screen {
 	        buttonContinue = button2;
 	        button2.setDisabled(true);
 	        final TextButton button3 = new TextButton("Exit", skin);
-	        table.add(button1).minWidth(250).maxHeight(80);
+	        table.add(button1).width(buttonWidth).height(buttonHeight);
 	        table.row();
-	        table.add(widget1);
+	        table.add(widget1).height(buttonHeight/2);
 	        table.row();
-	        table.add(button2).minWidth(250).maxHeight(80);
+	        table.add(button2).width(buttonWidth).height(buttonHeight);
 	        table.row();
-	        table.add(widget1);
+	        table.add(widget1).height(buttonHeight/2);
 	        table.row();
-	        table.add(button3).minWidth(250).maxHeight(80);
+	        table.add(button3).width(buttonWidth).height(buttonHeight);
 	        // Add widgets to the table here.
 
 	        button1.addListener(new ClickListener() {
