@@ -66,9 +66,7 @@ public class GestureHandler implements GestureListener {
 					if (Math.abs(deltaY) > Config.WORLD_MAX_SPEED) {
 						deltaY = Math.signum(deltaY)*Config.WORLD_MAX_SPEED;
 					}
-					//
-					/*tpointer.x = x;
-					tpointer.y = ScreenHeight-y;*/
+
 					block.setLinearVelocity(new Vector2(deltaX*Config.BLOCK_SIZE, -deltaY*Config.BLOCK_SIZE));
 					gameObject.setActiveItem(block);
 					break;
