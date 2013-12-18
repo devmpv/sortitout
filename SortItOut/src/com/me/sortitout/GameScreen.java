@@ -98,14 +98,19 @@ public class GameScreen implements Screen {
     			//super.touchDown(event, x, y, pointer, button);
     			Config.ButtonSound.play();
     			if (buttonAudio.isChecked()){
-
+    				Config.gameMusic.pause();
+    			}else {
+    				Config.gameMusic.play();
     			}
+    				
         	}
     	});
 		buttonGravity.addListener(new ClickListener() {
 			public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 			//super.touchDown(event, x, y, pointer, button);
-				Config.ButtonSound.play();
+				if (!buttonGravity.isDisabled()) {
+					Config.ButtonSound.play();
+				}
 				game.setAccelerometer(!buttonGravity.isChecked());
     		}
 		});
@@ -186,7 +191,6 @@ public class GameScreen implements Screen {
 	@Override
 	public void pause() {
 		appHandler.showMenu();
-		Config.gameMusic.pause();
 	}
 
 	@Override
@@ -204,7 +208,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
+		Config.gameMusic.pause();
 	}
 	
 	@Override
