@@ -29,7 +29,7 @@ public class ContactHandler implements ContactListener{
 		int cnt=0;
 		if (gameObject.ItemPositionsChanged()) {
 			float velosity=gameObject.getActiveItem().getLinearVelocity().len();
-			gameObject.blockSound.play(velosity/100, Math.max(velosity/50,1f), 0);
+			Config.blockSound.play(velosity/100, Math.max(velosity/50,1f), 0);
 			Item item;
 			ArrayList<Item> cItemList;
 			cItemList = gameObject.getItemList();
@@ -43,7 +43,7 @@ public class ContactHandler implements ContactListener{
 				if (cnt == 15) {
 					gameObject.GameOver();
 				}else {
-					gameObject.newPosSound.play();
+					Config.newPosSound.play();
 				}
 			}
 			count=cnt;

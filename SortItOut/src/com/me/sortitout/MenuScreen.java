@@ -43,6 +43,7 @@ public class MenuScreen implements Screen {
 	        table.setFillParent(true);       
 	        stage.addActor(table);
 	        skin = new Skin(Gdx.files.internal("data/skin.json"));
+	        skin.getFont("normaltext").setScale(appHandler.getGameObject().getScreenWidth()/480);
 	        skin.add("background", new Texture("textures/bubble1.png"));
 	        table.setBackground(skin.getTiledDrawable("background"));
 
@@ -52,7 +53,7 @@ public class MenuScreen implements Screen {
 						if (obj.equals(true)){
 							Gdx.app.exit();
 						}else {
-							appHandler.getGameObject().ButtonSound.play();
+							Config.ButtonSound.play();
 						}
 					}
 				}.text("Are you sure?").button("Exit", true).button("Back", false).key(Keys.ENTER, true)
@@ -79,7 +80,7 @@ public class MenuScreen implements Screen {
 	        			//super.touchDown(event, x, y, pointer, button);
 	        			appHandler.getGameObject().Shuffle();
 	        			button2.setDisabled(false);
-	        			appHandler.getGameObject().ButtonSound.play();
+	        			Config.ButtonSound.play();
 	        			appHandler.showGame();
 	            	}
 	        	});
@@ -87,7 +88,7 @@ public class MenuScreen implements Screen {
         		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
         			//super.touchDown(event, x, y, pointer, button);
         			if (!button2.isDisabled()) {
-        				appHandler.getGameObject().ButtonSound.play();
+        				Config.ButtonSound.play();
         				appHandler.showGame();
         			}
             	}
@@ -95,7 +96,7 @@ public class MenuScreen implements Screen {
 	        button3.addListener(new ClickListener() {
 	        	public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
         			//super.touchDown(event, x, y, pointer, button);
-	        		appHandler.getGameObject().ButtonSound.play();
+	        		Config.ButtonSound.play();
 	        		exitDialog.show(stage);
             	}
         	});

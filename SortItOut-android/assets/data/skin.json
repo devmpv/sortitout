@@ -20,8 +20,8 @@
      },
      com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {  
       default: { up: button, down: button-down, disabled: button-disabled }, 
-      button-snd: {up: button-snd, checked: button-snd-disabled},
-      button-gra: {up: button-gra, checked: button-gra-disabled, disabled: button-gra-disabled},
+      button-snd: {up: button-snd, down: button-snd, checked: button-snd-disabled},
+      button-gra: {up: button-gra, down: button-gra, checked: button-gra-disabled, disabled: button-gra-disabled},
       button-exit: {up: button-exit, down: button-exit-down},
       transparent: { },  
      },  

@@ -3,7 +3,6 @@ package com.me.sortitout;
 import java.util.ArrayList;
 import java.util.Collections;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
@@ -19,18 +18,6 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class GameObject {
 	
-	//Physics parameters
-	static final float BLOCK_SIZE = 5f; //meters
-	static final float WORLD_MAX_SPEED = 2f*BLOCK_SIZE;
-	static final float BLOCK_HALF = BLOCK_SIZE/2;
-	static final float BOX_STEP=1/60f;
-    static final int BOX_VELOCITY_ITERATIONS=10;  
-    static final int BOX_POSITION_ITERATIONS=20;
-    static final float BLOCK_DENSITY = 1f;
-    static final float BLOCK_FRICTION = 0f;
-    static final float BLOCK_RESTITUTION = 0f;
-    static final float BODY_LINEAR_DAMPING = BLOCK_SIZE;
-    static final boolean FIXED_ROTATION = true;
     //Variable
     float WORLD_TO_BOX;
 	float BOX_TO_WORLD;
@@ -39,11 +26,6 @@ public class GameObject {
 	//
 	private boolean accelerometer = false;
 	private boolean active = false;
-	//Physics world bounds
-	private float startpointX = BLOCK_SIZE*0.1f;
-	private float startpointY = BLOCK_SIZE*0.1f;
-	private float widthInMeters = BLOCK_SIZE*4.25f;
-	private float heightInMeters = BLOCK_SIZE*4.25f;
 	//Screen pixel size
 	private float width;
 	private float heigh;
@@ -54,14 +36,9 @@ public class GameObject {
 	private ArrayList<Item> ItemList = new ArrayList<Item>(15);
 	private ArrayList<Rectangle> RecList = new ArrayList<Rectangle>(15);
 	private Body activeBody;
-	//Sounds
-	Sound blockSound = Gdx.audio.newSound(Gdx.files.internal("sounds/clack1.wav"));
-	Sound newPosSound = Gdx.audio.newSound(Gdx.files.internal("sounds/stuck.wav"));
-	Sound gameOverSound = Gdx.audio.newSound(Gdx.files.internal("sounds/tada.wav"));
-	Sound edgeSound = Gdx.audio.newSound(Gdx.files.internal("sounds/edge_hit.wav"));
-	Sound ButtonSound = Gdx.audio.newSound(Gdx.files.internal("sounds/button.wav"));
+
 	//Resources
-	public World world;
+	private World world;
 	private TextureAtlas atlas;
 	private ContactHandler contactHandler;
 	//Delta time accumulator
@@ -77,10 +54,10 @@ public class GameObject {
 		width = screenWidth;
 		heigh = screenHeight;
 		//Scaling to screen
-		BOX_TO_WORLD = screenWidth/widthInMeters;
+		BOX_TO_WORLD = screenWidth/Config.widthInMeters;
 		WORLD_TO_BOX = 1/BOX_TO_WORLD;
-		BLOCK_HALF_PIX = BLOCK_HALF*BOX_TO_WORLD;
-		BLOCK_SIZE_PIX = BLOCK_SIZE*BOX_TO_WORLD;
+		BLOCK_HALF_PIX = Config.BLOCK_HALF*BOX_TO_WORLD;
+		BLOCK_SIZE_PIX = Config.BLOCK_SIZE*BOX_TO_WORLD;
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
 		PolygonShape polygonShape = new PolygonShape();
@@ -90,11 +67,11 @@ public class GameObject {
 		atlas = new TextureAtlas(Gdx.files.internal("data/puzzle.atlas"));
 		//
 		setWorldBounds();       
-        polygonShape.setAsBox(BLOCK_SIZE/2, BLOCK_SIZE/2);
+        polygonShape.setAsBox(Config.BLOCK_SIZE/2, Config.BLOCK_SIZE/2);
         fixtureDef.shape = polygonShape;
-        fixtureDef.density = BLOCK_DENSITY;
-        fixtureDef.friction = BLOCK_FRICTION;
-        fixtureDef.restitution = BLOCK_RESTITUTION;
+        fixtureDef.density = Config.BLOCK_DENSITY;
+        fixtureDef.friction = Config.BLOCK_FRICTION;
+        fixtureDef.restitution = Config.BLOCK_RESTITUTION;
         
         bodyDef.type = BodyType.DynamicBody;
         Body block;
@@ -102,17 +79,17 @@ public class GameObject {
         for (int i=0;i<15;i++) {
         	row = Math.abs(i/4);
         	column = i - row*4;
-        	bodyDef.position.x = column*BLOCK_SIZE+startpointX+BLOCK_HALF;
-        	bodyDef.position.y = (3-row)*BLOCK_SIZE+startpointY+BLOCK_HALF;
+        	bodyDef.position.x = column*Config.BLOCK_SIZE+Config.startpointX+Config.BLOCK_HALF;
+        	bodyDef.position.y = (3-row)*Config.BLOCK_SIZE+Config.startpointY+Config.BLOCK_HALF;
 			block = world.createBody(bodyDef);
 			block.createFixture(fixtureDef);
-			block.setFixedRotation(FIXED_ROTATION);
-		    block.setLinearDamping(BODY_LINEAR_DAMPING);
+			block.setFixedRotation(Config.FIXED_ROTATION);
+		    block.setLinearDamping(Config.BODY_LINEAR_DAMPING);
 		    //Assigning sprite
 		    sprite = atlas.createSprite("tx_fig_"+String.valueOf(i+1));
-		    sprite.setSize(BLOCK_SIZE*BOX_TO_WORLD, BLOCK_SIZE*BOX_TO_WORLD);
+		    sprite.setSize(Config.BLOCK_SIZE*BOX_TO_WORLD, Config.BLOCK_SIZE*BOX_TO_WORLD);
 			SpriteList.add(i, sprite);
-			//Shity but working. Keep original central points of all rectangles
+			//Shit but it works. Keep original central points of all rectangles
 			RecList.add(i, new Rectangle(Math.round((block.getPosition().x)*this.BOX_TO_WORLD), 
 					Math.round((block.getPosition().y)*this.BOX_TO_WORLD),
 					1,
@@ -124,7 +101,7 @@ public class GameObject {
 		}
         setActiveItem(BlockList.get(0));
         //Adding empty rectangle with index 15 at position 4:4
-        RecList.add(15, new Rectangle(RecList.get(14).x+BLOCK_SIZE*BOX_TO_WORLD, RecList.get(14).y, 1,1));
+        RecList.add(15, new Rectangle(RecList.get(14).x+Config.BLOCK_SIZE*BOX_TO_WORLD, RecList.get(14).y, 1,1));
         //Cloning original SpriteList
         @SuppressWarnings("unchecked")
         ArrayList<Sprite> orSpriteList = (ArrayList<Sprite>) SpriteList.clone();
@@ -138,10 +115,10 @@ public class GameObject {
 	}
 	private void setWorldBounds() {
 		
-		Vector2 lowerLeftCorner = new Vector2(startpointX, startpointY);
-		Vector2 lowerRightCorner = new Vector2(widthInMeters-startpointX, startpointY);
-		Vector2 upperLeftCorner = new Vector2(startpointX, heightInMeters-startpointY);
-		Vector2 upperRightCorner = new Vector2(widthInMeters-startpointX, heightInMeters-startpointY);
+		Vector2 lowerLeftCorner = new Vector2(Config.startpointX, Config.startpointY);
+		Vector2 lowerRightCorner = new Vector2(Config.widthInMeters-Config.startpointX, Config.startpointY);
+		Vector2 upperLeftCorner = new Vector2(Config.startpointX, Config.heightInMeters-Config.startpointY);
+		Vector2 upperRightCorner = new Vector2(Config.widthInMeters-Config.startpointX, Config.heightInMeters-Config.startpointY);
 		
 		EdgeShape EdgeBoxShape = new EdgeShape();
 		Body groundBody;
@@ -151,13 +128,13 @@ public class GameObject {
 		groundBody = world.createBody(groundBodyDef);
 		
         EdgeBoxShape.set(lowerLeftCorner, lowerRightCorner);
-        groundBody.createFixture(EdgeBoxShape, 0).setRestitution(BLOCK_RESTITUTION);
+        groundBody.createFixture(EdgeBoxShape, 0).setRestitution(Config.BLOCK_RESTITUTION);
         EdgeBoxShape.set(lowerLeftCorner, upperLeftCorner);
-        groundBody.createFixture(EdgeBoxShape, 0).setRestitution(BLOCK_RESTITUTION);
+        groundBody.createFixture(EdgeBoxShape, 0).setRestitution(Config.BLOCK_RESTITUTION);
         EdgeBoxShape.set(upperLeftCorner, upperRightCorner);
-        groundBody.createFixture(EdgeBoxShape, 0).setRestitution(BLOCK_RESTITUTION);
+        groundBody.createFixture(EdgeBoxShape, 0).setRestitution(Config.BLOCK_RESTITUTION);
         EdgeBoxShape.set(lowerRightCorner, upperRightCorner);
-        groundBody.createFixture(EdgeBoxShape, 0).setRestitution(BLOCK_RESTITUTION);
+        groundBody.createFixture(EdgeBoxShape, 0).setRestitution(Config.BLOCK_RESTITUTION);
 	}
 	public ArrayList<Body> GetBlockList() {
 		return BlockList;
@@ -208,20 +185,20 @@ public class GameObject {
 			float x = Gdx.input.getAccelerometerX();
 			float y = Gdx.input.getAccelerometerY();
 			Vector2 gVec2 = new Vector2((Math.abs(x)>3f) ? x : 0, Math.abs(y)>3f ? y : 0);
-			world.setGravity(gVec2.scl(-5f*BLOCK_SIZE));
+			world.setGravity(gVec2.scl(Config.GRAVITY_MUL));
 		}
 	}
 	public void WorldStep (float delta){
 		//Should be improved on heavy applications (< 60 FPS)
-		if (delta >= (BOX_STEP/3)) {
-			world.step(delta, BOX_VELOCITY_ITERATIONS, BOX_POSITION_ITERATIONS);
+		if (delta >= (Config.BOX_STEP/3)) {
+			world.step(delta, Config.BOX_VELOCITY_ITERATIONS, Config.BOX_POSITION_ITERATIONS);
 			SetGravity();
 			DefineSpritePositions();
 			accumulator = 0;
 		} else {
 			accumulator += delta;
-			if (accumulator >= BOX_STEP) {
-				world.step(accumulator, BOX_VELOCITY_ITERATIONS, BOX_POSITION_ITERATIONS);
+			if (accumulator >= Config.BOX_STEP) {
+				world.step(accumulator, Config.BOX_VELOCITY_ITERATIONS, Config.BOX_POSITION_ITERATIONS);
 				SetGravity();
 				DefineSpritePositions();
 				accumulator = 0;
@@ -236,7 +213,6 @@ public class GameObject {
 		return heigh;
 	}
 	public void setActiveItem(Body block) {
-		// TODO Auto-generated method stub
 		activeBody = block;
 	}
 	public Body getActiveItem() {
@@ -273,8 +249,8 @@ public class GameObject {
 		Sprite sprite;
 		for (Body block : BlockList) {
 			sprite = SpriteList.get((Integer) block.getUserData());
-			sprite.setPosition(	(block.getPosition().x-GameObject.BLOCK_HALF)*BOX_TO_WORLD, 
-								(block.getPosition().y-GameObject.BLOCK_HALF)*BOX_TO_WORLD);
+			sprite.setPosition(	(block.getPosition().x-Config.BLOCK_HALF)*BOX_TO_WORLD, 
+								(block.getPosition().y-Config.BLOCK_HALF)*BOX_TO_WORLD);
 			
 		}
 	}
@@ -291,16 +267,13 @@ public class GameObject {
 		gameTime = 0;
 	}
 	public int getMoves()	{ 	return moves;		}
-	public String getTime() {
-		
+	public String getTimeString() {
 		int min = gameTime / 60;
 		int sec = gameTime - min*60;
-		String str = String.valueOf(min).concat(":").concat(String.valueOf(sec));
-		return str;	
+		return String.format(Config.TIME_FORMAT, min, sec);	
 	}
 	public void GameOver() {
-		// TODO Auto-generated method stub
-		gameOverSound.play();
+		Config.gameOverSound.play();
 		active = false;
 		appHandler.getGameScreen().showDialog();
 	}

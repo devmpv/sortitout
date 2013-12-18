@@ -18,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Widget;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class GameScreen implements Screen {
@@ -50,6 +52,7 @@ public class GameScreen implements Screen {
 	    //
 	    stage.addActor(gameScene);
 	    skin = new Skin(Gdx.files.internal("data/skin.json"));
+	    skin.getFont("normaltext").setScale(appHandler.getGameObject().getScreenWidth()/480);
 	    gameScene.setFillParent(true);
 	    gameScene.bottom();
 	    final Button buttonAudio = new Button(skin, "button-snd");
@@ -63,20 +66,22 @@ public class GameScreen implements Screen {
 	    gameOverDialog = new Dialog("", skin, "default") {
 						protected void result (Object obj) {
 							if (obj.equals(true)){
-								game.ButtonSound.play();
+								Config.ButtonSound.play();
 								game.Shuffle();
 								Gdx.input.setInputProcessor(multiplexer);
 								accelerometer = true;
 								label1.setVisible(true);
 							} else {
-								game.ButtonSound.play();
+								Config.ButtonSound.play();
 								gameOverDialog.hide();
 								appHandler.showMenu();
 							}
 						}
 					}.text("You win!").button("Exit", false).button("New", true).key(Keys.ENTER, true).key(Keys.ESCAPE, false);
 		label1 = new Label("", skin);
+		label1.setAlignment(Align.center);
 		label2 = new Label("", skin);
+		label2.setAlignment(Align.center);
 		gameScene.add(gameControls).center();
 		gameControls.add(label1).width(game.BLOCK_SIZE_PIX).height(buttonSize);
 		gameControls.add(buttonAudio).width(buttonSize).height(buttonSize);
@@ -84,12 +89,14 @@ public class GameScreen implements Screen {
 		gameControls.add(buttonExit).width(buttonSize).height(buttonSize);
 		gameControls.add(label2).width(game.BLOCK_SIZE_PIX).height(buttonSize);
 		gameScene.row();
+		gameScene.add(new Widget()).height(game.BLOCK_HALF_PIX/2);
+		gameScene.row();
 		gameScene.add(new Image(skin.getDrawable("empty"))).width(game.getScreenWidth()).height(game.getScreenWidth());
 		
 		buttonAudio.addListener(new ClickListener() {
     		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
     			//super.touchDown(event, x, y, pointer, button);
-    			game.ButtonSound.play();
+    			Config.ButtonSound.play();
     			if (buttonAudio.isChecked()){
 
     			}
@@ -98,14 +105,14 @@ public class GameScreen implements Screen {
 		buttonGravity.addListener(new ClickListener() {
 			public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 			//super.touchDown(event, x, y, pointer, button);
-				game.ButtonSound.play();
+				Config.ButtonSound.play();
 				game.setAccelerometer(!buttonGravity.isChecked());
     		}
 		});
 		buttonExit.addListener(new ClickListener() {
 			public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 			//super.touchDown(event, x, y, pointer, button);
-				game.ButtonSound.play();
+				Config.ButtonSound.play();
 				appHandler.showMenu();
 			}
 		});
@@ -142,7 +149,7 @@ public class GameScreen implements Screen {
 		
 		game.WorldStep(delta);
 		
-		label1.setText(game.getTime());
+		label1.setText(game.getTimeString());
 		label2.setText(String.valueOf(game.getMoves()));
 		stage.act(Gdx.graphics.getDeltaTime());
 		
@@ -188,7 +195,8 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void show() {
-		Gdx.input.setInputProcessor(multiplexer);
+		gameOverDialog.hide();
+		Gdx.input.setInputProcessor(multiplexer);		
 		label1.setVisible(true);
 	}
 

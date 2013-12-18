@@ -30,7 +30,6 @@ public class GestureHandler implements GestureListener {
 	
 	@Override
 	public boolean touchDown(float x, float y, int pointer, int button) {
-		// TODO Auto-generated method stub		
 		tpointer.x = x;
 		tpointer.y = ScreenHeight-y;
 		return false;
@@ -56,23 +55,23 @@ public class GestureHandler implements GestureListener {
 
 	@Override
 	public boolean pan(float x, float y, float deltaX, float deltaY) {
-		// TODO Auto-generated method stub
 		Sprite sprite;
 		for (Body block : gameObject.GetBlockList()) {
 				sprite = gameObject.GetSpriteList().get((Integer) block.getUserData()); 
 				if (sprite.getBoundingRectangle().contains(tpointer.x, tpointer.y)){
 					//Limiting speed to WORLD_MAX_SPEED
-					if (Math.abs(deltaX) > GameObject.WORLD_MAX_SPEED) {
-						deltaX = Math.signum(deltaX)*GameObject.WORLD_MAX_SPEED;
+					if (Math.abs(deltaX) > Config.WORLD_MAX_SPEED) {
+						deltaX = Math.signum(deltaX)*Config.WORLD_MAX_SPEED;
 					}
-					if (Math.abs(deltaY) > GameObject.WORLD_MAX_SPEED) {
-						deltaY = Math.signum(deltaY)*GameObject.WORLD_MAX_SPEED;
+					if (Math.abs(deltaY) > Config.WORLD_MAX_SPEED) {
+						deltaY = Math.signum(deltaY)*Config.WORLD_MAX_SPEED;
 					}
 					//
-					tpointer.x = x;
-					tpointer.y = ScreenHeight-y;
-					block.setLinearVelocity(new Vector2(deltaX*GameObject.BLOCK_SIZE, -deltaY*GameObject.BLOCK_SIZE));
+					/*tpointer.x = x;
+					tpointer.y = ScreenHeight-y;*/
+					block.setLinearVelocity(new Vector2(deltaX*Config.BLOCK_SIZE, -deltaY*Config.BLOCK_SIZE));
 					gameObject.setActiveItem(block);
+					break;
 				}
 		}
 		tpointer.x = x;
