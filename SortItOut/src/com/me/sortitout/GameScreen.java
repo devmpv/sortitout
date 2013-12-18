@@ -186,6 +186,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void pause() {
 		appHandler.showMenu();
+		Config.gameMusic.pause();
 	}
 
 	@Override
@@ -198,6 +199,7 @@ public class GameScreen implements Screen {
 		gameOverDialog.hide();
 		Gdx.input.setInputProcessor(multiplexer);		
 		label1.setVisible(true);
+		Config.gameMusic.play();
 	}
 
 	@Override

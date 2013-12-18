@@ -1,6 +1,7 @@
 package com.me.sortitout;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
 public class Config {
@@ -31,4 +32,7 @@ public class Config {
 	public static final Sound gameOverSound = Gdx.audio.newSound(Gdx.files.internal("sounds/tada.wav"));
 	public static final Sound edgeSound = Gdx.audio.newSound(Gdx.files.internal("sounds/edge_hit.wav"));
 	public static final Sound ButtonSound = Gdx.audio.newSound(Gdx.files.internal("sounds/button.wav"));
+	//Music
+	public static final Music menuMusic = Gdx.audio.newMusic(Gdx.files.internal("music/menu.mp3"));
+	public static final Music gameMusic = Gdx.audio.newMusic(Gdx.files.internal("music/game.mp3"));
 }
