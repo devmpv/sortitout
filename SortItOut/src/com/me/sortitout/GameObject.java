@@ -67,7 +67,7 @@ public class GameObject {
 		atlas = new TextureAtlas(Gdx.files.internal("data/puzzle.atlas"));
 		//
 		setWorldBounds();       
-        polygonShape.setAsBox(Config.BLOCK_SIZE/2, Config.BLOCK_SIZE/2);
+        polygonShape.setAsBox(Config.BLOCK_HALF, Config.BLOCK_HALF);
         fixtureDef.shape = polygonShape;
         fixtureDef.density = Config.BLOCK_DENSITY;
         fixtureDef.friction = Config.BLOCK_FRICTION;
@@ -283,5 +283,8 @@ public class GameObject {
 	}
 	public boolean isActive() {
 		return active;
+	}
+	public World getWorld() {
+		return world;
 	}
 }

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -22,7 +23,7 @@ public class MenuScreen implements Screen {
 	private ApplicationHandler appHandler;
 	private Dialog exitDialog;
 	private TextButton buttonContinue;
-	
+	private Button buttonAudio;
 	
 	public MenuScreen(ApplicationHandler applicationHandler) {
 		appHandler = applicationHandler;
@@ -39,11 +40,12 @@ public class MenuScreen implements Screen {
 	        Gdx.input.setInputProcessor(stage);
 	        
 	        Table table = new Table();
-	        table.setFillParent(true);       
-	        stage.addActor(table);
+	        stage.addActor(table);	  
+	        
 	        skin = new Skin(Gdx.files.internal("data/skin.json"));
 	        skin.getFont("normaltext").setScale(appHandler.getGameObject().getScreenWidth()/480);
 	        skin.add("background", new Texture("textures/bubble1.png"));
+	        table.setFillParent(true); 
 	        table.setBackground(skin.getTiledDrawable("background"));
 
 	        exitDialog = 
@@ -60,6 +62,7 @@ public class MenuScreen implements Screen {
 	        final TextButton button1 = new TextButton("New game", skin);
 	        final Widget widget1 = new Widget();
 	        final TextButton button2 = new TextButton("Continue", skin);
+	        
 	        buttonContinue = button2;
 	        button2.setDisabled(true);
 	        final TextButton button3 = new TextButton("Exit", skin);
@@ -72,8 +75,22 @@ public class MenuScreen implements Screen {
 	        table.add(widget1).height(buttonHeight/2);
 	        table.row();
 	        table.add(button3).width(buttonWidth).height(buttonHeight);
-	        // Add widgets to the table here.
-
+	        
+	        buttonAudio = new Button(skin, "button-snd");
+	        stage.addActor(buttonAudio);
+	        
+	        buttonAudio.addListener(new ClickListener() {
+	    		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+	    			//super.touchDown(event, x, y, pointer, button);
+	    			Config.ButtonSound.play();
+	    			if (buttonAudio.isChecked()){
+	    				Config.menuMusic.pause();
+	    			}else {
+	    				Config.menuMusic.play();
+	    			}
+	    				
+	        	}
+	    	});
 	        button1.addListener(new ClickListener() {
 	        		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 	        			//super.touchDown(event, x, y, pointer, button);
@@ -131,7 +148,9 @@ public class MenuScreen implements Screen {
 	public void show() {
 		Gdx.input.setInputProcessor(stage);
 		buttonContinue.setDisabled(!appHandler.getGameObject().isActive());
-		Config.menuMusic.play();
+		if (!buttonAudio.isChecked()) {
+			Config.menuMusic.play();
+		}
 	}
 
 	@Override

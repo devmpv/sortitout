@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -35,9 +36,13 @@ public class GameScreen implements Screen {
 	private InputMultiplexer multiplexer;
 	//private ShaderProgram shader;
 	private OrthographicCamera camera;
+	private Matrix4 debugMatrix;
 	private Dialog gameOverDialog;
 	private Label label1;
 	private Label label2;
+	private Button buttonAudio;
+	private Button buttonGravity;
+    private Button buttonExit;
 	
 	public GameScreen(ApplicationHandler applicationHandler) {
 		appHandler = applicationHandler;
@@ -55,9 +60,9 @@ public class GameScreen implements Screen {
 	    skin.getFont("normaltext").setScale(appHandler.getGameObject().getScreenWidth()/480);
 	    gameScene.setFillParent(true);
 	    gameScene.bottom();
-	    final Button buttonAudio = new Button(skin, "button-snd");
-	    final Button buttonGravity = new Button(skin, "button-gra");
-	    final Button buttonExit = new Button(skin, "button-exit");
+	    buttonAudio = new Button(skin, "button-snd");
+	    buttonGravity = new Button(skin, "button-gra");
+	    buttonExit = new Button(skin, "button-exit");
 	    if (!Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer)){
 	    	buttonGravity.setDisabled(true);
 	    } else {	    	
@@ -141,10 +146,12 @@ public class GameScreen implements Screen {
 		multiplexer.addProcessor(stage);
 		Gdx.input.setInputProcessor(multiplexer);
 		//Physics renderer
-		//debugRenderer = new Box2DDebugRenderer();
+		debugRenderer = new Box2DDebugRenderer();
 		//Camera
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, game.getScreenWidth(), game.getScreenHeight());
+		debugMatrix=new Matrix4(camera.combined);
+		debugMatrix.scale(game.BOX_TO_WORLD, game.BOX_TO_WORLD, 1f);
 	}
 
 	
@@ -179,8 +186,9 @@ public class GameScreen implements Screen {
 		}
 		//font.draw(batch, (Float.toString(1/delta).substring(0, 4)), 100, 550);
 		batch.end();
-	
 		stage.draw();
+		//Physics debug
+		//debugRenderer.render(game.getWorld(), debugMatrix);
 	}
 
 	@Override
@@ -203,7 +211,9 @@ public class GameScreen implements Screen {
 		gameOverDialog.hide();
 		Gdx.input.setInputProcessor(multiplexer);		
 		label1.setVisible(true);
-		Config.gameMusic.play();
+		if (!buttonAudio.isChecked()) {
+			Config.gameMusic.play();
+		}
 	}
 
 	@Override

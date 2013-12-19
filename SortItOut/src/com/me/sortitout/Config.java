@@ -6,23 +6,23 @@ import com.badlogic.gdx.audio.Sound;
 
 public class Config {
 	//Physics parameters
-	public static final float BLOCK_SIZE = 5f; //meters
-	public static final float WORLD_MAX_SPEED = BLOCK_SIZE*1.2f;
+	public static final float BLOCK_SIZE = 1f; //meters
+	public static final float WORLD_MAX_SPEED = BLOCK_SIZE*7f;
+	public static final float GRAVITY_MUL = -3f*BLOCK_SIZE;
 	public static final float BLOCK_HALF = BLOCK_SIZE/2;
 	public static final float BOX_STEP=1/60f;
 	public static final int BOX_VELOCITY_ITERATIONS=10;  
 	public static final int BOX_POSITION_ITERATIONS=20;
 	public static final float BLOCK_DENSITY = 0.5f;
 	public static final float BLOCK_FRICTION = 0f;
-	public static final float BLOCK_RESTITUTION = 0f;
-	public static final float BODY_LINEAR_DAMPING = BLOCK_SIZE/2;
+	public static final float BLOCK_RESTITUTION = 0.01f;
+	public static final float BODY_LINEAR_DAMPING = 0.1f;
 	public static final boolean FIXED_ROTATION = true;
 	//Physics world bounds
 	public static final float startpointX = BLOCK_SIZE*0.1f;
 	public static final float startpointY = BLOCK_SIZE*0.1f;
-	public static final float widthInMeters = BLOCK_SIZE*4.25f;
-	public static final float heightInMeters = BLOCK_SIZE*4.25f;
-	public static final float GRAVITY_MUL = -BLOCK_SIZE*BLOCK_SIZE;
+	public static final float widthInMeters = BLOCK_SIZE*4.30f;
+	public static final float heightInMeters = BLOCK_SIZE*4.30f;
 	
 	//Strings
 	public static final String TIME_FORMAT = "%s:%s";
