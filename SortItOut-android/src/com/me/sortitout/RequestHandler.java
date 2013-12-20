@@ -1,10 +1,10 @@
 package com.me.sortitout;
 
+import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-
-import com.google.ads.AdView;
+import com.google.android.gms.ads.AdView;
 import com.me.sortitout.IReqHandler;
 
 public class RequestHandler implements IReqHandler {
@@ -18,6 +18,7 @@ public class RequestHandler implements IReqHandler {
 	private final int SHOW_FULLADS = 3;
 	private final int HIDE_FULLADS = 4;
 
+	@SuppressLint("HandlerLeak")
 	protected Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {

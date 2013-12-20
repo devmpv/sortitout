@@ -273,7 +273,7 @@ public class GameObject {
 		return String.format(Config.TIME_FORMAT, min, sec);	
 	}
 	public void GameOver() {
-		Config.gameOverSound.play();
+		Config.getInst().gameOverSound.play();
 		active = false;
 		appHandler.getGameScreen().showDialog();
 	}

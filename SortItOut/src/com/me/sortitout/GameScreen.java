@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Input.Peripheral;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -43,6 +44,8 @@ public class GameScreen implements Screen {
 	private Button buttonAudio;
 	private Button buttonGravity;
     private Button buttonExit;
+
+	private Music gameMusic = Gdx.audio.newMusic(Gdx.files.internal("music/game.mp3"));
 	
 	public GameScreen(ApplicationHandler applicationHandler) {
 		appHandler = applicationHandler;
@@ -71,13 +74,13 @@ public class GameScreen implements Screen {
 	    gameOverDialog = new Dialog("", skin, "default") {
 						protected void result (Object obj) {
 							if (obj.equals(true)){
-								Config.ButtonSound.play();
+								Config.getInst().ButtonSound.play();
 								game.Shuffle();
 								Gdx.input.setInputProcessor(multiplexer);
 								accelerometer = true;
 								label1.setVisible(true);
 							} else {
-								Config.ButtonSound.play();
+								Config.getInst().ButtonSound.play();
 								gameOverDialog.hide();
 								appHandler.showMenu();
 							}
@@ -101,11 +104,11 @@ public class GameScreen implements Screen {
 		buttonAudio.addListener(new ClickListener() {
     		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
     			//super.touchDown(event, x, y, pointer, button);
-    			Config.ButtonSound.play();
+    			Config.getInst().ButtonSound.play();
     			if (buttonAudio.isChecked()){
-    				Config.gameMusic.pause();
+    				gameMusic.pause();
     			}else {
-    				Config.gameMusic.play();
+    				gameMusic.play();
     			}
     				
         	}
@@ -114,7 +117,7 @@ public class GameScreen implements Screen {
 			public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 			//super.touchDown(event, x, y, pointer, button);
 				if (!buttonGravity.isDisabled()) {
-					Config.ButtonSound.play();
+					Config.getInst().ButtonSound.play();
 				}
 				game.setAccelerometer(!buttonGravity.isChecked());
     		}
@@ -122,7 +125,7 @@ public class GameScreen implements Screen {
 		buttonExit.addListener(new ClickListener() {
 			public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 			//super.touchDown(event, x, y, pointer, button);
-				Config.ButtonSound.play();
+				Config.getInst().ButtonSound.play();
 				appHandler.showMenu();
 			}
 		});
@@ -212,19 +215,20 @@ public class GameScreen implements Screen {
 		Gdx.input.setInputProcessor(multiplexer);		
 		label1.setVisible(true);
 		if (!buttonAudio.isChecked()) {
-			Config.gameMusic.play();
+			gameMusic.play();
 		}
 	}
 
 	@Override
 	public void hide() {
-		Config.gameMusic.pause();
+		gameMusic.pause();
 	}
 	
 	@Override
 	public void dispose() {
 		batch.dispose();
 		stage.dispose();
+		gameMusic.dispose();
 	}
 	public void showDialog() {
 		Gdx.input.setInputProcessor(stage);
