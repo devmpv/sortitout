@@ -6,7 +6,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Input.Peripheral;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -29,7 +28,6 @@ public class GameScreen implements Screen {
 	private Skin skin;
 	private Stage stage;
 	private SpriteBatch batch;
-	boolean accelerometer;
 	Box2DDebugRenderer debugRenderer;
 	private GestureHandler gestureHandler = new GestureHandler();
 	private GameObject game;
@@ -45,8 +43,6 @@ public class GameScreen implements Screen {
 	private Button buttonGravity;
     private Button buttonExit;
 
-	private Music gameMusic = Gdx.audio.newMusic(Gdx.files.internal("music/game.mp3"));
-	
 	public GameScreen(ApplicationHandler applicationHandler) {
 		appHandler = applicationHandler;
 		game = applicationHandler.getGameObject();
@@ -66,21 +62,20 @@ public class GameScreen implements Screen {
 	    buttonAudio = new Button(skin, "button-snd");
 	    buttonGravity = new Button(skin, "button-gra");
 	    buttonExit = new Button(skin, "button-exit");
-	    if (!Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer)){
-	    	buttonGravity.setDisabled(true);
-	    } else {	    	
+	    if (Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer)){
 	    	game.setAccelerometer(true);
+	    } else {	    	
+	    	buttonGravity.setDisabled(true);
 	    }
 	    gameOverDialog = new Dialog("", skin, "default") {
 						protected void result (Object obj) {
 							if (obj.equals(true)){
-								Config.getInst().ButtonSound.play();
+								Config.getInst().buttonSound.play();
 								game.Shuffle();
 								Gdx.input.setInputProcessor(multiplexer);
-								accelerometer = true;
 								label1.setVisible(true);
 							} else {
-								Config.getInst().ButtonSound.play();
+								Config.getInst().buttonSound.play();
 								gameOverDialog.hide();
 								appHandler.showMenu();
 							}
@@ -104,11 +99,11 @@ public class GameScreen implements Screen {
 		buttonAudio.addListener(new ClickListener() {
     		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
     			//super.touchDown(event, x, y, pointer, button);
-    			Config.getInst().ButtonSound.play();
+    			Config.getInst().buttonSound.play();
     			if (buttonAudio.isChecked()){
-    				gameMusic.pause();
+    				Config.getInst().gameMusic.pause();
     			}else {
-    				gameMusic.play();
+    				Config.getInst().gameMusic.play();
     			}
     				
         	}
@@ -117,7 +112,7 @@ public class GameScreen implements Screen {
 			public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 			//super.touchDown(event, x, y, pointer, button);
 				if (!buttonGravity.isDisabled()) {
-					Config.getInst().ButtonSound.play();
+					Config.getInst().buttonSound.play();
 				}
 				game.setAccelerometer(!buttonGravity.isChecked());
     		}
@@ -125,7 +120,7 @@ public class GameScreen implements Screen {
 		buttonExit.addListener(new ClickListener() {
 			public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 			//super.touchDown(event, x, y, pointer, button);
-				Config.getInst().ButtonSound.play();
+				Config.getInst().buttonSound.play();
 				appHandler.showMenu();
 			}
 		});
@@ -215,24 +210,22 @@ public class GameScreen implements Screen {
 		Gdx.input.setInputProcessor(multiplexer);		
 		label1.setVisible(true);
 		if (!buttonAudio.isChecked()) {
-			gameMusic.play();
+			Config.getInst().gameMusic.play();
 		}
 	}
 
 	@Override
 	public void hide() {
-		gameMusic.pause();
+		Config.getInst().gameMusic.pause();
 	}
 	
 	@Override
 	public void dispose() {
 		batch.dispose();
 		stage.dispose();
-		gameMusic.dispose();
 	}
 	public void showDialog() {
 		Gdx.input.setInputProcessor(stage);
-		accelerometer = false;
 		label1.setVisible(false);
 		gameOverDialog.show(stage);
 	}

@@ -5,33 +5,31 @@ import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.utils.GdxNativesLoader;
 
 
 public class GestureHandler implements GestureListener {
 	
 	private GameObject gameObject;
 	//private float ScreenWidth; 
-	private float ScreenHeight;
-	Rectangle tpointer;
+	private float h;
+	Rectangle tp;
+	Vector2 vel = new Vector2();
 	//OrthographicCamera camera;
 	public boolean Init(ApplicationHandler ahandler) {
 				
 		gameObject = ahandler.getGameObject();
 		//ScreenWidth = gameObject.getScreenWidth();
-		ScreenHeight = gameObject.getScreenHeight();
-		//Loading native libraries
-		GdxNativesLoader.load();
-		tpointer = new Rectangle();
-		tpointer.width = gameObject.BLOCK_SIZE_PIX;
-		tpointer.height = tpointer.width;
+		h = gameObject.getScreenHeight();
+		tp = new Rectangle();
+		tp.width = gameObject.BLOCK_SIZE_PIX;
+		tp.height = tp.width;
 		return true;
 	}
 	
 	@Override
 	public boolean touchDown(float x, float y, int pointer, int button) {
-		tpointer.x = x;
-		tpointer.y = ScreenHeight-y;
+		tp.x = x;
+		tp.y = h-y;
 		return false;
 	}
 
@@ -50,30 +48,39 @@ public class GestureHandler implements GestureListener {
 	@Override
 	public boolean fling(float velocityX, float velocityY, int button) {
 		// TODO Auto-generated method stub
+		Sprite sprite;
+		for (Body block : gameObject.GetBlockList()) {
+			sprite = gameObject.GetSpriteList().get((Integer) block.getUserData()); 
+			if (sprite.getBoundingRectangle().contains(tp.x, tp.y)){
+				vel.set(velocityX, -velocityY)
+							.clamp(Config.MIN_SPEED, Config.MAX_SPEED);
+							
+				block.setLinearVelocity(vel);
+				gameObject.setActiveItem(block);
+				break;
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public boolean pan(float x, float y, float deltaX, float deltaY) {
 		Sprite sprite;
+		
 		for (Body block : gameObject.GetBlockList()) {
 				sprite = gameObject.GetSpriteList().get((Integer) block.getUserData()); 
-				if (sprite.getBoundingRectangle().contains(tpointer.x, tpointer.y)){
-					//Limiting speed to WORLD_MAX_SPEED
-					if (Math.abs(deltaX) > Config.WORLD_MAX_SPEED) {
-						deltaX = Math.signum(deltaX)*Config.WORLD_MAX_SPEED;
-					}
-					if (Math.abs(deltaY) > Config.WORLD_MAX_SPEED) {
-						deltaY = Math.signum(deltaY)*Config.WORLD_MAX_SPEED;
-					}
-
-					block.setLinearVelocity(new Vector2(deltaX*Config.BLOCK_SIZE, -deltaY*Config.BLOCK_SIZE));
+				if (sprite.getBoundingRectangle().contains(tp.x, tp.y)){
+					vel.set(deltaX, -deltaY)
+								.nor()
+								.scl(Config.MAX_SPEED)
+								.clamp(Config.MIN_SPEED, Config.MAX_SPEED);
+					block.setLinearVelocity(vel);
 					gameObject.setActiveItem(block);
 					break;
 				}
 		}
-		tpointer.x = x;
-		tpointer.y = ScreenHeight-y;
+		tp.x = x;
+		tp.y = h-y;
 		return false;
 	}
 

@@ -2,11 +2,10 @@ package com.me.sortitout;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.GdxNativesLoader;
 
 public class ApplicationHandler extends Game {
-	
-	
-	
+
 	private MenuScreen menuScreen;
 	private GameScreen gameScreen;
 	private GameObject gameObject;
@@ -20,6 +19,12 @@ public class ApplicationHandler extends Game {
 	}
 	@Override
 	public void create() {
+		//Loading native libraries
+		GdxNativesLoader.load();
+		
+		//Initialize configuration and resources
+		Config.getInst();
+		//
 		Gdx.input.setCatchBackKey(true);
 		Gdx.input.setCatchMenuKey(true);
 		
@@ -47,5 +52,11 @@ public class ApplicationHandler extends Game {
 	public void showGame() {
 		
 		this.setScreen(gameScreen);
+	}
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		Config.dispose();
+		super.dispose();
 	}
 }

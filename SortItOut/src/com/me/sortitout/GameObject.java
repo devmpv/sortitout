@@ -48,6 +48,8 @@ public class GameObject {
 	private int gameTime = 0;
 	private long startTime; 
 	private ApplicationHandler appHandler;
+	private Vector2 noGravity = new Vector2();
+	private Vector2 varGravity = new Vector2();
     
 	public GameObject(ApplicationHandler applicationHandler, float screenWidth, float screenHeight) {
 		appHandler = applicationHandler;
@@ -181,11 +183,11 @@ public class GameObject {
 		return ShuffleCount;
 	}
 	private void SetGravity () {
-		if (accelerometer) {
+		if (accelerometer && active) {
 			float x = Gdx.input.getAccelerometerX();
 			float y = Gdx.input.getAccelerometerY();
-			Vector2 gVec2 = new Vector2((Math.abs(x)>3f) ? x : 0, Math.abs(y)>3f ? y : 0);
-			world.setGravity(gVec2.scl(Config.GRAVITY_MUL));
+			varGravity.set((Math.abs(x)>3f) ? x : 0, Math.abs(y)>3f ? y : 0).scl(Config.GRAVITY_MUL);
+			world.setGravity(varGravity);
 		}
 	}
 	public void WorldStep (float delta){
@@ -266,7 +268,9 @@ public class GameObject {
 		startTime = TimeUtils.millis();
 		gameTime = 0;
 	}
-	public int getMoves()	{ 	return moves;		}
+	public int getMoves()	{ 	
+		return moves;
+	}
 	public String getTimeString() {
 		int min = gameTime / 60;
 		int sec = gameTime - min*60;
@@ -279,7 +283,7 @@ public class GameObject {
 	}
 	public void setAccelerometer(boolean a) {
 		this.accelerometer = a;
-		world.setGravity(new Vector2());
+		world.setGravity(noGravity);
 	}
 	public boolean isActive() {
 		return active;

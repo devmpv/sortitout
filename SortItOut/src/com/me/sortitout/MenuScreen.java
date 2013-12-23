@@ -3,7 +3,6 @@ package com.me.sortitout;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -25,7 +24,7 @@ public class MenuScreen implements Screen {
 	private Dialog exitDialog;
 	private TextButton buttonContinue;
 	private Button buttonAudio;
-	private Music menuMusic = Gdx.audio.newMusic(Gdx.files.internal("music/menu.mp3"));
+
 	
 	public MenuScreen(ApplicationHandler applicationHandler) {
 		appHandler = applicationHandler;
@@ -56,7 +55,7 @@ public class MenuScreen implements Screen {
 						if (obj.equals(true)){
 							Gdx.app.exit();
 						}else {
-							Config.getInst().ButtonSound.play();
+							Config.getInst().buttonSound.play();
 						}
 					}
 				}.text("Are you sure?").button("Exit", true).button("Back", false).key(Keys.ENTER, true)
@@ -84,11 +83,11 @@ public class MenuScreen implements Screen {
 	        buttonAudio.addListener(new ClickListener() {
 	    		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 	    			//super.touchDown(event, x, y, pointer, button);
-	    			Config.getInst().ButtonSound.play();
+	    			Config.getInst().buttonSound.play();
 	    			if (buttonAudio.isChecked()){
-	    				menuMusic.pause();
+	    				Config.getInst().menuMusic.pause();
 	    			}else {
-	    				menuMusic.play();
+	    				Config.getInst().menuMusic.play();
 	    			}
 	    				
 	        	}
@@ -98,7 +97,7 @@ public class MenuScreen implements Screen {
 	        			//super.touchDown(event, x, y, pointer, button);
 	        			appHandler.getGameObject().Shuffle();
 	        			button2.setDisabled(false);
-	        			Config.getInst().ButtonSound.play();
+	        			Config.getInst().buttonSound.play();
 	        			appHandler.showGame();
 	            	}
 	        	});
@@ -106,7 +105,7 @@ public class MenuScreen implements Screen {
         		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
         			//super.touchDown(event, x, y, pointer, button);
         			if (!button2.isDisabled()) {
-        				Config.getInst().ButtonSound.play();
+        				Config.getInst().buttonSound.play();
         				appHandler.showGame();
         			}
             	}
@@ -114,7 +113,7 @@ public class MenuScreen implements Screen {
 	        button3.addListener(new ClickListener() {
 	        	public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
         			//super.touchDown(event, x, y, pointer, button);
-	        		Config.getInst().ButtonSound.play();
+	        		Config.getInst().buttonSound.play();
 	        		exitDialog.show(stage);
             	}
         	});
@@ -135,8 +134,6 @@ public class MenuScreen implements Screen {
 
 	public void dispose() {
 	        stage.dispose();
-	        Config.dispose();
-	        menuMusic.dispose();
 	}
 
 	@Override
@@ -153,14 +150,13 @@ public class MenuScreen implements Screen {
 		Gdx.input.setInputProcessor(stage);
 		buttonContinue.setDisabled(!appHandler.getGameObject().isActive());
 		if (!buttonAudio.isChecked()) {
-			menuMusic.play();
+			Config.getInst().menuMusic.play();
 		}
 	}
 
 	@Override
 	public void hide() {
-		menuMusic.pause();
-		
+		Config.getInst().menuMusic.pause();
 	}
 
 	@Override
