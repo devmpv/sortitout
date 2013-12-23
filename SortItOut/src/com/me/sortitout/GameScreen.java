@@ -158,8 +158,9 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		
 		game.WorldStep(delta);
-		
-		label1.setText(game.getTimeString());
+		if (game.isActive()) {
+			label1.setText(game.getTimeString());
+		}
 		label2.setText(String.valueOf(game.getMoves()));
 		stage.act(Gdx.graphics.getDeltaTime());
 		
@@ -208,7 +209,6 @@ public class GameScreen implements Screen {
 	public void show() {
 		gameOverDialog.hide();
 		Gdx.input.setInputProcessor(multiplexer);		
-		label1.setVisible(true);
 		if (!buttonAudio.isChecked()) {
 			Config.getInst().gameMusic.play();
 		}
@@ -226,7 +226,6 @@ public class GameScreen implements Screen {
 	}
 	public void showDialog() {
 		Gdx.input.setInputProcessor(stage);
-		label1.setVisible(false);
 		gameOverDialog.show(stage);
 	}
 }

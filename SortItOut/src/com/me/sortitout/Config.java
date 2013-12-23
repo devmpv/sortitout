@@ -68,7 +68,6 @@ public class Config {
 	public static void dispose() {
 		if (inst!=null) {
 			inst.audioDispose();
-			inst=null;
 		}
 	}
 	private void audioDispose(){
@@ -77,13 +76,12 @@ public class Config {
 		menuMusic.dispose();
 		gameMusic.stop();
 		gameMusic.dispose();
+		
 		//Sound
 		blockSound.dispose();
 		newPosSound.dispose();
 		gameOverSound.dispose();
 		edgeSound.dispose();
 		buttonSound.dispose();
-
 	}
-	
 }

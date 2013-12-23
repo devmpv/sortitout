@@ -55,8 +55,8 @@ public class ApplicationHandler extends Game {
 	}
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-		Config.dispose();
+		gameScreen.dispose();
 		super.dispose();
+		Config.dispose();
 	}
 }
