@@ -3,6 +3,7 @@ package com.me.sortitout;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -24,7 +25,7 @@ public class MenuScreen implements Screen {
 	private Dialog exitDialog;
 	private TextButton buttonContinue;
 	private Button buttonAudio;
-
+	private Music menuMusic;
 	
 	public MenuScreen(ApplicationHandler applicationHandler) {
 		appHandler = applicationHandler;
@@ -35,6 +36,7 @@ public class MenuScreen implements Screen {
 		
 	        //float dWidth = appHandler.getGameObject().getScreenWidth(); 
 	        //float dHeight = GameObject.BLOCK_SIZE*appHandler.getGameObject().BOX_TO_WORLD*3;
+			menuMusic = Gdx.audio.newMusic(Gdx.files.internal("music/menu.mp3"));
 			float buttonWidth=appHandler.getGameObject().BLOCK_SIZE_PIX*2;
 			float buttonHeight=appHandler.getGameObject().BLOCK_HALF_PIX + appHandler.getGameObject().BLOCK_HALF_PIX/2;
 			stage = new Stage();
@@ -78,6 +80,7 @@ public class MenuScreen implements Screen {
 	        table.add(button3).width(buttonWidth).height(buttonHeight);
 	        
 	        buttonAudio = new Button(skin, "button-snd");
+	        buttonAudio.setSize(buttonHeight, buttonHeight);
 	        stage.addActor(buttonAudio);
 	        
 	        buttonAudio.addListener(new ClickListener() {
@@ -85,9 +88,9 @@ public class MenuScreen implements Screen {
 	    			//super.touchDown(event, x, y, pointer, button);
 	    			Config.getInst().buttonSound.play();
 	    			if (buttonAudio.isChecked()){
-	    				Config.getInst().menuMusic.pause();
+	    				menuMusic.pause();
 	    			}else {
-	    				Config.getInst().menuMusic.play();
+	    				menuMusic.play();
 	    			}
 	    				
 	        	}
@@ -133,6 +136,7 @@ public class MenuScreen implements Screen {
 
 
 	public void dispose() {
+		menuMusic.dispose();
 		stage.dispose();
 		skin.dispose();
 	}
@@ -151,16 +155,13 @@ public class MenuScreen implements Screen {
 		Gdx.input.setInputProcessor(stage);
 		buttonContinue.setDisabled(!appHandler.getGameObject().isActive());
 		if (!buttonAudio.isChecked()) {
-			Config.getInst().menuMusic.play();
+			menuMusic.play();
 		}
 	}
 
 	@Override
 	public void hide() {
-		//May be called after music is disposed
-		 if (Config.getInst().menuMusic != null) {
-			 Config.getInst().menuMusic.pause();
-		 }
+		menuMusic.pause();
 	}
 
 	@Override

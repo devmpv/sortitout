@@ -1,7 +1,6 @@
 package com.me.sortitout;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
 public class Config {
@@ -16,9 +15,7 @@ public class Config {
 			buttonSound;
 		
 	//Music
-	public Music
-			menuMusic,
-			gameMusic;
+
 	//Physics parameters
 	public static final float BLOCK_SIZE = 1f; //meters
 	public static final float MAX_SPEED = BLOCK_SIZE*5;
@@ -45,9 +42,7 @@ public class Config {
 	
 	private Config() {
 		//Music
-		menuMusic = Gdx.audio.newMusic(Gdx.files.internal("music/menu.mp3"));
-		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("music/game.mp3"));
-		gameMusic.setVolume(0.3f);
+
 		//Sounds
 		blockSound = Gdx.audio.newSound(Gdx.files.internal("sounds/clack1.wav"));
 		newPosSound = Gdx.audio.newSound(Gdx.files.internal("sounds/stuck.wav"));
@@ -68,16 +63,11 @@ public class Config {
 	public static void dispose() {
 		if (inst!=null) {
 			inst.audioDispose();
+			inst=null;
 		}
 	}
 	private void audioDispose(){
 		//Music
-		menuMusic.stop();
-		menuMusic.dispose();
-		menuMusic=null;
-		gameMusic.stop();
-		gameMusic.dispose();
-		gameMusic=null;
 		
 		//Sound
 		blockSound.dispose();

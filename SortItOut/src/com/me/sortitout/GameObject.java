@@ -52,6 +52,8 @@ public class GameObject {
 	private Vector2 varGravity = new Vector2();
     
 	public GameObject(ApplicationHandler applicationHandler, float screenWidth, float screenHeight) {
+		
+		
 		appHandler = applicationHandler;
 		width = screenWidth;
 		heigh = screenHeight;
@@ -96,7 +98,7 @@ public class GameObject {
 					Math.round((block.getPosition().y)*this.BOX_TO_WORLD),
 					1,
 					1));
-		    block.setUserData(new Integer(i));
+		    block.setUserData(Integer.valueOf(i));
 		    BlockList.add(i, block);
 		    //Filling ItemList with correct order
 		    ItemList.add(i,new Item(sprite, i));
@@ -188,7 +190,7 @@ public class GameObject {
 		if (accelerometer && active) {
 			float x = Gdx.input.getAccelerometerX();
 			float y = Gdx.input.getAccelerometerY();
-			varGravity.set((Math.abs(x)>3f) ? x : 0, Math.abs(y)>3f ? y : 0).scl(Config.GRAVITY_MUL);
+			varGravity.set((Math.abs(x)>4f) ? x : 0, Math.abs(y)>4f ? y : 0).scl(Config.GRAVITY_MUL);
 			world.setGravity(varGravity);
 		}
 	}

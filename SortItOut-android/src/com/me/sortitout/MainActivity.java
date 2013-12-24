@@ -12,7 +12,6 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.mediation.admob.AdMobExtras;
 import com.me.sortitout.ApplicationHandler;
 
 public class MainActivity extends AndroidApplication{
@@ -40,23 +39,13 @@ public class MainActivity extends AndroidApplication{
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
      
         // Create and setup the AdMob view
-        Bundle bundle = new Bundle(); 
-        bundle.putString("color_bg", "AAAAFF"); 
-        bundle.putString("color_bg_top", "FFFFFF"); 
-        bundle.putString("color_border", "FFFFFF"); 
-        bundle.putString("color_link", "000080"); 
-        bundle.putString("color_text", "808080"); 
-        bundle.putString("color_url", "008000");  
-        AdMobExtras extras = new AdMobExtras(bundle);
-        //
         adView = new AdView(this);
-        adView.setAdUnitId("pub-9161258038291870");     
+        adView.setAdUnitId("ca-app-pub-9161258038291870/6015923347");     
         adView.setAdSize(AdSize.SMART_BANNER); 
         
         AdRequest adRequest = new AdRequest.Builder()
         					.addTestDevice(AdRequest.DEVICE_ID_EMULATOR) //Emulator     
         					.addTestDevice("79E92E554ACEC25E7C0744DB62D560B7") // Lenovo test   
-        					.addNetworkExtras(extras)
         					.build();
         adView.loadAd(adRequest);
         // Add the libgdx view
@@ -74,4 +63,10 @@ public class MainActivity extends AndroidApplication{
         // Hook it all up
         setContentView(layout);
     }
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+	}
 }

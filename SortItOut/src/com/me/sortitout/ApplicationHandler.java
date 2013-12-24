@@ -35,7 +35,12 @@ public class ApplicationHandler extends Game {
 		
 		gameScreen = new GameScreen(this);
 		menuScreen = new MenuScreen(this);
-		//menuScreen.create();
+		//Sleep for 2 seconds
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			
+		}
 		this.setScreen(menuScreen);
 
 	}
@@ -56,8 +61,8 @@ public class ApplicationHandler extends Game {
 	@Override
 	public void dispose() {		
 		gameObject.dispose();
-		Config.dispose();
 		gameScreen.dispose();
+		Config.dispose();
 		super.dispose();
 		menuScreen.dispose();		
 	}

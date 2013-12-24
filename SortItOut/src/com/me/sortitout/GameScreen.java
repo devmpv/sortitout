@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Input.Peripheral;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -41,13 +42,16 @@ public class GameScreen implements Screen {
 	private Button buttonAudio;
 	private Button buttonGravity;
     private Button buttonExit;
-
+    private Music gameMusic; 
+    	
 	public GameScreen(ApplicationHandler applicationHandler) {
 		appHandler = applicationHandler;
 		game = applicationHandler.getGameObject();
 		create();
 	}
 	public void create() {	
+		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("music/game.mp3"));
+		gameMusic.setVolume(0.3f);
 		float buttonSize = game.BLOCK_HALF_PIX + game.BLOCK_HALF_PIX/2; 
 		stage = new Stage();
 	    Table gameScene = new Table();
@@ -100,9 +104,9 @@ public class GameScreen implements Screen {
     			//super.touchDown(event, x, y, pointer, button);
     			Config.getInst().buttonSound.play();
     			if (buttonAudio.isChecked()){
-    				Config.getInst().gameMusic.pause();
+    				gameMusic.pause();
     			}else {
-    				Config.getInst().gameMusic.play();
+    				gameMusic.play();
     			}
     				
         	}
@@ -210,13 +214,13 @@ public class GameScreen implements Screen {
 		gameOverDialog.hide();
 		Gdx.input.setInputProcessor(multiplexer);		
 		if (!buttonAudio.isChecked()) {
-			Config.getInst().gameMusic.play();
+			gameMusic.play();
 		}
 	}
 
 	@Override
 	public void hide() {
-		Config.getInst().gameMusic.pause();
+		gameMusic.pause();
 	}
 	
 	@Override
@@ -224,6 +228,7 @@ public class GameScreen implements Screen {
 		batch.dispose();
 		stage.dispose();
 		skin.dispose();
+		gameMusic.dispose();
 	}
 	public void showDialog() {
 		Gdx.input.setInputProcessor(stage);
