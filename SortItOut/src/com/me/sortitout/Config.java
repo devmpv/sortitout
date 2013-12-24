@@ -74,8 +74,10 @@ public class Config {
 		//Music
 		menuMusic.stop();
 		menuMusic.dispose();
+		menuMusic=null;
 		gameMusic.stop();
 		gameMusic.dispose();
+		gameMusic=null;
 		
 		//Sound
 		blockSound.dispose();

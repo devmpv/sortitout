@@ -55,9 +55,10 @@ public class ApplicationHandler extends Game {
 	}
 	@Override
 	public void dispose() {		
-		super.dispose();
+		gameObject.dispose();
 		Config.dispose();
 		gameScreen.dispose();
-		menuScreen.dispose();
+		super.dispose();
+		menuScreen.dispose();		
 	}
 }

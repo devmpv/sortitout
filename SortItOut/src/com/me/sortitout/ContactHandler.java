@@ -10,11 +10,11 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 public class ContactHandler implements ContactListener{
 	
 
-	GameObject gameObject;
+	GameObject game;
 	private int count = 0;
-	public void Init(GameObject gObject) {
+	public void init(GameObject gameObject) {
 		// TODO Auto-generated method stub
-		gameObject = gObject;
+		game = gameObject;
 		
 	}
 	
@@ -26,12 +26,12 @@ public class ContactHandler implements ContactListener{
 	@Override
 	public void endContact(Contact contact) {
 		int cnt=0;
-		if (gameObject.ItemPositionsChanged()) {
-			float velosity=gameObject.getActiveItem().getLinearVelocity().len();
+		if (game.itemPositionsChanged()) {
+			float velosity=game.getActiveItem().getLinearVelocity().len();
 			Config.getInst().blockSound.play(velosity/100, Math.max(velosity/50,1f), 0);
 			Item item;
 			ArrayList<Item> cItemList;
-			cItemList = gameObject.getItemList();
+			cItemList = game.getItemList();
 			for (int i=0;i<15;i++) {
 				item = cItemList.get(i); 
 				if (item.position == i) {
@@ -40,7 +40,7 @@ public class ContactHandler implements ContactListener{
 			}
 			if (cnt>count) {
 				if (cnt == 15) {
-					gameObject.GameOver();
+					game.gameOver();
 				}else {
 					Config.getInst().newPosSound.play();
 				}

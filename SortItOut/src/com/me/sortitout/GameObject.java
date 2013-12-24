@@ -110,7 +110,7 @@ public class GameObject {
         origSpriteList = orSpriteList;
         //
         contactHandler = new ContactHandler();
-        contactHandler.Init(this);
+        contactHandler.init(this);
         world.setContactListener(contactHandler);
         //Dispose disposable
         polygonShape.dispose();
@@ -137,6 +137,8 @@ public class GameObject {
         groundBody.createFixture(EdgeBoxShape, 0).setRestitution(Config.BLOCK_RESTITUTION);
         EdgeBoxShape.set(lowerRightCorner, upperRightCorner);
         groundBody.createFixture(EdgeBoxShape, 0).setRestitution(Config.BLOCK_RESTITUTION);
+        //Dispose
+        EdgeBoxShape.dispose();
 	}
 	public ArrayList<Body> GetBlockList() {
 		return BlockList;
@@ -146,7 +148,7 @@ public class GameObject {
 		return SpriteList;
 	}
 	
-	public int Shuffle() {
+	public int shuffle() {
 		ArrayList<Integer> tmpList = new ArrayList<Integer>();
 		for (int i=0; i<15; i++) {
 			tmpList.add(i);
@@ -173,8 +175,8 @@ public class GameObject {
 					tpmSpriteList.add(i, origSpriteList.get(clone.get(i)));
 				}
 				SpriteList = tpmSpriteList;
-				DefineSpritePositions();
-				ItemPositionsChanged();
+				defineSpritePositions();
+				itemPositionsChanged();
 				good = true;
 			}
 		}
@@ -182,7 +184,7 @@ public class GameObject {
 		startTimer();
 		return ShuffleCount;
 	}
-	private void SetGravity () {
+	private void setGravity () {
 		if (accelerometer && active) {
 			float x = Gdx.input.getAccelerometerX();
 			float y = Gdx.input.getAccelerometerY();
@@ -190,19 +192,19 @@ public class GameObject {
 			world.setGravity(varGravity);
 		}
 	}
-	public void WorldStep (float delta){
+	public void worldStep (float delta){
 		//Should be improved on heavy applications (< 60 FPS)
 		if (delta >= (Config.BOX_STEP/3)) {
 			world.step(delta, Config.BOX_VELOCITY_ITERATIONS, Config.BOX_POSITION_ITERATIONS);
-			SetGravity();
-			DefineSpritePositions();
+			setGravity();
+			defineSpritePositions();
 			accumulator = 0;
 		} else {
 			accumulator += delta;
 			if (accumulator >= Config.BOX_STEP) {
 				world.step(accumulator, Config.BOX_VELOCITY_ITERATIONS, Config.BOX_POSITION_ITERATIONS);
-				SetGravity();
-				DefineSpritePositions();
+				setGravity();
+				defineSpritePositions();
 				accumulator = 0;
 			}
 		}
@@ -223,7 +225,7 @@ public class GameObject {
 	public ArrayList<Item> getItemList(){
 		return ItemList;
 	}
-	public boolean ItemPositionsChanged() {
+	public boolean itemPositionsChanged() {
 		if ((TimeUtils.millis()-startTime)/100 < 1) {
 			return positionChanged;
 		}
@@ -233,7 +235,6 @@ public class GameObject {
 		for (int i=0; i<15; i++){
 			item = ItemList.get(i);
 			rec = item.sprite.getBoundingRectangle();
-			//!! There are 16 rectangles! so <=15
 			for (int j=0; j<=15; j++) { 			
 				if (rec.contains(RecList.get(j))) {
 					if (item.position!=j) {
@@ -247,7 +248,7 @@ public class GameObject {
 		}
 		return positionChanged;
 	}
-	public void DefineSpritePositions() {
+	public void defineSpritePositions() {
 		Sprite sprite;
 		for (Body block : BlockList) {
 			sprite = SpriteList.get((Integer) block.getUserData());
@@ -260,7 +261,7 @@ public class GameObject {
 		if (gameTime<999) {
 			gameTime = Math.round((TimeUtils.millis()-startTime)/1000);
 		}else {
-			Shuffle();
+			shuffle();
 		}
 	}
 	public void startTimer() {
@@ -276,7 +277,7 @@ public class GameObject {
 		int sec = gameTime - min*60;
 		return String.format(Config.TIME_FORMAT, min, sec);	
 	}
-	public void GameOver() {
+	public void gameOver() {
 		Config.getInst().gameOverSound.play();
 		active = false;
 		appHandler.getGameScreen().showDialog();
@@ -290,5 +291,9 @@ public class GameObject {
 	}
 	public World getWorld() {
 		return world;
+	}
+	public void dispose() {
+		world.dispose();
+		atlas.dispose();
 	}
 }

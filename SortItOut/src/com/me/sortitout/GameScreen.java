@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -35,7 +34,7 @@ public class GameScreen implements Screen {
 	private InputMultiplexer multiplexer;
 	//private ShaderProgram shader;
 	private OrthographicCamera camera;
-	private Matrix4 debugMatrix;
+	//private Matrix4 debugMatrix;
 	private Dialog gameOverDialog;
 	private Label label1;
 	private Label label2;
@@ -71,7 +70,7 @@ public class GameScreen implements Screen {
 						protected void result (Object obj) {
 							if (obj.equals(true)){
 								Config.getInst().buttonSound.play();
-								game.Shuffle();
+								game.shuffle();
 								Gdx.input.setInputProcessor(multiplexer);
 								label1.setVisible(true);
 							} else {
@@ -148,8 +147,9 @@ public class GameScreen implements Screen {
 		//Camera
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, game.getScreenWidth(), game.getScreenHeight());
-		debugMatrix=new Matrix4(camera.combined);
-		debugMatrix.scale(game.BOX_TO_WORLD, game.BOX_TO_WORLD, 1f);
+		//Debug physics
+		//debugMatrix=new Matrix4(camera.combined);
+		//debugMatrix.scale(game.BOX_TO_WORLD, game.BOX_TO_WORLD, 1f);
 	}
 
 	
@@ -157,7 +157,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		
-		game.WorldStep(delta);
+		game.worldStep(delta);
 		if (game.isActive()) {
 			label1.setText(game.getTimeString());
 		}
@@ -223,6 +223,7 @@ public class GameScreen implements Screen {
 	public void dispose() {
 		batch.dispose();
 		stage.dispose();
+		skin.dispose();
 	}
 	public void showDialog() {
 		Gdx.input.setInputProcessor(stage);

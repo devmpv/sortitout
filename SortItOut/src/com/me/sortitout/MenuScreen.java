@@ -95,7 +95,7 @@ public class MenuScreen implements Screen {
 	        button1.addListener(new ClickListener() {
 	        		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 	        			//super.touchDown(event, x, y, pointer, button);
-	        			appHandler.getGameObject().Shuffle();
+	        			appHandler.getGameObject().shuffle();
 	        			button2.setDisabled(false);
 	        			Config.getInst().buttonSound.play();
 	        			appHandler.showGame();
@@ -134,6 +134,7 @@ public class MenuScreen implements Screen {
 
 	public void dispose() {
 		stage.dispose();
+		skin.dispose();
 	}
 
 	@Override
@@ -156,7 +157,10 @@ public class MenuScreen implements Screen {
 
 	@Override
 	public void hide() {
-		Config.getInst().menuMusic.pause();
+		//May be called after music is disposed
+		 if (Config.getInst().menuMusic != null) {
+			 Config.getInst().menuMusic.pause();
+		 }
 	}
 
 	@Override
