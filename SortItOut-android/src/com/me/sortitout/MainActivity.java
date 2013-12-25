@@ -8,7 +8,6 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
-import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
@@ -23,15 +22,7 @@ public class MainActivity extends AndroidApplication{
         super.onCreate(savedInstanceState);
         // Create the layout
         RelativeLayout layout = new RelativeLayout(this);
-        
-        //Params
-        AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
-        cfg.useGL20 = false;
-        cfg.useAccelerometer = false;
-        cfg.maxSimultaneousSounds = 1;
-        cfg.useWakelock = false;
-        cfg.numSamples = 2;
-        
+     
         // Create the libgdx View
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,

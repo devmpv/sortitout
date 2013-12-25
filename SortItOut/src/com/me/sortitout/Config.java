@@ -8,12 +8,11 @@ public class Config {
 	private static Config inst;
 	//Sound
 	public Sound 	
-			blockSound, 
-			newPosSound, 
-			gameOverSound, 
-			edgeSound, 
+			blockSound,
+			newPosSound,
+			gameOverSound,
+			edgeSound,
 			buttonSound;
-		
 	//Music
 
 	//Physics parameters
