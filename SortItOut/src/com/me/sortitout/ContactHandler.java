@@ -29,7 +29,7 @@ public class ContactHandler implements ContactListener{
 			if (game.itemPositionsChanged()) {		
 				if (A.getUserData() == null || B.getUserData() == null) {
 					Config.getInst().edgeSound.play(0.5f, 1.5f, 0);
-					aBody.setLinearVelocity(aBody.getLinearVelocity().div(4f));
+					//aBody.setLinearVelocity(aBody.getLinearVelocity().scl(4f));
 				} else {
 					Config.getInst().blockSound.play(velosity, Math.max(1, velosity*1.2f), 0);
 				}

@@ -15,7 +15,6 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -62,7 +61,7 @@ public class GameScreen implements Screen {
 	    skin.getFont("normaltext").setScale(appHandler.getGameObject().getScreenWidth()/480);
 	    gameScene.setFillParent(true);
 	    gameScene.bottom();
-	    gameScene.setBackground(skin.getTiledDrawable("background"));
+	    //gameScene.setBackground(skin.getTiledDrawable("background"));
 	    buttonAudio = new Button(skin, "button-snd");
 	    buttonGravity = new Button(skin, "button-gra");
 	    buttonExit = new Button(skin, "button-exit");
@@ -98,7 +97,7 @@ public class GameScreen implements Screen {
 		gameScene.row();
 		gameScene.add(new Widget()).height(game.BLOCK_HALF_PIX/2);
 		gameScene.row();
-		gameScene.add(new Image(skin.getDrawable("empty"))).width(game.getScreenWidth()).height(game.getScreenWidth());
+		gameScene.add(new Widget()).width(game.getScreenWidth()).height(game.getScreenWidth());
 		
 		buttonAudio.addListener(new ClickListener() {
     		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
@@ -171,12 +170,13 @@ public class GameScreen implements Screen {
 		
 		Gdx.gl.glClearColor(220, 220, 220, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		stage.draw();
+		
 		
 		batch.setProjectionMatrix(camera.combined);
 		//Table.drawDebug(stage);
 		batch.begin();
-		//skin.getTiledDrawable("background").draw(batch, 0, 0, stage.getWidth(), stage.getHeight());
+		skin.getTiledDrawable("background").draw(batch, 0, 0, stage.getWidth(), stage.getHeight());
+		skin.getDrawable("empty").draw(batch, 0, 0, stage.getWidth(), stage.getWidth());
 		//drawing blocks
 		Item item;
 		ArrayList<Item> cItemList;
@@ -189,9 +189,10 @@ public class GameScreen implements Screen {
 				item.sprite.draw(batch, 0.6f);	
 			}	
 		}
+		//FPS
 		//font.draw(batch, (Float.toString(1/delta).substring(0, 4)), 100, 550);
 		batch.end();
-		
+		stage.draw();
 		//Physics debug
 		//debugRenderer.render(game.getWorld(), debugMatrix);
 	}

@@ -122,7 +122,7 @@ public class GameObject {
         polygonShape.dispose();
 	}
 	private void setWorldBounds() {
-		FixtureDef groundFixtureDef = new FixtureDef();
+		
 		Vector2 lowerLeftCorner = new Vector2(Config.startpointX, Config.startpointY);
 		Vector2 lowerRightCorner = new Vector2(Config.widthInMeters-Config.startpointX, Config.startpointY);
 		Vector2 upperLeftCorner = new Vector2(Config.startpointX, Config.heightInMeters-Config.startpointY);
@@ -131,10 +131,12 @@ public class GameObject {
 		EdgeShape edgeBoxShape = new EdgeShape();
 		Body groundBody;
 		BodyDef groundBodyDef = new BodyDef();
+		groundBodyDef.type = BodyType.StaticBody;
+		FixtureDef groundFixtureDef = new FixtureDef();
 		groundFixtureDef.shape = edgeBoxShape;
 		groundFixtureDef.density = 0f;
 		groundFixtureDef.filter.categoryBits = Config.CATEGORY_SCENERY;
-		groundFixtureDef.restitution = Config.BLOCK_RESTITUTION;
+		groundFixtureDef.restitution = 0f;
 		groundBody = world.createBody(groundBodyDef);		
         edgeBoxShape.set(lowerLeftCorner, lowerRightCorner);
         groundBody.createFixture(groundFixtureDef);
