@@ -9,19 +9,20 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 public class GestureHandler implements GestureListener {
 	
-	private GameObject gameObject;
+	private GameObject game;
 	//private float ScreenWidth; 
 	private float h;
 	Rectangle tp;
 	Vector2 vel = new Vector2();
+	Vector2 dist = new Vector2();
 	//OrthographicCamera camera;
 	public boolean Init(ApplicationHandler ahandler) {
 				
-		gameObject = ahandler.getGameObject();
+		game = ahandler.getGameObject();
 		//ScreenWidth = gameObject.getScreenWidth();
-		h = gameObject.getScreenHeight();
+		h = game.getScreenHeight();
 		tp = new Rectangle();
-		tp.width = gameObject.BLOCK_SIZE_PIX;
+		tp.width = game.BLOCK_SIZE_PIX;
 		tp.height = tp.width;
 		return true;
 	}
@@ -48,40 +49,42 @@ public class GestureHandler implements GestureListener {
 	@Override
 	public boolean fling(float velocityX, float velocityY, int button) {
 		// TODO Auto-generated method stub
-		Sprite sprite;
-		for (Body block : gameObject.GetBlockList()) {
-			sprite = gameObject.GetSpriteList().get((Integer) block.getUserData()); 
+		/*Sprite sprite;
+		for (Body block : game.GetBlockList()) {
+			sprite = game.GetSpriteList().get((Integer) block.getUserData()); 
 			if (sprite.getBoundingRectangle().contains(tp.x, tp.y)){
 				vel.set(velocityX, -velocityY)
 							.clamp(Config.MIN_SPEED, Config.MAX_SPEED);
 							
 				block.setLinearVelocity(vel);
-				gameObject.setActiveItem(block);
+				game.setActiveItem(block);
 				break;
 			}
-		}
+		}*/
 		return false;
 	}
 
 	@Override
 	public boolean pan(float x, float y, float deltaX, float deltaY) {
 		Sprite sprite;
-		
-		for (Body block : gameObject.GetBlockList()) {
-				sprite = gameObject.GetSpriteList().get((Integer) block.getUserData()); 
+		dist.set(deltaX, -deltaY);
+		if (dist.len()<1) {
+			return false;
+		}
+		for (Body block : game.GetBlockList()) {
+				sprite = game.GetSpriteList().get((Integer) block.getUserData()); 
 				if (sprite.getBoundingRectangle().contains(tp.x, tp.y)){
-					vel.set(deltaX, -deltaY)
-								.nor()
-								.scl(Config.MAX_SPEED)
-								.clamp(Config.MIN_SPEED, Config.MAX_SPEED);
+					vel.set(dist.div(game.BOX_TO_WORLD))
+								.scl(50f)
+								.clamp(0f, Config.MAX_SPEED);
 					block.setLinearVelocity(vel);
-					gameObject.setActiveItem(block);
+					game.setActiveItem(block);
 					break;
 				}
 		}
 		tp.x = x;
 		tp.y = h-y;
-		return false;
+		return true;
 	}
 
 	@Override
@@ -98,7 +101,7 @@ public class GestureHandler implements GestureListener {
 		return false;
 	}
 	public GameObject getGame(){
-		return gameObject;
+		return game;
 	}
 
 	@Override

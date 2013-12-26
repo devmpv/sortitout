@@ -62,13 +62,14 @@ public class GameScreen implements Screen {
 	    skin.getFont("normaltext").setScale(appHandler.getGameObject().getScreenWidth()/480);
 	    gameScene.setFillParent(true);
 	    gameScene.bottom();
+	    gameScene.setBackground(skin.getTiledDrawable("background"));
 	    buttonAudio = new Button(skin, "button-snd");
 	    buttonGravity = new Button(skin, "button-gra");
 	    buttonExit = new Button(skin, "button-exit");
-	    if (Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer)){
-	    	game.setAccelerometer(true);
-	    } else {	    	
+	    if (!Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer)){
 	    	buttonGravity.setDisabled(true);
+	    }else {
+	    	buttonGravity.setChecked(true);
 	    }
 	    gameOverDialog = new Dialog("", skin, "default") {
 						protected void result (Object obj) {
@@ -170,8 +171,9 @@ public class GameScreen implements Screen {
 		
 		Gdx.gl.glClearColor(220, 220, 220, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		batch.setProjectionMatrix(camera.combined);
+		stage.draw();
 		
+		batch.setProjectionMatrix(camera.combined);
 		//Table.drawDebug(stage);
 		batch.begin();
 		//skin.getTiledDrawable("background").draw(batch, 0, 0, stage.getWidth(), stage.getHeight());
@@ -189,7 +191,7 @@ public class GameScreen implements Screen {
 		}
 		//font.draw(batch, (Float.toString(1/delta).substring(0, 4)), 100, 550);
 		batch.end();
-		stage.draw();
+		
 		//Physics debug
 		//debugRenderer.render(game.getWorld(), debugMatrix);
 	}

@@ -62,16 +62,20 @@ public class GameObject {
 		WORLD_TO_BOX = 1/BOX_TO_WORLD;
 		BLOCK_HALF_PIX = Config.BLOCK_HALF*BOX_TO_WORLD;
 		BLOCK_SIZE_PIX = Config.BLOCK_SIZE*BOX_TO_WORLD;
-		BodyDef bodyDef = new BodyDef();
-		FixtureDef fixtureDef = new FixtureDef();
+		
+		
 		PolygonShape polygonShape = new PolygonShape();
 		Sprite sprite;
 		//
 		world = new World(new Vector2(0, 0), true);
 		atlas = new TextureAtlas(Gdx.files.internal("data/puzzle.atlas"));
 		//
-		setWorldBounds();       
+		setWorldBounds();
+		//Defining blocks
+		BodyDef bodyDef = new BodyDef();
+		FixtureDef fixtureDef = new FixtureDef();
         polygonShape.setAsBox(Config.BLOCK_HALF, Config.BLOCK_HALF);
+        fixtureDef.filter.categoryBits = Config.CATEGORY_BLOCK;
         fixtureDef.shape = polygonShape;
         fixtureDef.density = Config.BLOCK_DENSITY;
         fixtureDef.friction = Config.BLOCK_FRICTION;
@@ -118,29 +122,30 @@ public class GameObject {
         polygonShape.dispose();
 	}
 	private void setWorldBounds() {
-		
+		FixtureDef groundFixtureDef = new FixtureDef();
 		Vector2 lowerLeftCorner = new Vector2(Config.startpointX, Config.startpointY);
 		Vector2 lowerRightCorner = new Vector2(Config.widthInMeters-Config.startpointX, Config.startpointY);
 		Vector2 upperLeftCorner = new Vector2(Config.startpointX, Config.heightInMeters-Config.startpointY);
 		Vector2 upperRightCorner = new Vector2(Config.widthInMeters-Config.startpointX, Config.heightInMeters-Config.startpointY);
 		
-		EdgeShape EdgeBoxShape = new EdgeShape();
+		EdgeShape edgeBoxShape = new EdgeShape();
 		Body groundBody;
 		BodyDef groundBodyDef = new BodyDef();
-		//
-		//groundBodyDef.position.set(0, 0);
-		groundBody = world.createBody(groundBodyDef);
-		
-        EdgeBoxShape.set(lowerLeftCorner, lowerRightCorner);
-        groundBody.createFixture(EdgeBoxShape, 0).setRestitution(Config.BLOCK_RESTITUTION);
-        EdgeBoxShape.set(lowerLeftCorner, upperLeftCorner);
-        groundBody.createFixture(EdgeBoxShape, 0).setRestitution(Config.BLOCK_RESTITUTION);
-        EdgeBoxShape.set(upperLeftCorner, upperRightCorner);
-        groundBody.createFixture(EdgeBoxShape, 0).setRestitution(Config.BLOCK_RESTITUTION);
-        EdgeBoxShape.set(lowerRightCorner, upperRightCorner);
-        groundBody.createFixture(EdgeBoxShape, 0).setRestitution(Config.BLOCK_RESTITUTION);
+		groundFixtureDef.shape = edgeBoxShape;
+		groundFixtureDef.density = 0f;
+		groundFixtureDef.filter.categoryBits = Config.CATEGORY_SCENERY;
+		groundFixtureDef.restitution = Config.BLOCK_RESTITUTION;
+		groundBody = world.createBody(groundBodyDef);		
+        edgeBoxShape.set(lowerLeftCorner, lowerRightCorner);
+        groundBody.createFixture(groundFixtureDef);
+        edgeBoxShape.set(lowerLeftCorner, upperLeftCorner);
+        groundBody.createFixture(groundFixtureDef);
+        edgeBoxShape.set(upperLeftCorner, upperRightCorner);
+        groundBody.createFixture(groundFixtureDef);
+        edgeBoxShape.set(lowerRightCorner, upperRightCorner);
+        groundBody.createFixture(groundFixtureDef);
         //Dispose
-        EdgeBoxShape.dispose();
+        edgeBoxShape.dispose();
 	}
 	public ArrayList<Body> GetBlockList() {
 		return BlockList;
