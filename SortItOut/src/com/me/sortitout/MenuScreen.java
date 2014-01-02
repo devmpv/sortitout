@@ -57,10 +57,10 @@ public class MenuScreen implements Screen {
 						if (obj.equals(true)){
 							Gdx.app.exit();
 						}else {
-							Config.getInst().buttonSound.play();
+							Config.getInst().playSnd(Config.SND_BUTTON);
 						}
 					}
-				}.text("Are you sure?").button("Exit", true).button("Back", false).key(Keys.ENTER, true)
+				}.text("Exit game?").button(" Exit ", true).button(" Back ", false).key(Keys.ENTER, true)
 				.key(Keys.ESCAPE, false);
 	        final TextButton button1 = new TextButton("New game", skin);
 	        final Widget widget1 = new Widget();
@@ -79,14 +79,21 @@ public class MenuScreen implements Screen {
 	        table.row();
 	        table.add(button3).width(buttonWidth).height(buttonHeight);
 	        
-	        Config.getInst().menuButton = new Button(skin, "button-snd");
+	        Config.getInst().menuButton = new Button(skin, "button-mus");
 	        Config.getInst().menuButton.setSize(buttonHeight, buttonHeight);
-	        stage.addActor(Config.getInst().menuButton);
+	        
+	        final Button sndMuteButton = new Button(skin, "button-snd");
+	        sndMuteButton.setSize(buttonHeight, buttonHeight);
+	        Table buttonTable = new Table();
+	        buttonTable.bottom().left();
+	        buttonTable.add(Config.getInst().menuButton);
+	        buttonTable.add(sndMuteButton);
+	        stage.addActor(buttonTable);
 	        
 	        Config.getInst().menuButton.addListener(new ClickListener() {
 	    		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 	    			//super.touchDown(event, x, y, pointer, button);
-	    			Config.getInst().buttonSound.play();
+	    			Config.getInst().playSnd(Config.SND_BUTTON);
 	    			if (Config.getInst().menuButton.isChecked()){
 	    				Config.getInst().pauseMusic();
 	    			}else {
@@ -95,12 +102,23 @@ public class MenuScreen implements Screen {
 	    				
 	        	}
 	    	});	        
+	        sndMuteButton.addListener(new ClickListener() {
+        		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+        			//super.touchDown(event, x, y, pointer, button);
+        			if (sndMuteButton.isChecked()) {
+        				Config.mute = true;
+        			} else {
+        				Config.mute = false;
+        			}
+        				
+            	}
+        	});
 	        button1.addListener(new ClickListener() {
 	        		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 	        			//super.touchDown(event, x, y, pointer, button);
 	        			appHandler.getGameObject().shuffle();
 	        			button2.setDisabled(false);
-	        			Config.getInst().buttonSound.play();
+	        			Config.getInst().playSnd(Config.SND_BUTTON);
 	        			appHandler.showGame();
 	            	}
 	        	});
@@ -108,7 +126,7 @@ public class MenuScreen implements Screen {
         		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
         			//super.touchDown(event, x, y, pointer, button);
         			if (!button2.isDisabled()) {
-        				Config.getInst().buttonSound.play();
+        				Config.getInst().playSnd(Config.SND_BUTTON);
         				appHandler.showGame();
         			}
             	}
@@ -116,7 +134,7 @@ public class MenuScreen implements Screen {
 	        button3.addListener(new ClickListener() {
 	        	public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
         			//super.touchDown(event, x, y, pointer, button);
-	        		Config.getInst().buttonSound.play();
+	        		Config.getInst().playSnd(Config.SND_BUTTON);
 	        		exitDialog.show(stage);
             	}
         	});
@@ -147,7 +165,7 @@ public class MenuScreen implements Screen {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-        //Table.drawDebug(stage); // This is optional, but enables debug lines for tables.
+        //Table.drawDebug(stage); // Enables debug lines for tables.
 	}
 
 	@Override

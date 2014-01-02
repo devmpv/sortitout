@@ -46,23 +46,37 @@ button-gra
   orig: 64, 64
   offset: 0, 0
   index: -1
-button-snd-disabled
+button-mus-disabled
   rotate: false
   xy: 67, 3
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-button-snd
+button-mus
   rotate: false
   xy: 133, 65
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
+button-snd-disabled
+  rotate: false
+  xy: 199, 65
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+button-snd
+  rotate: false
+  xy: 265, 67
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
 button-disabled
   rotate: false
-  xy: 199, 67
+  xy: 331, 69
   size: 62, 62
   split: 17, 14, 22, 13
   orig: 62, 62
@@ -70,7 +84,7 @@ button-disabled
   index: -1
 button-down
   rotate: false
-  xy: 133, 1
+  xy: 395, 69
   size: 62, 62
   split: 17, 14, 22, 12
   orig: 62, 62
@@ -78,7 +92,7 @@ button-down
   index: -1
 button
   rotate: false
-  xy: 265, 69
+  xy: 133, 1
   size: 62, 62
   split: 18, 14, 23, 12
   orig: 62, 62
@@ -86,7 +100,7 @@ button
   index: -1
 window
   rotate: false
-  xy: 329, 69
+  xy: 197, 1
   size: 62, 62
   split: 18, 13, 21, 14
   orig: 62, 62

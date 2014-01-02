@@ -64,7 +64,7 @@ public class GameScreen implements Screen {
 	    //gameScene.setBackground(skin.getTiledDrawable("background"));
 	    buttonGravity = new Button(skin, "button-gra");
 	    buttonExit = new Button(skin, "button-exit");
-	    Config.getInst().gameButton = new Button(skin, "button-snd");
+	    Config.getInst().gameButton = new Button(skin, "button-mus");
 
 	    if (!Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer)){
 	    	buttonGravity.setDisabled(true);
@@ -74,17 +74,17 @@ public class GameScreen implements Screen {
 	    gameOverDialog = new Dialog("", skin, "default") {
 						protected void result (Object obj) {
 							if (obj.equals(true)){
-								Config.getInst().buttonSound.play();
+								Config.getInst().playSnd(Config.SND_BUTTON);
 								game.shuffle();
 								Gdx.input.setInputProcessor(multiplexer);
 								label1.setVisible(true);
 							} else {
-								Config.getInst().buttonSound.play();
+								Config.getInst().playSnd(Config.SND_BUTTON);
 								gameOverDialog.hide();
 								appHandler.showMenu();
 							}
 						}
-					}.text("You win!").button("Exit", false).button("New", true).key(Keys.ENTER, true).key(Keys.ESCAPE, false);
+					}.text("You win!").button(" Menu ", false).button(" New ", true).key(Keys.ENTER, true).key(Keys.ESCAPE, false);
 		label1 = new Label("", skin);
 		label1.setAlignment(Align.center);
 		label2 = new Label("", skin);
@@ -105,7 +105,7 @@ public class GameScreen implements Screen {
 		Config.getInst().gameButton.addListener(new ClickListener() {
     		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
     			//super.touchDown(event, x, y, pointer, button);
-    			Config.getInst().buttonSound.play();
+    			Config.getInst().playSnd(Config.SND_BUTTON);
     			if (Config.getInst().gameButton.isChecked()){
     				Config.getInst().pauseMusic();
     			}else {
@@ -118,7 +118,7 @@ public class GameScreen implements Screen {
 			public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 			//super.touchDown(event, x, y, pointer, button);
 				if (!buttonGravity.isDisabled()) {
-					Config.getInst().buttonSound.play();
+					Config.getInst().playSnd(Config.SND_BUTTON);
 				}
 				game.setAccelerometer(!buttonGravity.isChecked());
     		}
@@ -126,7 +126,7 @@ public class GameScreen implements Screen {
 		buttonExit.addListener(new ClickListener() {
 			public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 			//super.touchDown(event, x, y, pointer, button);
-				Config.getInst().buttonSound.play();
+				Config.getInst().playSnd(Config.SND_BUTTON);
 				appHandler.showMenu();
 			}
 		});

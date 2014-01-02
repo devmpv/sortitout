@@ -28,10 +28,10 @@ public class ContactHandler implements ContactListener{
 			float velosity=Math.max(A.getLinearVelocity().len()/Config.MAX_SPEED, B.getLinearVelocity().len()/Config.MAX_SPEED);
 			if (game.itemPositionsChanged()) {		
 				if (A.getUserData() == null || B.getUserData() == null) {
-					Config.getInst().edgeSound.play(0.5f, 1.5f, 0);
+					Config.getInst().playSnd(Config.SND_EDGE, velosity*0.5f, 1.5f);
 					//aBody.setLinearVelocity(aBody.getLinearVelocity().scl(4f));
 				} else {
-					Config.getInst().blockSound.play(velosity, Math.max(1, velosity*1.2f), 0);
+					Config.getInst().playSnd(Config.SND_BLOCK, velosity, Math.max(1, velosity*1.2f));
 				}
 				
 				Item item;
@@ -47,7 +47,7 @@ public class ContactHandler implements ContactListener{
 					if (cnt == 15) {
 						game.gameOver();
 					}else {
-						Config.getInst().newPosSound.play();
+						Config.getInst().playSnd(Config.SND_NEWPOS);
 					}
 				}
 				count=cnt;

@@ -9,17 +9,26 @@ public class Config {
 	
 	private static Config inst;
 	//Sound
-	public Sound 	
+	private Sound 	
 			blockSound,
 			newPosSound,
 			gameOverSound,
 			edgeSound,
 			buttonSound;
+	//Sound IDs
+	public static final int 
+		SND_BLOCK = 1,
+		SND_NEWPOS = 2,
+		SND_GAMEOVER = 3,
+		SND_EDGE = 4,
+		SND_BUTTON = 5;
 	//Music
 	public Music
 			gameMusic,
 			menuMusic;
 	public Button menuButton, gameButton;
+
+	public static Boolean mute = false;
 	//Physics parameters
 	public static final float BLOCK_SIZE = 1f; //meters
 	public static final float MAX_SPEED = BLOCK_SIZE*6;
@@ -85,6 +94,23 @@ public class Config {
 		music.play();
 		menuButton.setChecked(false);
 		gameButton.setChecked(false);
+	}
+	public void playSnd (int sndID) {
+		this.playSnd(sndID, 1, 1);
+	}
+	public void playSnd (int sndID, float volume) {
+		this.playSnd(sndID, volume, 1);
+	}
+	public void playSnd (int sndID, float volume, float pitch) {
+		if (!mute) {
+			switch (sndID) {
+				case SND_BLOCK: blockSound.play(volume, pitch, 0); break;
+				case SND_BUTTON: buttonSound.play(volume, pitch, 0); break;
+				case SND_NEWPOS: newPosSound.play(volume, pitch, 0); break;
+				case SND_EDGE: edgeSound.play(volume, pitch, 0); break;
+				case SND_GAMEOVER: gameOverSound.play(volume, pitch, 0);
+			}
+		}
 	}
 	private void audioDispose(){
 		//Music
