@@ -38,7 +38,6 @@ public class GameScreen implements Screen {
 	private Dialog gameOverDialog;
 	private Label label1;
 	private Label label2;
-	private Button buttonAudio;
 	private Button buttonGravity;
     private Button buttonExit;
     private Music gameMusic; 
@@ -51,6 +50,7 @@ public class GameScreen implements Screen {
 	public void create() {	
 		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("music/game.mp3"));
 		gameMusic.setVolume(0.3f);
+		Config.getInst().gameMusic = gameMusic;
 		float buttonSize = game.BLOCK_HALF_PIX + game.BLOCK_HALF_PIX/2; 
 		stage = new Stage();
 	    Table gameScene = new Table();
@@ -62,9 +62,10 @@ public class GameScreen implements Screen {
 	    gameScene.setFillParent(true);
 	    gameScene.bottom();
 	    //gameScene.setBackground(skin.getTiledDrawable("background"));
-	    buttonAudio = new Button(skin, "button-snd");
 	    buttonGravity = new Button(skin, "button-gra");
 	    buttonExit = new Button(skin, "button-exit");
+	    Config.getInst().gameButton = new Button(skin, "button-snd");
+
 	    if (!Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer)){
 	    	buttonGravity.setDisabled(true);
 	    }else {
@@ -88,9 +89,11 @@ public class GameScreen implements Screen {
 		label1.setAlignment(Align.center);
 		label2 = new Label("", skin);
 		label2.setAlignment(Align.center);
+        
+		
 		gameScene.add(gameControls).center();
 		gameControls.add(label1).width(game.BLOCK_SIZE_PIX).height(buttonSize);
-		gameControls.add(buttonAudio).width(buttonSize).height(buttonSize);
+		gameControls.add(Config.getInst().gameButton).width(buttonSize).height(buttonSize);
 		gameControls.add(buttonGravity).width(buttonSize).height(buttonSize);
 		gameControls.add(buttonExit).width(buttonSize).height(buttonSize);
 		gameControls.add(label2).width(game.BLOCK_SIZE_PIX).height(buttonSize);
@@ -99,14 +102,14 @@ public class GameScreen implements Screen {
 		gameScene.row();
 		gameScene.add(new Widget()).width(game.getScreenWidth()).height(game.getScreenWidth());
 		
-		buttonAudio.addListener(new ClickListener() {
+		Config.getInst().gameButton.addListener(new ClickListener() {
     		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
     			//super.touchDown(event, x, y, pointer, button);
     			Config.getInst().buttonSound.play();
-    			if (buttonAudio.isChecked()){
-    				gameMusic.pause();
+    			if (Config.getInst().gameButton.isChecked()){
+    				Config.getInst().pauseMusic();
     			}else {
-    				gameMusic.play();
+    				Config.getInst().playMusic(gameMusic);
     			}
     				
         	}
@@ -216,7 +219,7 @@ public class GameScreen implements Screen {
 	public void show() {
 		gameOverDialog.hide();
 		Gdx.input.setInputProcessor(multiplexer);		
-		if (!buttonAudio.isChecked()) {
+		if (!Config.getInst().gameButton.isChecked()) {
 			gameMusic.play();
 		}
 	}

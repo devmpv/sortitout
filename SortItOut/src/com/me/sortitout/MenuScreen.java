@@ -23,8 +23,7 @@ public class MenuScreen implements Screen {
 	private Stage stage;
 	private ApplicationHandler appHandler;
 	private Dialog exitDialog;
-	private TextButton buttonContinue;
-	private Button buttonAudio;
+	private TextButton buttonContinue;	
 	private Music menuMusic;
 	
 	public MenuScreen(ApplicationHandler applicationHandler) {
@@ -37,6 +36,7 @@ public class MenuScreen implements Screen {
 	        //float dWidth = appHandler.getGameObject().getScreenWidth(); 
 	        //float dHeight = GameObject.BLOCK_SIZE*appHandler.getGameObject().BOX_TO_WORLD*3;
 			menuMusic = Gdx.audio.newMusic(Gdx.files.internal("music/menu.mp3"));
+			Config.getInst().menuMusic = menuMusic;
 			float buttonWidth=appHandler.getGameObject().BLOCK_SIZE_PIX*2;
 			float buttonHeight=appHandler.getGameObject().BLOCK_HALF_PIX + appHandler.getGameObject().BLOCK_HALF_PIX/2;
 			stage = new Stage();
@@ -79,22 +79,22 @@ public class MenuScreen implements Screen {
 	        table.row();
 	        table.add(button3).width(buttonWidth).height(buttonHeight);
 	        
-	        buttonAudio = new Button(skin, "button-snd");
-	        buttonAudio.setSize(buttonHeight, buttonHeight);
-	        stage.addActor(buttonAudio);
+	        Config.getInst().menuButton = new Button(skin, "button-snd");
+	        Config.getInst().menuButton.setSize(buttonHeight, buttonHeight);
+	        stage.addActor(Config.getInst().menuButton);
 	        
-	        buttonAudio.addListener(new ClickListener() {
+	        Config.getInst().menuButton.addListener(new ClickListener() {
 	    		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 	    			//super.touchDown(event, x, y, pointer, button);
 	    			Config.getInst().buttonSound.play();
-	    			if (buttonAudio.isChecked()){
-	    				menuMusic.pause();
+	    			if (Config.getInst().menuButton.isChecked()){
+	    				Config.getInst().pauseMusic();
 	    			}else {
-	    				menuMusic.play();
+	    				Config.getInst().playMusic(menuMusic);
 	    			}
 	    				
 	        	}
-	    	});
+	    	});	        
 	        button1.addListener(new ClickListener() {
 	        		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 	        			//super.touchDown(event, x, y, pointer, button);
@@ -154,7 +154,7 @@ public class MenuScreen implements Screen {
 	public void show() {
 		Gdx.input.setInputProcessor(stage);
 		buttonContinue.setDisabled(!appHandler.getGameObject().isActive());
-		if (!buttonAudio.isChecked()) {
+		if (!Config.getInst().menuButton.isChecked()) {
 			menuMusic.play();
 		}
 	}

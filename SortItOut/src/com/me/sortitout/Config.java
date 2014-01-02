@@ -1,7 +1,9 @@
 package com.me.sortitout;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 
 public class Config {
 	
@@ -14,7 +16,10 @@ public class Config {
 			edgeSound,
 			buttonSound;
 	//Music
-
+	public Music
+			gameMusic,
+			menuMusic;
+	public Button menuButton, gameButton;
 	//Physics parameters
 	public static final float BLOCK_SIZE = 1f; //meters
 	public static final float MAX_SPEED = BLOCK_SIZE*6;
@@ -46,19 +51,19 @@ public class Config {
 	
 	private Config() {
 		//Music
-
+		
 		//Sounds
 		blockSound = Gdx.audio.newSound(Gdx.files.internal("sounds/clack1.mp3"));
 		newPosSound = Gdx.audio.newSound(Gdx.files.internal("sounds/stuck.mp3"));
 		gameOverSound = Gdx.audio.newSound(Gdx.files.internal("sounds/win.mp3"));
 		edgeSound = Gdx.audio.newSound(Gdx.files.internal("sounds/edge_hit.mp3"));
 		buttonSound = Gdx.audio.newSound(Gdx.files.internal("sounds/button.mp3"));
+		//Button
 	}
 	
 	public static Config getInst()
     {
-        if (inst == null)
-        {
+        if (inst == null) {
             inst = new Config();
         }
         return inst;
@@ -67,12 +72,24 @@ public class Config {
 	public static void dispose() {
 		if (inst!=null) {
 			inst.audioDispose();
-			inst=null;
+			inst=null;			
 		}
+	}
+	public void pauseMusic() {
+		menuMusic.pause();
+		gameMusic.pause();
+		menuButton.setChecked(true);
+		gameButton.setChecked(true);
+	}
+	public void playMusic(Music music) {
+		music.play();
+		menuButton.setChecked(false);
+		gameButton.setChecked(false);
 	}
 	private void audioDispose(){
 		//Music
-		
+		gameMusic = null;
+		menuMusic = null;
 		//Sound
 		blockSound.dispose();
 		newPosSound.dispose();
@@ -80,4 +97,5 @@ public class Config {
 		edgeSound.dispose();
 		buttonSound.dispose();
 	}
+
 }
