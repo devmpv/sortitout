@@ -9,10 +9,9 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class ContactHandler implements ContactListener{
-	
-
 	GameObject game;
 	private int count = 0;
+	
 	public void init(GameObject gameObject) {
 		game = gameObject;		
 	}
@@ -32,8 +31,7 @@ public class ContactHandler implements ContactListener{
 					//aBody.setLinearVelocity(aBody.getLinearVelocity().scl(4f));
 				} else {
 					Config.getInst().playSnd(Config.SND_BLOCK, velosity, Math.max(1, velosity*1.2f));
-				}
-				
+				}				
 				Item item;
 				ArrayList<Item> cItemList;
 				cItemList = game.getItemList();
@@ -58,12 +56,6 @@ public class ContactHandler implements ContactListener{
 	@Override
 	public void endContact(Contact contact) {
 		// TODO Auto-generated method stub
-		/*Body 	
-		A = contact.getFixtureA().getBody(),
-		B = contact.getFixtureB().getBody();
-		A.setLinearVelocity(A.getLinearVelocity().div(2f));
-		B.setLinearVelocity(B.getLinearVelocity().div(2f));
-		*/
 	}
 
 	@Override

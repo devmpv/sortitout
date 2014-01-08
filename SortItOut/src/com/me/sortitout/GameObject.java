@@ -63,8 +63,8 @@ public class GameObject {
 		BLOCK_HALF_PIX = Config.BLOCK_HALF*BOX_TO_WORLD;
 		BLOCK_SIZE_PIX = Config.BLOCK_SIZE*BOX_TO_WORLD;
 		
-		
-		PolygonShape polygonShape = new PolygonShape();
+		PolygonShape preciseShape = new PolygonShape();	
+		preciseShape.set(Config.vertices);
 		Sprite sprite;
 		//
 		world = new World(new Vector2(0, 0), true);
@@ -74,9 +74,9 @@ public class GameObject {
 		//Defining blocks
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
-        polygonShape.setAsBox(Config.BLOCK_HALF, Config.BLOCK_HALF);
+        
         fixtureDef.filter.categoryBits = Config.CATEGORY_BLOCK;
-        fixtureDef.shape = polygonShape;
+        fixtureDef.shape = preciseShape;
         fixtureDef.density = Config.BLOCK_DENSITY;
         fixtureDef.friction = Config.BLOCK_FRICTION;
         fixtureDef.restitution = Config.BLOCK_RESTITUTION;
@@ -119,7 +119,7 @@ public class GameObject {
         contactHandler.init(this);
         world.setContactListener(contactHandler);
         //Dispose disposable
-        polygonShape.dispose();
+        preciseShape.dispose();
 	}
 	private void setWorldBounds() {
 		

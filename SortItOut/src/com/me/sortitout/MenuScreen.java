@@ -43,7 +43,7 @@ public class MenuScreen implements Screen {
 	        Gdx.input.setInputProcessor(stage);
 	        
 	        Table table = new Table();
-	        stage.addActor(table);	  
+	        stage.addActor(table);
 	        
 	        skin = new Skin(Gdx.files.internal("data/skin.json"));
 	        skin.getFont("normaltext").setScale(appHandler.getGameObject().getScreenWidth()/480);
@@ -80,14 +80,14 @@ public class MenuScreen implements Screen {
 	        table.add(button3).width(buttonWidth).height(buttonHeight);
 	        
 	        Config.getInst().menuButton = new Button(skin, "button-mus");
-	        Config.getInst().menuButton.setSize(buttonHeight, buttonHeight);
+	        //Config.getInst().menuButton.setSize(buttonHeight, buttonHeight);
 	        
 	        final Button sndMuteButton = new Button(skin, "button-snd");
-	        sndMuteButton.setSize(buttonHeight, buttonHeight);
+	        //sndMuteButton.setSize(buttonHeight, buttonHeight);
 	        Table buttonTable = new Table();
 	        buttonTable.bottom().left();
-	        buttonTable.add(Config.getInst().menuButton);
-	        buttonTable.add(sndMuteButton);
+	        buttonTable.add(Config.getInst().menuButton).size(buttonHeight);
+	        buttonTable.add(sndMuteButton).size(buttonHeight);
 	        stage.addActor(buttonTable);
 	        
 	        Config.getInst().menuButton.addListener(new ClickListener() {

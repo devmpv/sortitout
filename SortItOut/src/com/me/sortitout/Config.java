@@ -30,6 +30,15 @@ public class Config {
 
 	public static Boolean mute = false;
 	//Physics parameters
+	public static final float[] vertices = {
+			-0.35f, -0.5f,
+			-0.5f, -0.35f,
+			-0.5f, 0.35f,
+			-0.35f, 0.5f,
+			0.35f, 0.5f,
+			0.5f, 0.35f,
+			0.5f, -0.35f,
+			0.35f, -0.5f};
 	public static final float BLOCK_SIZE = 1f; //meters
 	public static final float MAX_SPEED = BLOCK_SIZE*6;
 	public static final float MIN_SPEED = BLOCK_SIZE;
