@@ -47,7 +47,7 @@ public class MenuScreen implements Screen {
 	        
 	        skin = new Skin(Gdx.files.internal("data/skin.json"));
 	        skin.getFont("normaltext").setScale(appHandler.getGameObject().getScreenWidth()/480);
-	        skin.add("background", new Texture("textures/bubble1.png"));
+	        //skin.add("background", new Texture("textures/bubble1.png"));
 	        table.setFillParent(true); 
 	        table.setBackground(skin.getTiledDrawable("background"));
 
