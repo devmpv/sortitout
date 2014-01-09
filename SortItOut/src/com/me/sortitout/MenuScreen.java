@@ -40,7 +40,7 @@ public class MenuScreen implements Screen {
 			float buttonWidth=appHandler.getGameObject().BLOCK_SIZE_PIX*2;
 			float buttonHeight=appHandler.getGameObject().BLOCK_HALF_PIX + appHandler.getGameObject().BLOCK_HALF_PIX/2;
 			stage = new Stage();
-	        Gdx.input.setInputProcessor(stage);
+	        //Gdx.input.setInputProcessor(stage);
 	        
 	        Table table = new Table();
 	        stage.addActor(table);

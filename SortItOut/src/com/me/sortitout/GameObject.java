@@ -235,8 +235,8 @@ public class GameObject {
 		return ItemList;
 	}
 	public boolean itemPositionsChanged() {
-		if ((TimeUtils.millis()-startTime)/100 < 1) {
-			return positionChanged;
+		if ((TimeUtils.millis()-startTime) - gameTime*1000 < 100) {
+			return false;
 		}
 		Rectangle rec;
 		Item item;

@@ -47,7 +47,7 @@ public class Config {
 	public static final float BOX_STEP=1/60f;
 	public static final int BOX_VELOCITY_ITERATIONS=15;  
 	public static final int BOX_POSITION_ITERATIONS=8;
-	public static final float BLOCK_DENSITY = 0.1f;
+	public static final float BLOCK_DENSITY = 1f;
 	public static final float BLOCK_FRICTION = 0f;
 	public static final float BLOCK_RESTITUTION = 0f;
 	public static final float BODY_LINEAR_DAMPING = 0.9f;
