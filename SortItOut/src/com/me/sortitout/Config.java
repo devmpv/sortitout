@@ -9,26 +9,18 @@ public class Config {
 	
 	private static Config inst;
 	//Sound
-	private Sound 	
+	public static Sound 	
 			blockSound,
 			newPosSound,
 			gameOverSound,
 			edgeSound,
 			buttonSound;
-	//Sound IDs
-	public static final int 
-		SND_BLOCK = 1,
-		SND_NEWPOS = 2,
-		SND_GAMEOVER = 3,
-		SND_EDGE = 4,
-		SND_BUTTON = 5;
 	//Music
 	public Music
 			gameMusic,
 			menuMusic;
 	public Button menuButton, gameButton;
 
-	public static Boolean mute = false;
 	//Physics parameters
 	public static final float[] vertices = {
 			-0.35f, -0.5f,
@@ -104,22 +96,10 @@ public class Config {
 		menuButton.setChecked(false);
 		gameButton.setChecked(false);
 	}
-	public void playSnd (int sndID) {
-		this.playSnd(sndID, 1, 1);
-	}
-	public void playSnd (int sndID, float volume) {
-		this.playSnd(sndID, volume, 1);
-	}
-	public void playSnd (int sndID, float volume, float pitch) {
-		if (!mute) {
-			switch (sndID) {
-				case SND_BLOCK: blockSound.play(volume, pitch, 0); break;
-				case SND_BUTTON: buttonSound.play(volume, pitch, 0); break;
-				case SND_NEWPOS: newPosSound.play(volume, pitch, 0); break;
-				case SND_EDGE: edgeSound.play(volume, pitch, 0); break;
-				case SND_GAMEOVER: gameOverSound.play(volume, pitch, 0);
-			}
-		}
+	public static void playSnd (Sound sound) { 		playSnd(sound, 1, 1); 	}
+	public static void playSnd (Sound sound, float volume) {	playSnd(sound, volume, 1); 	}
+	public static void playSnd (Sound sound, float volume, float pitch) {
+		if (Settings.soundEnabled) 	sound.play(volume, pitch, 0);
 	}
 	private void audioDispose(){
 		//Music

@@ -39,14 +39,12 @@ public class MenuScreen implements Screen {
 			float buttonWidth=appHandler.getGameObject().BLOCK_SIZE_PIX*2;
 			float buttonHeight=appHandler.getGameObject().BLOCK_HALF_PIX + appHandler.getGameObject().BLOCK_HALF_PIX/2;
 			stage = new Stage();
-	        //Gdx.input.setInputProcessor(stage);
 	        
 	        Table table = new Table();
 	        stage.addActor(table);
 	        
 	        skin = new Skin(Gdx.files.internal("data/skin.json"));
 	        skin.getFont("normaltext").setScale(appHandler.getGameObject().getScreenWidth()/480);
-	        //skin.add("background", new Texture("textures/bubble1.png"));
 	        table.setFillParent(true); 
 	        table.setBackground(skin.getTiledDrawable("background"));
 
@@ -56,7 +54,7 @@ public class MenuScreen implements Screen {
 						if (obj.equals(true)){
 							Gdx.app.exit();
 						}else {
-							Config.getInst().playSnd(Config.SND_BUTTON);
+							Config.playSnd(Config.buttonSound);
 						}
 					}
 				}.text("Exit game?").button(" Exit ", true).button(" Back ", false).key(Keys.ENTER, true)
@@ -79,20 +77,18 @@ public class MenuScreen implements Screen {
 	        table.add(button3).width(buttonWidth).height(buttonHeight);
 	        
 	        Config.getInst().menuButton = new Button(skin, "button-mus");
-	        //Config.getInst().menuButton.setSize(buttonHeight, buttonHeight);
-	        
 	        final Button sndMuteButton = new Button(skin, "button-snd");
-	        //sndMuteButton.setSize(buttonHeight, buttonHeight);
+	        sndMuteButton.setChecked(!Settings.soundEnabled);
 	        Table buttonTable = new Table();
 	        buttonTable.bottom().left();
-	        buttonTable.add(Config.getInst().menuButton).size(buttonHeight);
-	        buttonTable.add(sndMuteButton).size(buttonHeight);
+	        buttonTable.add(Config.getInst().menuButton).size(buttonHeight*0.7f);
+	        buttonTable.add(sndMuteButton).size(buttonHeight*0.7f);
 	        stage.addActor(buttonTable);
 	        
 	        Config.getInst().menuButton.addListener(new ClickListener() {
 	    		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 	    			//super.touchDown(event, x, y, pointer, button);
-	    			Config.getInst().playSnd(Config.SND_BUTTON);
+	    			Config.playSnd(Config.buttonSound);
 	    			if (Config.getInst().menuButton.isChecked()){
 	    				Config.getInst().pauseMusic();
 	    			}else {
@@ -104,12 +100,7 @@ public class MenuScreen implements Screen {
 	        sndMuteButton.addListener(new ClickListener() {
         		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
         			//super.touchDown(event, x, y, pointer, button);
-        			if (sndMuteButton.isChecked()) {
-        				Config.mute = true;
-        			} else {
-        				Config.mute = false;
-        			}
-        				
+        			Settings.soundEnabled = !sndMuteButton.isChecked();
             	}
         	});
 	        button1.addListener(new ClickListener() {
@@ -117,7 +108,7 @@ public class MenuScreen implements Screen {
 	        			//super.touchDown(event, x, y, pointer, button);
 	        			appHandler.getGameObject().shuffle();
 	        			button2.setDisabled(false);
-	        			Config.getInst().playSnd(Config.SND_BUTTON);
+	        			Config.playSnd(Config.buttonSound);
 	        			appHandler.showGame();
 	            	}
 	        	});
@@ -125,7 +116,7 @@ public class MenuScreen implements Screen {
         		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
         			//super.touchDown(event, x, y, pointer, button);
         			if (!button2.isDisabled()) {
-        				Config.getInst().playSnd(Config.SND_BUTTON);
+        				Config.playSnd(Config.buttonSound);
         				appHandler.showGame();
         			}
             	}
@@ -133,7 +124,7 @@ public class MenuScreen implements Screen {
 	        button3.addListener(new ClickListener() {
 	        	public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
         			//super.touchDown(event, x, y, pointer, button);
-	        		Config.getInst().playSnd(Config.SND_BUTTON);
+	        		Config.playSnd(Config.buttonSound);
 	        		exitDialog.show(stage);
             	}
         	});

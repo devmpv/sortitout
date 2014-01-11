@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
@@ -27,13 +26,12 @@ public class GameScreen implements Screen {
 	private Skin skin;
 	private Stage stage;
 	private SpriteBatch batch;
-	Box2DDebugRenderer debugRenderer;
 	private GestureHandler gestureHandler = new GestureHandler();
 	private GameObject game;
 	private ApplicationHandler appHandler;
 	private InputMultiplexer multiplexer;
-	//private ShaderProgram shader;
 	private OrthographicCamera camera;
+	//private Box2DDebugRenderer debugRenderer;
 	//private Matrix4 debugMatrix;
 	private Dialog gameOverDialog;
 	private Label label1;
@@ -61,7 +59,6 @@ public class GameScreen implements Screen {
 	    skin.getFont("normaltext").setScale(appHandler.getGameObject().getScreenWidth()/480);
 	    gameScene.setFillParent(true);
 	    gameScene.bottom();
-	    //gameScene.setBackground(skin.getTiledDrawable("background"));
 	    buttonGravity = new Button(skin, "button-gra");
 	    buttonExit = new Button(skin, "button-exit");
 	    Config.getInst().gameButton = new Button(skin, "button-mus");
@@ -73,16 +70,15 @@ public class GameScreen implements Screen {
 	    }
 	    gameOverDialog = new Dialog("", skin, "default") {
 						protected void result (Object obj) {
-							if (obj.equals(true)){
-								Config.getInst().playSnd(Config.SND_BUTTON);
+							Config.playSnd(Config.buttonSound);
+							if (obj.equals(true)){								
 								game.shuffle();
 								Gdx.input.setInputProcessor(multiplexer);
 								label1.setVisible(true);
 							} else {
-								Config.getInst().playSnd(Config.SND_BUTTON);
-								gameOverDialog.hide();
 								appHandler.showMenu();
 							}
+							gameOverDialog.hide();
 						}
 					}.text("You win!").button(" Menu ", false).button(" New ", true).key(Keys.ENTER, true).key(Keys.ESCAPE, false);
 		label1 = new Label("", skin);
@@ -105,7 +101,7 @@ public class GameScreen implements Screen {
 		Config.getInst().gameButton.addListener(new ClickListener() {
     		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
     			//super.touchDown(event, x, y, pointer, button);
-    			Config.getInst().playSnd(Config.SND_BUTTON);
+    			Config.playSnd(Config.buttonSound);
     			if (Config.getInst().gameButton.isChecked()){
     				Config.getInst().pauseMusic();
     			}else {
@@ -118,7 +114,7 @@ public class GameScreen implements Screen {
 			public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 			//super.touchDown(event, x, y, pointer, button);
 				if (!buttonGravity.isDisabled()) {
-					Config.getInst().playSnd(Config.SND_BUTTON);
+					Config.playSnd(Config.buttonSound);
 				}
 				game.setAccelerometer(!buttonGravity.isChecked());
     		}
@@ -126,7 +122,7 @@ public class GameScreen implements Screen {
 		buttonExit.addListener(new ClickListener() {
 			public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 			//super.touchDown(event, x, y, pointer, button);
-				Config.getInst().playSnd(Config.SND_BUTTON);
+				Config.playSnd(Config.buttonSound);
 				appHandler.showMenu();
 			}
 		});
@@ -149,8 +145,8 @@ public class GameScreen implements Screen {
 		multiplexer.addProcessor(new InputHandler(appHandler));
 		multiplexer.addProcessor(stage);
 		Gdx.input.setInputProcessor(multiplexer);
-		//Physics renderer
-		debugRenderer = new Box2DDebugRenderer();
+		//Physics debug renderer
+		//debugRenderer = new Box2DDebugRenderer();
 		//Camera
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, game.getScreenWidth(), game.getScreenHeight());

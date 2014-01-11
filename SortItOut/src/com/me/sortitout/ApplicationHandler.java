@@ -22,7 +22,7 @@ public class ApplicationHandler extends Game {
 	public void create() {
 		//Loading native libraries
 		GdxNativesLoader.load();
-		
+		Settings.load();
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		//Splash
@@ -61,6 +61,7 @@ public class ApplicationHandler extends Game {
 	}
 	@Override
 	public void dispose() {
+		Settings.save();
 		gameObject.dispose();
 		gameScreen.dispose();
 		Config.dispose();

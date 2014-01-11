@@ -27,9 +27,9 @@ public class ContactHandler implements ContactListener{
 			float velosity=Math.max(A.getLinearVelocity().len()/Config.MAX_SPEED, B.getLinearVelocity().len()/Config.MAX_SPEED);
 			if (game.itemPositionsChanged()) {		
 				if (A.getUserData() == null || B.getUserData() == null) {
-					Config.getInst().playSnd(Config.SND_EDGE, velosity*0.5f, 1.5f);
+					Config.playSnd(Config.edgeSound, velosity*0.5f, 1.5f);
 				} else {
-					Config.getInst().playSnd(Config.SND_BLOCK, velosity, Math.max(1, velosity*1.2f));
+					Config.playSnd(Config.blockSound, velosity, Math.max(1, velosity*1.2f));
 				}				
 				Item item;
 				ArrayList<Item> cItemList;
@@ -44,7 +44,7 @@ public class ContactHandler implements ContactListener{
 					if (cnt == 15) {
 						game.gameOver();
 					}else {
-						Config.getInst().playSnd(Config.SND_NEWPOS);
+						Config.playSnd(Config.newPosSound);
 					}
 				}
 				count=cnt;

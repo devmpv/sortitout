@@ -2,6 +2,7 @@ package com.me.sortitout;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -287,7 +288,7 @@ public class GameObject {
 		return String.format(Config.TIME_FORMAT, min, sec);	
 	}
 	public void gameOver() {
-		Config.getInst().playSnd(Config.SND_GAMEOVER);
+		Config.playSnd(Config.gameOverSound);
 		active = false;
 		appHandler.getGameScreen().showDialog();
 	}
