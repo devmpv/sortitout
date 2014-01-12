@@ -29,7 +29,7 @@ public class SplashScreen implements Screen {
 		Gdx.gl.glClearColor(255, 255, 255, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         spriteBatch.begin();
-        spriteBatch.draw(splash, w/2-w/6, h/2-w/6, w/3, w/3);
+        spriteBatch.draw(splash, w/2-w/4, h/2-w/4, w/2, w/2);
         spriteBatch.end();
         
         if(Gdx.input.justTouched()) 
