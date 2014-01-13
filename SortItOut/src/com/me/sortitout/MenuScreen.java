@@ -3,14 +3,12 @@ package com.me.sortitout;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
@@ -18,12 +16,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class MenuScreen implements Screen {
 
-	private Skin skin;
 	private Stage stage;
 	private ApplicationHandler appHandler;
 	private Dialog exitDialog;
-	private TextButton buttonContinue;	
-	private Music menuMusic;
+	private TextButton buttonContinue;
 	
 	public MenuScreen(ApplicationHandler applicationHandler) {
 		appHandler = applicationHandler;
@@ -34,8 +30,7 @@ public class MenuScreen implements Screen {
 		
 	        //float dWidth = appHandler.getGameObject().getScreenWidth(); 
 	        //float dHeight = GameObject.BLOCK_SIZE*appHandler.getGameObject().BOX_TO_WORLD*3;
-			menuMusic = Gdx.audio.newMusic(Gdx.files.internal("music/menu.mp3"));
-			Config.getInst().menuMusic = menuMusic;
+			
 			float buttonWidth=appHandler.getGameObject().BLOCK_SIZE_PIX*2;
 			float buttonHeight=appHandler.getGameObject().BLOCK_HALF_PIX + appHandler.getGameObject().BLOCK_HALF_PIX/2;
 			stage = new Stage();
@@ -43,29 +38,28 @@ public class MenuScreen implements Screen {
 	        Table table = new Table();
 	        stage.addActor(table);
 	        
-	        skin = new Skin(Gdx.files.internal("data/skin.json"));
-	        skin.getFont("normaltext").setScale(appHandler.getGameObject().getScreenWidth()/480);
+	        
 	        table.setFillParent(true); 
-	        table.setBackground(skin.getTiledDrawable("background"));
+	        table.setBackground(Assets.skin.getTiledDrawable("background"));
 
 	        exitDialog = 
-	        	new Dialog("", skin, "default") {
+	        	new Dialog("", Assets.skin, "default") {
 					protected void result (Object obj) {
 						if (obj.equals(true)){
 							Gdx.app.exit();
 						}else {
-							Config.playSnd(Config.buttonSound);
+							Assets.playSnd(Assets.buttonSound);
 						}
 					}
 				}.text("Exit game?").button(" Exit ", true).button(" Back ", false).key(Keys.ENTER, true)
 				.key(Keys.ESCAPE, false);
-	        final TextButton button1 = new TextButton("New game", skin);
+	        final TextButton button1 = new TextButton("New game", Assets.skin);
 	        final Widget widget1 = new Widget();
-	        final TextButton button2 = new TextButton("Continue", skin);
+	        final TextButton button2 = new TextButton("Continue", Assets.skin);
 	        
 	        buttonContinue = button2;
 	        button2.setDisabled(true);
-	        final TextButton button3 = new TextButton("Exit", skin);
+	        final TextButton button3 = new TextButton("Exit", Assets.skin);
 	        table.add(button1).width(buttonWidth).height(buttonHeight);
 	        table.row();
 	        table.add(widget1).height(buttonHeight/2);
@@ -76,25 +70,22 @@ public class MenuScreen implements Screen {
 	        table.row();
 	        table.add(button3).width(buttonWidth).height(buttonHeight);
 	        
-	        Config.getInst().menuButton = new Button(skin, "button-mus");
-	        final Button sndMuteButton = new Button(skin, "button-snd");
+	        Assets.menuButton = new Button(Assets.skin, "button-mus");
+	        Assets.menuButton.setChecked(!Settings.musicEnabled);
+	        final Button sndMuteButton = new Button(Assets.skin, "button-snd");
 	        sndMuteButton.setChecked(!Settings.soundEnabled);
 	        Table buttonTable = new Table();
 	        buttonTable.bottom().left();
-	        buttonTable.add(Config.getInst().menuButton).size(buttonHeight*0.7f);
+	        buttonTable.add(Assets.menuButton).size(buttonHeight*0.7f);
 	        buttonTable.add(sndMuteButton).size(buttonHeight*0.7f);
 	        stage.addActor(buttonTable);
 	        
-	        Config.getInst().menuButton.addListener(new ClickListener() {
+	        Assets.menuButton.addListener(new ClickListener() {
 	    		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 	    			//super.touchDown(event, x, y, pointer, button);
-	    			Config.playSnd(Config.buttonSound);
-	    			if (Config.getInst().menuButton.isChecked()){
-	    				Config.getInst().pauseMusic();
-	    			}else {
-	    				Config.getInst().playMusic(menuMusic);
-	    			}
-	    				
+	    			Assets.playSnd(Assets.buttonSound);
+	    			Settings.musicEnabled = !Assets.menuButton.isChecked();
+    				Assets.playMusic(Assets.menuMusic);
 	        	}
 	    	});	        
 	        sndMuteButton.addListener(new ClickListener() {
@@ -108,7 +99,7 @@ public class MenuScreen implements Screen {
 	        			//super.touchDown(event, x, y, pointer, button);
 	        			appHandler.getGameObject().shuffle();
 	        			button2.setDisabled(false);
-	        			Config.playSnd(Config.buttonSound);
+	        			Assets.playSnd(Assets.buttonSound);
 	        			appHandler.showGame();
 	            	}
 	        	});
@@ -116,7 +107,7 @@ public class MenuScreen implements Screen {
         		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
         			//super.touchDown(event, x, y, pointer, button);
         			if (!button2.isDisabled()) {
-        				Config.playSnd(Config.buttonSound);
+        				Assets.playSnd(Assets.buttonSound);
         				appHandler.showGame();
         			}
             	}
@@ -124,7 +115,7 @@ public class MenuScreen implements Screen {
 	        button3.addListener(new ClickListener() {
 	        	public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
         			//super.touchDown(event, x, y, pointer, button);
-	        		Config.playSnd(Config.buttonSound);
+	        		Assets.playSnd(Assets.buttonSound);
 	        		exitDialog.show(stage);
             	}
         	});
@@ -144,9 +135,7 @@ public class MenuScreen implements Screen {
 
 
 	public void dispose() {
-		menuMusic.dispose();
 		stage.dispose();
-		skin.dispose();
 	}
 
 	@Override
@@ -162,24 +151,26 @@ public class MenuScreen implements Screen {
 	public void show() {
 		Gdx.input.setInputProcessor(stage);
 		buttonContinue.setDisabled(!appHandler.getGameObject().isActive());
-		if (!Config.getInst().menuButton.isChecked()) {
-			menuMusic.play();
+		if (Settings.musicEnabled) {
+			Assets.playMusic(Assets.menuMusic);
 		}
 	}
 
 	@Override
 	public void hide() {
-		menuMusic.pause();
+		Assets.pauseMusic();
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
+		Assets.pauseMusic();
 	}
 
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
+		Assets.playMusic(Assets.menuMusic);
 	}
 
 }

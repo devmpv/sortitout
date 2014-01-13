@@ -59,13 +59,13 @@ public class GameObject {
 		width = screenWidth;
 		heigh = screenHeight;
 		//Scaling to screen
-		BOX_TO_WORLD = screenWidth/Config.widthInMeters;
+		BOX_TO_WORLD = screenWidth/Assets.widthInMeters;
 		WORLD_TO_BOX = 1/BOX_TO_WORLD;
-		BLOCK_HALF_PIX = Config.BLOCK_HALF*BOX_TO_WORLD;
-		BLOCK_SIZE_PIX = Config.BLOCK_SIZE*BOX_TO_WORLD;
+		BLOCK_HALF_PIX = Assets.BLOCK_HALF*BOX_TO_WORLD;
+		BLOCK_SIZE_PIX = Assets.BLOCK_SIZE*BOX_TO_WORLD;
 		
 		PolygonShape preciseShape = new PolygonShape();	
-		preciseShape.set(Config.vertices);
+		preciseShape.set(Assets.vertices);
 		Sprite sprite;
 		//
 		world = new World(new Vector2(0, 0), true);
@@ -76,11 +76,11 @@ public class GameObject {
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
         
-        fixtureDef.filter.categoryBits = Config.CATEGORY_BLOCK;
+        fixtureDef.filter.categoryBits = Assets.CATEGORY_BLOCK;
         fixtureDef.shape = preciseShape;
-        fixtureDef.density = Config.BLOCK_DENSITY;
-        fixtureDef.friction = Config.BLOCK_FRICTION;
-        fixtureDef.restitution = Config.BLOCK_RESTITUTION;
+        fixtureDef.density = Assets.BLOCK_DENSITY;
+        fixtureDef.friction = Assets.BLOCK_FRICTION;
+        fixtureDef.restitution = Assets.BLOCK_RESTITUTION;
         
         bodyDef.type = BodyType.DynamicBody;
         Body block;
@@ -88,15 +88,15 @@ public class GameObject {
         for (int i=0;i<15;i++) {
         	row = Math.abs(i/4);
         	column = i - row*4;
-        	bodyDef.position.x = column*Config.BLOCK_SIZE+Config.startpointX+Config.BLOCK_HALF;
-        	bodyDef.position.y = (3-row)*Config.BLOCK_SIZE+Config.startpointY+Config.BLOCK_HALF;
+        	bodyDef.position.x = column*Assets.BLOCK_SIZE+Assets.startpointX+Assets.BLOCK_HALF;
+        	bodyDef.position.y = (3-row)*Assets.BLOCK_SIZE+Assets.startpointY+Assets.BLOCK_HALF;
 			block = world.createBody(bodyDef);
 			block.createFixture(fixtureDef);
-			block.setFixedRotation(Config.FIXED_ROTATION);
-		    block.setLinearDamping(Config.BODY_LINEAR_DAMPING);
+			block.setFixedRotation(Assets.FIXED_ROTATION);
+		    block.setLinearDamping(Assets.BODY_LINEAR_DAMPING);
 		    //Assigning sprite
 		    sprite = atlas.createSprite("tx_fig_"+String.valueOf(i+1));
-		    sprite.setSize(Config.BLOCK_SIZE*BOX_TO_WORLD, Config.BLOCK_SIZE*BOX_TO_WORLD);
+		    sprite.setSize(Assets.BLOCK_SIZE*BOX_TO_WORLD, Assets.BLOCK_SIZE*BOX_TO_WORLD);
 			SpriteList.add(i, sprite);
 			//Shit but it works. Keep original central points of all rectangles
 			RecList.add(i, new Rectangle(Math.round((block.getPosition().x)*this.BOX_TO_WORLD), 
@@ -110,7 +110,7 @@ public class GameObject {
 		}
         setActiveItem(BlockList.get(0));
         //Adding empty rectangle with index 15 at position 4:4
-        RecList.add(15, new Rectangle(RecList.get(14).x+Config.BLOCK_SIZE*BOX_TO_WORLD, RecList.get(14).y, 1,1));
+        RecList.add(15, new Rectangle(RecList.get(14).x+Assets.BLOCK_SIZE*BOX_TO_WORLD, RecList.get(14).y, 1,1));
         //Cloning original SpriteList
         @SuppressWarnings("unchecked")
         ArrayList<Sprite> orSpriteList = (ArrayList<Sprite>) SpriteList.clone();
@@ -124,10 +124,10 @@ public class GameObject {
 	}
 	private void setWorldBounds() {
 		
-		Vector2 lowerLeftCorner = new Vector2(Config.startpointX, Config.startpointY);
-		Vector2 lowerRightCorner = new Vector2(Config.widthInMeters-Config.startpointX, Config.startpointY);
-		Vector2 upperLeftCorner = new Vector2(Config.startpointX, Config.heightInMeters-Config.startpointY);
-		Vector2 upperRightCorner = new Vector2(Config.widthInMeters-Config.startpointX, Config.heightInMeters-Config.startpointY);
+		Vector2 lowerLeftCorner = new Vector2(Assets.startpointX, Assets.startpointY);
+		Vector2 lowerRightCorner = new Vector2(Assets.widthInMeters-Assets.startpointX, Assets.startpointY);
+		Vector2 upperLeftCorner = new Vector2(Assets.startpointX, Assets.heightInMeters-Assets.startpointY);
+		Vector2 upperRightCorner = new Vector2(Assets.widthInMeters-Assets.startpointX, Assets.heightInMeters-Assets.startpointY);
 		
 		EdgeShape edgeBoxShape = new EdgeShape();
 		Body groundBody;
@@ -136,7 +136,7 @@ public class GameObject {
 		FixtureDef groundFixtureDef = new FixtureDef();
 		groundFixtureDef.shape = edgeBoxShape;
 		groundFixtureDef.density = 0f;
-		groundFixtureDef.filter.categoryBits = Config.CATEGORY_SCENERY;
+		groundFixtureDef.filter.categoryBits = Assets.CATEGORY_SCENERY;
 		groundFixtureDef.restitution = 0f;
 		groundBody = world.createBody(groundBodyDef);		
         edgeBoxShape.set(lowerLeftCorner, lowerRightCorner);
@@ -198,21 +198,21 @@ public class GameObject {
 		if (accelerometer && active) {
 			float x = Gdx.input.getAccelerometerX();
 			float y = Gdx.input.getAccelerometerY();
-			varGravity.set((Math.abs(x)>4f) ? x : 0, Math.abs(y)>4f ? y : 0).scl(Config.GRAVITY_MUL);
+			varGravity.set((Math.abs(x)>4f) ? x : 0, Math.abs(y)>4f ? y : 0).scl(Assets.GRAVITY_MUL);
 			world.setGravity(varGravity);
 		}
 	}
 	public void worldStep (float delta){
 		//Should be improved on heavy applications (< 60 FPS)
-		if (delta >= (Config.BOX_STEP/3)) {
-			world.step(delta, Config.BOX_VELOCITY_ITERATIONS, Config.BOX_POSITION_ITERATIONS);
+		if (delta >= (Assets.BOX_STEP/3)) {
+			world.step(delta, Assets.BOX_VELOCITY_ITERATIONS, Assets.BOX_POSITION_ITERATIONS);
 			setGravity();
 			defineSpritePositions();
 			accumulator = 0;
 		} else {
 			accumulator += delta;
-			if (accumulator >= Config.BOX_STEP) {
-				world.step(accumulator, Config.BOX_VELOCITY_ITERATIONS, Config.BOX_POSITION_ITERATIONS);
+			if (accumulator >= Assets.BOX_STEP) {
+				world.step(accumulator, Assets.BOX_VELOCITY_ITERATIONS, Assets.BOX_POSITION_ITERATIONS);
 				setGravity();
 				defineSpritePositions();
 				accumulator = 0;
@@ -262,8 +262,8 @@ public class GameObject {
 		Sprite sprite;
 		for (Body block : BlockList) {
 			sprite = SpriteList.get((Integer) block.getUserData());
-			sprite.setPosition(	(block.getPosition().x-Config.BLOCK_HALF)*BOX_TO_WORLD, 
-								(block.getPosition().y-Config.BLOCK_HALF)*BOX_TO_WORLD);
+			sprite.setPosition(	(block.getPosition().x-Assets.BLOCK_HALF)*BOX_TO_WORLD, 
+								(block.getPosition().y-Assets.BLOCK_HALF)*BOX_TO_WORLD);
 			
 		}
 	}
@@ -285,10 +285,10 @@ public class GameObject {
 	public String getTimeString() {
 		int min = gameTime / 60;
 		int sec = gameTime - min*60;
-		return String.format(Config.TIME_FORMAT, min, sec);	
+		return String.format(Assets.TIME_FORMAT, min, sec);	
 	}
 	public void gameOver() {
-		Config.playSnd(Config.gameOverSound);
+		Assets.playSnd(Assets.gameOverSound);
 		active = false;
 		appHandler.getGameScreen().showDialog();
 	}

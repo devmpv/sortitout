@@ -76,7 +76,7 @@ public class GestureHandler implements GestureListener {
 				if (sprite.getBoundingRectangle().contains(tp.x, tp.y)){
 					vel.set(dist.div(game.BOX_TO_WORLD))
 								.scl(50f)
-								.clamp(0f, Config.MAX_SPEED);
+								.clamp(0f, Assets.MAX_SPEED);
 					block.setLinearVelocity(vel);
 					game.setActiveItem(block);
 					break;

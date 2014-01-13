@@ -10,6 +10,7 @@ import com.badlogic.gdx.Gdx;
 
 public class Settings {
         public static boolean soundEnabled = true;
+        public static boolean musicEnabled = true;
         public final static int[] highscores = new int[] {100, 80, 50, 30, 10};
         public final static String file = ".sortitout";
 
@@ -18,6 +19,7 @@ public class Settings {
                 try {
                         in = new BufferedReader(new InputStreamReader(Gdx.files.external(file).read()));
                         soundEnabled = Boolean.parseBoolean(in.readLine());
+                        musicEnabled = Boolean.parseBoolean(in.readLine());
                         for (int i = 0; i < 5; i++) {
                                 highscores[i] = Integer.parseInt(in.readLine());
                         }
@@ -36,6 +38,7 @@ public class Settings {
                 try {
                         out = new BufferedWriter(new OutputStreamWriter(Gdx.files.external(file).write(false)));
                         out.write(Boolean.toString(soundEnabled).concat("\n"));
+                        out.write(Boolean.toString(musicEnabled).concat("\n"));
                         for (int i = 0; i < 5; i++) {
                                 out.write(Integer.toString(highscores[i]).concat("\n"));
                         }

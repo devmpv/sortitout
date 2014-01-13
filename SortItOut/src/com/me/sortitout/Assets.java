@@ -4,10 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-public class Config {
+public class Assets {
 	
-	private static Config inst;
+	private static Assets inst;
 	//Sound
 	public static Sound 	
 			blockSound,
@@ -16,10 +17,10 @@ public class Config {
 			edgeSound,
 			buttonSound;
 	//Music
-	public Music
+	public static Music
 			gameMusic,
 			menuMusic;
-	public Button menuButton, gameButton;
+	public static Button menuButton, gameButton;
 
 	//Physics parameters
 	public static final float[] vertices = {
@@ -37,7 +38,7 @@ public class Config {
 	public static final float GRAVITY_MUL = -3f*BLOCK_SIZE;
 	public static final float BLOCK_HALF = BLOCK_SIZE/2;
 	public static final float BOX_STEP=1/60f;
-	public static final int BOX_VELOCITY_ITERATIONS=15;  
+	public static final int BOX_VELOCITY_ITERATIONS=15;
 	public static final int BOX_POSITION_ITERATIONS=8;
 	public static final float BLOCK_DENSITY = 1f;
 	public static final float BLOCK_FRICTION = 0f;
@@ -57,44 +58,46 @@ public class Config {
 	public static final short MASK_SCENERY = -1;
 	//Strings
 	public static final String TIME_FORMAT = "%s:%s";
-
+	//Skin
+	public static Skin skin;
 	
-	private Config() {
+	public static void Load() {
 		//Music
-		
+		menuMusic = Gdx.audio.newMusic(Gdx.files.internal("music/menu.mp3"));
+		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("music/game.mp3"));
+		gameMusic.setVolume(0.3f);
 		//Sounds
 		blockSound = Gdx.audio.newSound(Gdx.files.internal("sounds/clack1.mp3"));
 		newPosSound = Gdx.audio.newSound(Gdx.files.internal("sounds/stuck.mp3"));
 		gameOverSound = Gdx.audio.newSound(Gdx.files.internal("sounds/win.mp3"));
 		edgeSound = Gdx.audio.newSound(Gdx.files.internal("sounds/edge_hit.mp3"));
 		buttonSound = Gdx.audio.newSound(Gdx.files.internal("sounds/button.mp3"));
-		//Button
+		//Skin
+		skin = new Skin(Gdx.files.internal("data/skin.json"));
+        skin.getFont("normaltext").setScale(Gdx.graphics.getWidth()/480);
 	}
-	
-	public static Config getInst()
-    {
-        if (inst == null) {
-            inst = new Config();
-        }
-        return inst;
-    }
 	
 	public static void dispose() {
 		if (inst!=null) {
 			inst.audioDispose();
+			skin.dispose();
 			inst=null;			
 		}
 	}
-	public void pauseMusic() {
+	public static void pauseMusic() {
 		menuMusic.pause();
 		gameMusic.pause();
 		menuButton.setChecked(true);
 		gameButton.setChecked(true);
 	}
-	public void playMusic(Music music) {
-		music.play();
-		menuButton.setChecked(false);
-		gameButton.setChecked(false);
+	public static void playMusic(Music music) {
+		if (Settings.musicEnabled) {
+			music.play();
+			menuButton.setChecked(false);
+			gameButton.setChecked(false);
+		} else {
+			pauseMusic();
+		}
 	}
 	public static void playSnd (Sound sound) { 		playSnd(sound, 1, 1); 	}
 	public static void playSnd (Sound sound, float volume) {	playSnd(sound, volume, 1); 	}
@@ -103,6 +106,10 @@ public class Config {
 	}
 	private void audioDispose(){
 		//Music
+		gameMusic.stop();
+		menuMusic.stop();
+		gameMusic.dispose();
+		menuMusic.dispose();
 		gameMusic = null;
 		menuMusic = null;
 		//Sound

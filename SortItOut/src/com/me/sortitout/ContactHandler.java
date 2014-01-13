@@ -24,12 +24,12 @@ public class ContactHandler implements ContactListener{
 			A = contact.getFixtureA().getBody(),
 			B = contact.getFixtureB().getBody();	
 		if ((A == aBody || B == aBody)) {			
-			float velosity=Math.max(A.getLinearVelocity().len()/Config.MAX_SPEED, B.getLinearVelocity().len()/Config.MAX_SPEED);
+			float velosity=Math.max(A.getLinearVelocity().len()/Assets.MAX_SPEED, B.getLinearVelocity().len()/Assets.MAX_SPEED);
 			if (game.itemPositionsChanged()) {		
 				if (A.getUserData() == null || B.getUserData() == null) {
-					Config.playSnd(Config.edgeSound, velosity*0.5f, 1.5f);
+					Assets.playSnd(Assets.edgeSound, velosity*0.5f, 1.5f);
 				} else {
-					Config.playSnd(Config.blockSound, velosity, Math.max(1, velosity*1.2f));
+					Assets.playSnd(Assets.blockSound, velosity, Math.max(1, velosity*1.2f));
 				}				
 				Item item;
 				ArrayList<Item> cItemList;
@@ -44,7 +44,7 @@ public class ContactHandler implements ContactListener{
 					if (cnt == 15) {
 						game.gameOver();
 					}else {
-						Config.playSnd(Config.newPosSound);
+						Assets.playSnd(Assets.newPosSound);
 					}
 				}
 				count=cnt;

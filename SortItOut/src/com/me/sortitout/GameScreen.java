@@ -6,7 +6,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Input.Peripheral;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
@@ -23,7 +21,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class GameScreen implements Screen {
 
-	private Skin skin;
 	private Stage stage;
 	private SpriteBatch batch;
 	private GestureHandler gestureHandler = new GestureHandler();
@@ -38,7 +35,6 @@ public class GameScreen implements Screen {
 	private Label label2;
 	private Button buttonGravity;
     private Button buttonExit;
-    private Music gameMusic; 
     	
 	public GameScreen(ApplicationHandler applicationHandler) {
 		appHandler = applicationHandler;
@@ -46,31 +42,28 @@ public class GameScreen implements Screen {
 		create();
 	}
 	public void create() {	
-		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("music/game.mp3"));
-		gameMusic.setVolume(0.3f);
-		Config.getInst().gameMusic = gameMusic;
+
 		float buttonSize = game.BLOCK_HALF_PIX + game.BLOCK_HALF_PIX/2; 
 		stage = new Stage();
 	    Table gameScene = new Table();
 	    Table gameControls = new Table();
 	    //
 	    stage.addActor(gameScene);
-	    skin = new Skin(Gdx.files.internal("data/skin.json"));
-	    skin.getFont("normaltext").setScale(appHandler.getGameObject().getScreenWidth()/480);
 	    gameScene.setFillParent(true);
 	    gameScene.bottom();
-	    buttonGravity = new Button(skin, "button-gra");
-	    buttonExit = new Button(skin, "button-exit");
-	    Config.getInst().gameButton = new Button(skin, "button-mus");
+	    buttonGravity = new Button(Assets.skin, "button-gra");
+	    buttonExit = new Button(Assets.skin, "button-exit");
+	    Assets.gameButton = new Button(Assets.skin, "button-mus");
+	    Assets.gameButton.setChecked(!Settings.musicEnabled);
 
 	    if (!Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer)){
 	    	buttonGravity.setDisabled(true);
 	    }else {
 	    	buttonGravity.setChecked(true);
 	    }
-	    gameOverDialog = new Dialog("", skin, "default") {
+	    gameOverDialog = new Dialog("", Assets.skin, "default") {
 						protected void result (Object obj) {
-							Config.playSnd(Config.buttonSound);
+							Assets.playSnd(Assets.buttonSound);
 							if (obj.equals(true)){								
 								game.shuffle();
 								Gdx.input.setInputProcessor(multiplexer);
@@ -81,15 +74,15 @@ public class GameScreen implements Screen {
 							gameOverDialog.hide();
 						}
 					}.text("You win!").button(" Menu ", false).button(" New ", true).key(Keys.ENTER, true).key(Keys.ESCAPE, false);
-		label1 = new Label("", skin);
+		label1 = new Label("", Assets.skin);
 		label1.setAlignment(Align.center);
-		label2 = new Label("", skin);
+		label2 = new Label("", Assets.skin);
 		label2.setAlignment(Align.center);
         
 		
 		gameScene.add(gameControls).center();
 		gameControls.add(label1).width(game.BLOCK_SIZE_PIX).height(buttonSize);
-		gameControls.add(Config.getInst().gameButton).width(buttonSize).height(buttonSize);
+		gameControls.add(Assets.gameButton).width(buttonSize).height(buttonSize);
 		gameControls.add(buttonGravity).width(buttonSize).height(buttonSize);
 		gameControls.add(buttonExit).width(buttonSize).height(buttonSize);
 		gameControls.add(label2).width(game.BLOCK_SIZE_PIX).height(buttonSize);
@@ -98,23 +91,19 @@ public class GameScreen implements Screen {
 		gameScene.row();
 		gameScene.add(new Widget()).width(game.getScreenWidth()).height(game.getScreenWidth());
 		
-		Config.getInst().gameButton.addListener(new ClickListener() {
+		Assets.gameButton.addListener(new ClickListener() {
     		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
     			//super.touchDown(event, x, y, pointer, button);
-    			Config.playSnd(Config.buttonSound);
-    			if (Config.getInst().gameButton.isChecked()){
-    				Config.getInst().pauseMusic();
-    			}else {
-    				Config.getInst().playMusic(gameMusic);
-    			}
-    				
+    			Assets.playSnd(Assets.buttonSound);
+    			Settings.musicEnabled = !Assets.gameButton.isChecked();
+    			Assets.playMusic(Assets.gameMusic);
         	}
     	});
 		buttonGravity.addListener(new ClickListener() {
 			public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 			//super.touchDown(event, x, y, pointer, button);
 				if (!buttonGravity.isDisabled()) {
-					Config.playSnd(Config.buttonSound);
+					Assets.playSnd(Assets.buttonSound);
 				}
 				game.setAccelerometer(!buttonGravity.isChecked());
     		}
@@ -122,7 +111,7 @@ public class GameScreen implements Screen {
 		buttonExit.addListener(new ClickListener() {
 			public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 			//super.touchDown(event, x, y, pointer, button);
-				Config.playSnd(Config.buttonSound);
+				Assets.playSnd(Assets.buttonSound);
 				appHandler.showMenu();
 			}
 		});
@@ -174,8 +163,8 @@ public class GameScreen implements Screen {
 		batch.setProjectionMatrix(camera.combined);
 		//Table.drawDebug(stage);
 		batch.begin();
-		skin.getTiledDrawable("background").draw(batch, 0, 0, stage.getWidth(), stage.getHeight());
-		skin.getDrawable("empty").draw(batch, 0, 0, stage.getWidth(), stage.getWidth());
+		Assets.skin.getTiledDrawable("background").draw(batch, 0, 0, stage.getWidth(), stage.getHeight());
+		Assets.skin.getDrawable("empty").draw(batch, 0, 0, stage.getWidth(), stage.getWidth());
 		//drawing blocks
 		Item item;
 		ArrayList<Item> cItemList;
@@ -204,6 +193,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void pause() {
 		appHandler.showMenu();
+		appHandler.getMenuScreen().pause();
 	}
 
 	@Override
@@ -215,22 +205,20 @@ public class GameScreen implements Screen {
 	public void show() {
 		gameOverDialog.hide();
 		Gdx.input.setInputProcessor(multiplexer);		
-		if (!Config.getInst().gameButton.isChecked()) {
-			gameMusic.play();
+		if (Settings.musicEnabled) {
+			Assets.playMusic(Assets.gameMusic);
 		}
 	}
 
 	@Override
 	public void hide() {
-		gameMusic.pause();
+		Assets.pauseMusic();
 	}
 	
 	@Override
 	public void dispose() {
 		batch.dispose();
 		stage.dispose();
-		skin.dispose();
-		gameMusic.dispose();
 	}
 	public void showDialog() {
 		Gdx.input.setInputProcessor(stage);

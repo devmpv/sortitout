@@ -28,7 +28,7 @@ public class ApplicationHandler extends Game {
 		//Splash
 		this.setScreen(new SplashScreen(this));
 		//Initialize configuration and resources
-		Config.getInst();
+		Assets.Load();
 		//
 		Gdx.input.setCatchBackKey(true);
 		Gdx.input.setCatchMenuKey(true);
@@ -64,7 +64,7 @@ public class ApplicationHandler extends Game {
 		Settings.save();
 		gameObject.dispose();
 		gameScreen.dispose();
-		Config.dispose();
+		Assets.dispose();
 		super.dispose();
 		menuScreen.dispose();		
 	}
