@@ -12,6 +12,8 @@ public class SplashScreen implements Screen {
 	private ApplicationHandler app;
 	private SpriteBatch spriteBatch;
     private Texture splash;
+    private float accum = 0f;
+    private boolean fadeout = false;
 
 	public SplashScreen(ApplicationHandler applicationHandler) {
 		// TODO Auto-generated constructor stub
@@ -26,15 +28,19 @@ public class SplashScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		// TODO Auto-generated method stub
+		accum += fadeout ? -delta : delta;
 		Gdx.gl.glClearColor(255, 255, 255, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         spriteBatch.begin();
+        spriteBatch.setColor(1f, 1f, 1f, Math.min(1f, accum/2));
         spriteBatch.draw(splash, w/2-w/4, h/2-w/4, w/2, w/2);
         spriteBatch.end();
-        
-        if(Gdx.input.justTouched()) 
-        	if (app.getMenuScreen()!=null)
+        if (accum>=4f) {
+        	fadeout = true;
+        }
+        if(Gdx.input.justTouched() && fadeout==true || accum<=0f) 
                 app.setScreen(app.getMenuScreen());
+        System.out.println(accum);
 	}
 
 	@Override
