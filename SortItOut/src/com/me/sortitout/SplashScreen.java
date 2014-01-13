@@ -35,12 +35,12 @@ public class SplashScreen implements Screen {
         spriteBatch.setColor(1f, 1f, 1f, Math.min(1f, accum/2));
         spriteBatch.draw(splash, w/2-w/4, h/2-w/4, w/2, w/2);
         spriteBatch.end();
-        if (accum>=4f) {
+        if (accum>=3f) {
         	fadeout = true;
         }
         if(Gdx.input.justTouched() && fadeout==true || accum<=0f) 
                 app.setScreen(app.getMenuScreen());
-        System.out.println(accum);
+        //System.out.println(accum);
 	}
 
 	@Override
