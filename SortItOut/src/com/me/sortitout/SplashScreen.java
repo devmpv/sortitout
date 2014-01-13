@@ -19,7 +19,7 @@ public class SplashScreen implements Screen {
 		w = Gdx.graphics.getWidth();
 		h = Gdx.graphics.getHeight();
 		spriteBatch = new SpriteBatch();
-        splash = new Texture(Gdx.files.internal("data/splash.png"));
+        splash = new Texture(Gdx.files.internal("data/splash.jpg"));
         splash.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	}
 
