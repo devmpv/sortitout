@@ -9,6 +9,6 @@
 	<classpathentry kind="src" path="/SortItOut"/>
 	<classpathentry exported="true" kind="lib" path="libs/gdx-backend-android.jar" sourcepath="libs/gdx-backend-android-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="/SortItOut/libs/gdx.jar" sourcepath="/SortItOut/libs/gdx-sources.jar"/>
-	<classpathentry kind="lib" path="/SortItOut/libs/tween-engine-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="/SortItOut/libs/tween-engine-api.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
