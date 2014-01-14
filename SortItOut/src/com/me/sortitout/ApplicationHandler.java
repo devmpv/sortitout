@@ -4,6 +4,9 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.GdxNativesLoader;
+import com.me.sortitout.screens.GameScreen;
+import com.me.sortitout.screens.MenuScreen;
+import com.me.sortitout.screens.SplashScreen;
 
 public class ApplicationHandler extends Game {
 

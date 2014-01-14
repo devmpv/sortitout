@@ -1,4 +1,4 @@
-package com.me.sortitout;
+package com.me.sortitout.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -13,6 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.me.sortitout.ApplicationHandler;
+import com.me.sortitout.Assets;
+import com.me.sortitout.Settings;
 
 public class MenuScreen implements Screen {
 

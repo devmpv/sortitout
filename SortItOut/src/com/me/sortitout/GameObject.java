@@ -20,10 +20,10 @@ import com.badlogic.gdx.utils.TimeUtils;
 public class GameObject {
 	
     //Variable
-    float WORLD_TO_BOX;
-	float BOX_TO_WORLD;
-	float BLOCK_HALF_PIX;
-	float BLOCK_SIZE_PIX;
+    public float WORLD_TO_BOX;
+	public float BOX_TO_WORLD;
+	public float BLOCK_HALF_PIX;
+	public float BLOCK_SIZE_PIX;
 	//
 	private boolean accelerometer = false;
 	private boolean active = false;

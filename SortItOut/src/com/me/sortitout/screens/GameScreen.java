@@ -1,4 +1,4 @@
-package com.me.sortitout;
+package com.me.sortitout.screens;
 
 import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
@@ -18,6 +18,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.me.sortitout.ApplicationHandler;
+import com.me.sortitout.Assets;
+import com.me.sortitout.GameObject;
+import com.me.sortitout.GestureHandler;
+import com.me.sortitout.InputHandler;
+import com.me.sortitout.Item;
+import com.me.sortitout.Settings;
 
 public class GameScreen implements Screen {
 
