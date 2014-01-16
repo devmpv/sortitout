@@ -50,7 +50,7 @@ public class GameScreen implements Screen {
 	}
 	public void create() {	
 
-		float buttonSize = game.BLOCK_HALF_PIX + game.BLOCK_HALF_PIX/2; 
+		float buttonSize = GameObject.BLOCK_HALF_PIX + GameObject.BLOCK_HALF_PIX/2; 
 		stage = new Stage();
 	    Table gameScene = new Table();
 	    Table gameControls = new Table();
@@ -88,13 +88,13 @@ public class GameScreen implements Screen {
         
 		
 		gameScene.add(gameControls).center();
-		gameControls.add(label1).width(game.BLOCK_SIZE_PIX).height(buttonSize);
+		gameControls.add(label1).width(GameObject.BLOCK_SIZE_PIX).height(buttonSize);
 		gameControls.add(Assets.gameButton).width(buttonSize).height(buttonSize);
 		gameControls.add(buttonGravity).width(buttonSize).height(buttonSize);
 		gameControls.add(buttonExit).width(buttonSize).height(buttonSize);
-		gameControls.add(label2).width(game.BLOCK_SIZE_PIX).height(buttonSize);
+		gameControls.add(label2).width(GameObject.BLOCK_SIZE_PIX).height(buttonSize);
 		gameScene.row();
-		gameScene.add(new Widget()).height(game.BLOCK_HALF_PIX/2);
+		gameScene.add(new Widget()).height(GameObject.BLOCK_HALF_PIX/2);
 		gameScene.row();
 		gameScene.add(new Widget()).width(game.getScreenWidth()).height(game.getScreenWidth());
 		

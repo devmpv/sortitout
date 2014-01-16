@@ -22,7 +22,7 @@ public class GestureHandler implements GestureListener {
 		//ScreenWidth = gameObject.getScreenWidth();
 		h = game.getScreenHeight();
 		tp = new Rectangle();
-		tp.width = game.BLOCK_SIZE_PIX;
+		tp.width = GameObject.BLOCK_SIZE_PIX;
 		tp.height = tp.width;
 		return true;
 	}
@@ -74,7 +74,7 @@ public class GestureHandler implements GestureListener {
 		for (Body block : game.GetBlockList()) {
 				sprite = game.GetSpriteList().get((Integer) block.getUserData()); 
 				if (sprite.getBoundingRectangle().contains(tp.x, tp.y)){
-					vel.set(dist.div(game.BOX_TO_WORLD))
+					vel.set(dist.div(GameObject.BOX_TO_WORLD))
 								.scl(50f)
 								.clamp(0f, Assets.MAX_SPEED);
 					block.setLinearVelocity(vel);

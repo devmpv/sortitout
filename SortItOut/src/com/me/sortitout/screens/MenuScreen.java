@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.me.sortitout.ApplicationHandler;
 import com.me.sortitout.Assets;
+import com.me.sortitout.GameObject;
 import com.me.sortitout.Settings;
 
 public class MenuScreen implements Screen {
@@ -34,8 +35,8 @@ public class MenuScreen implements Screen {
 	        //float dWidth = appHandler.getGameObject().getScreenWidth(); 
 	        //float dHeight = GameObject.BLOCK_SIZE*appHandler.getGameObject().BOX_TO_WORLD*3;
 			
-			float buttonWidth=appHandler.getGameObject().BLOCK_SIZE_PIX*2;
-			float buttonHeight=appHandler.getGameObject().BLOCK_HALF_PIX + appHandler.getGameObject().BLOCK_HALF_PIX/2;
+			float buttonWidth=GameObject.BLOCK_SIZE_PIX*2;
+			float buttonHeight=GameObject.BLOCK_HALF_PIX + GameObject.BLOCK_HALF_PIX/2;
 			stage = new Stage();
 	        
 	        Table table = new Table();
@@ -79,8 +80,8 @@ public class MenuScreen implements Screen {
 	        sndMuteButton.setChecked(!Settings.soundEnabled);
 	        Table buttonTable = new Table();
 	        buttonTable.bottom().left();
-	        buttonTable.add(Assets.menuButton).size(buttonHeight*0.7f);
-	        buttonTable.add(sndMuteButton).size(buttonHeight*0.7f);
+	        buttonTable.add(Assets.menuButton).size(buttonHeight);
+	        buttonTable.add(sndMuteButton).size(buttonHeight);
 	        stage.addActor(buttonTable);
 	        
 	        Assets.menuButton.addListener(new ClickListener() {

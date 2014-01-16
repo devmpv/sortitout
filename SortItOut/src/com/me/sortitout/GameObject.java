@@ -20,10 +20,10 @@ import com.badlogic.gdx.utils.TimeUtils;
 public class GameObject {
 	
     //Variable
-    public float WORLD_TO_BOX;
-	public float BOX_TO_WORLD;
-	public float BLOCK_HALF_PIX;
-	public float BLOCK_SIZE_PIX;
+    public static float WORLD_TO_BOX;
+	public static float BOX_TO_WORLD;
+	public static float BLOCK_HALF_PIX;
+	public static float BLOCK_SIZE_PIX;
 	//
 	private boolean accelerometer = false;
 	private boolean active = false;
@@ -99,8 +99,8 @@ public class GameObject {
 		    sprite.setSize(Assets.BLOCK_SIZE*BOX_TO_WORLD, Assets.BLOCK_SIZE*BOX_TO_WORLD);
 			SpriteList.add(i, sprite);
 			//Shit but it works. Keep original central points of all rectangles
-			RecList.add(i, new Rectangle(Math.round((block.getPosition().x)*this.BOX_TO_WORLD), 
-					Math.round((block.getPosition().y)*this.BOX_TO_WORLD),
+			RecList.add(i, new Rectangle(Math.round((block.getPosition().x)*BOX_TO_WORLD), 
+					Math.round((block.getPosition().y)*BOX_TO_WORLD),
 					1,
 					1));
 		    block.setUserData(Integer.valueOf(i));

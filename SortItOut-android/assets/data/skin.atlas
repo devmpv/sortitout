@@ -78,7 +78,7 @@ button-disabled
   rotate: false
   xy: 331, 69
   size: 62, 62
-  split: 17, 14, 22, 13
+  split: 17, 16, 16, 15
   orig: 62, 62
   offset: 0, 0
   index: -1
@@ -86,7 +86,7 @@ button-down
   rotate: false
   xy: 395, 69
   size: 62, 62
-  split: 17, 14, 22, 12
+  split: 16, 16, 16, 15
   orig: 62, 62
   offset: 0, 0
   index: -1
@@ -94,7 +94,7 @@ button
   rotate: false
   xy: 133, 1
   size: 62, 62
-  split: 18, 14, 23, 12
+  split: 16, 15, 16, 15
   orig: 62, 62
   offset: 0, 0
   index: -1
@@ -102,7 +102,7 @@ window
   rotate: false
   xy: 197, 1
   size: 62, 62
-  split: 18, 13, 21, 14
+  split: 16, 16, 34, 14
   orig: 62, 62
   offset: 0, 0
   index: -1
