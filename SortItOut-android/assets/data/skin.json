@@ -14,7 +14,8 @@
 	dialogDim: { name: empty, color: { r: 0, g: 0, b: 0, a: 0.45 } }
      },
      com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {  
-      default: { background: button, font: normaltext, fontColor: white },  
+      default: { font: normaltext, fontColor: white },  
+      gamelabel: { background: edit, font: normaltext, fontColor: white },  
       normal-text: { font: normaltext, fontColor: white },  
       title-text: { font: titletext, fontColor: red },  
      },

@@ -98,9 +98,17 @@ button
   orig: 62, 62
   offset: 0, 0
   index: -1
-window
+edit
   rotate: false
   xy: 197, 1
+  size: 62, 62
+  split: 25, 19, 22, 22
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+window
+  rotate: false
+  xy: 261, 1
   size: 62, 62
   split: 16, 16, 34, 14
   orig: 62, 62

@@ -81,9 +81,9 @@ public class GameScreen implements Screen {
 							gameOverDialog.hide();
 						}
 					}.text("You win!").button(" Menu ", false).button(" New ", true).key(Keys.ENTER, true).key(Keys.ESCAPE, false);
-		label1 = new Label("", Assets.skin);
+		label1 = new Label("", Assets.skin, "gamelabel");
 		label1.setAlignment(Align.center);
-		label2 = new Label("", Assets.skin);
+		label2 = new Label("", Assets.skin, "gamelabel");
 		label2.setAlignment(Align.center);
         
 		
