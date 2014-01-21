@@ -1,9 +1,13 @@
 package com.me.sortitout.screens;
 
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenManager;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -17,6 +21,7 @@ import com.me.sortitout.ApplicationHandler;
 import com.me.sortitout.Assets;
 import com.me.sortitout.GameObject;
 import com.me.sortitout.Settings;
+import com.me.sortitout.tween.SpriteAccessor;
 
 public class MenuScreen implements Screen {
 
@@ -24,6 +29,7 @@ public class MenuScreen implements Screen {
 	private ApplicationHandler appHandler;
 	private Dialog exitDialog;
 	private TextButton buttonContinue;
+	private TweenManager tweenManager;
 	
 	public MenuScreen(ApplicationHandler applicationHandler) {
 		appHandler = applicationHandler;
@@ -31,9 +37,7 @@ public class MenuScreen implements Screen {
 	}
 
 	public void create () {
-		
-	        //float dWidth = appHandler.getGameObject().getScreenWidth(); 
-	        //float dHeight = GameObject.BLOCK_SIZE*appHandler.getGameObject().BOX_TO_WORLD*3;
+			tweenManager = new TweenManager();
 			
 			float buttonWidth=GameObject.BLOCK_SIZE_PIX*2;
 			float buttonHeight=GameObject.BLOCK_HALF_PIX + GameObject.BLOCK_HALF_PIX/2;

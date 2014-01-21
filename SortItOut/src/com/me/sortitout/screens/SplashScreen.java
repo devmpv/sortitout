@@ -2,6 +2,7 @@ package com.me.sortitout.screens;
 
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
+import aurelienribon.tweenengine.equations.Quad;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -58,7 +59,11 @@ public class SplashScreen implements Screen {
 		Tween.set(splash, SpriteAccessor.ALPHA).target(0).start(tweenManager);
 		Tween.set(splash, SpriteAccessor.ROTATE).target(720).start(tweenManager);
 		Tween.to(splash, SpriteAccessor.ALPHA, 2).target(1).delay(2).start(tweenManager);
-		Tween.to(splash, SpriteAccessor.ROTATE, 2).target(0).delay(2).start(tweenManager);
+		Tween.to(splash, SpriteAccessor.ROTATE, 2)
+			.target(0)
+			.delay(2)
+			.ease(Quad.INOUT)
+			.start(tweenManager);
 		Tween.to(splash, SpriteAccessor.ALPHA, 2).target(0).delay(6).start(tweenManager);
 	}
 

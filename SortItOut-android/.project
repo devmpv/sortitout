@@ -34,7 +34,7 @@
 		<link>
 			<name>android-19</name>
 			<type>2</type>
-			<location>D:/home/user1/D::/home/user1/D::/programs/android-sdk/sources/android-19</location>
+			<location>/home/user1/D::/home/user1/D::/home/user1/D::/programs/android-sdk/sources/android-19</location>
 		</link>
 		<link>
 			<name>src-lib1</name>
