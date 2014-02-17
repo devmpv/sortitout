@@ -48,14 +48,11 @@ public class GameObject {
 	private int moves = 0;
 	private int gameTime = 0;
 	private long startTime; 
-	private ApplicationHandler appHandler;
 	private Vector2 noGravity = new Vector2();
 	private Vector2 varGravity = new Vector2();
     
-	public GameObject(ApplicationHandler applicationHandler, float screenWidth, float screenHeight) {
+	public GameObject(float screenWidth, float screenHeight) {
 		
-		
-		appHandler = applicationHandler;
 		width = screenWidth;
 		heigh = screenHeight;
 		//Scaling to screen
@@ -290,7 +287,8 @@ public class GameObject {
 	public void gameOver() {
 		Assets.playSnd(Assets.gameOverSound);
 		active = false;
-		appHandler.getGameScreen().showDialog();
+		Settings.addScore("John", moves);
+		GameApp.gameScreen.showDialog();
 	}
 	public void setAccelerometer(boolean a) {
 		this.accelerometer = a;

@@ -16,9 +16,9 @@ public class GestureHandler implements GestureListener {
 	Vector2 vel = new Vector2();
 	Vector2 dist = new Vector2();
 	//OrthographicCamera camera;
-	public boolean Init(ApplicationHandler ahandler) {
+	public boolean Init() {
 				
-		game = ahandler.getGameObject();
+		game = GameApp.gameObject;
 		//ScreenWidth = gameObject.getScreenWidth();
 		h = game.getScreenHeight();
 		tp = new Rectangle();

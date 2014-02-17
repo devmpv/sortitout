@@ -5,11 +5,9 @@ import com.badlogic.gdx.InputProcessor;
 
 public class InputHandler implements InputProcessor {
 
-	ApplicationHandler app;
 	
-	public InputHandler(ApplicationHandler applicationHandler) {
+	public InputHandler() {
 		// TODO Auto-generated constructor stub
-		app = applicationHandler;
 	}
 
 	@Override
@@ -22,7 +20,10 @@ public class InputHandler implements InputProcessor {
 	public boolean keyUp(int keycode) {
 		// TODO Auto-generated method stub
 		if (keycode == Keys.BACK) {
-			app.showMenu();
+			GameApp.handler.setScreen(GameApp.menuScreen);
+		}
+		if (keycode == Keys.BACKSPACE) {
+			GameApp.handler.setScreen(GameApp.hsScreen);
 		}
 		return false;
 	}

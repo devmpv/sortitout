@@ -2,7 +2,6 @@ package com.me.sortitout;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.me.sortitout.ApplicationHandler;
 
 public class Main {
 	public static void main(String[] args) {
@@ -14,6 +13,6 @@ public class Main {
 		cfg.samples = 4;
 		cfg.resizable = false;
 		cfg.vSyncEnabled = true;
-		new LwjglApplication(new ApplicationHandler(), cfg);
+		new LwjglApplication(new GameApp(), cfg);
 	}
 }

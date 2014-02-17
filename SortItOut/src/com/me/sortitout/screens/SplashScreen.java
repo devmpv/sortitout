@@ -3,7 +3,6 @@ package com.me.sortitout.screens;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
 import aurelienribon.tweenengine.equations.Quad;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
@@ -11,18 +10,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.me.sortitout.ApplicationHandler;
+import com.me.sortitout.GameApp;
 import com.me.sortitout.tween.SpriteAccessor;
 
 public class SplashScreen implements Screen {
 	private float w, h;
-	private ApplicationHandler app;
+	private GameApp app;
 	private SpriteBatch spriteBatch;
     private Sprite splash;
     private TweenManager tweenManager;
 
-	public SplashScreen(ApplicationHandler applicationHandler) {
-		app = applicationHandler;
+	public SplashScreen() {
+		app = GameApp.handler;
 	}
 
 	@Override
@@ -34,7 +33,7 @@ public class SplashScreen implements Screen {
         	splash.draw(spriteBatch);
         spriteBatch.end();
         if (tweenManager.getRunningTweensCount() == 0 || Gdx.input.justTouched()) 
-            app.setScreen(app.getMenuScreen());
+            app.setScreen(GameApp.menuScreen);
 	}
 
 	@Override

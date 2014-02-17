@@ -11,7 +11,6 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
-import com.me.sortitout.ApplicationHandler;
 
 public class MainActivity extends AndroidApplication{
 	private AdView adView;
@@ -40,7 +39,7 @@ public class MainActivity extends AndroidApplication{
         					.build();
         adView.loadAd(adRequest);
         // Add the libgdx view
-        View gameView = initializeForView(new ApplicationHandler(new RequestHandler(adView)), false);
+        View gameView = initializeForView(new GameApp(new RequestHandler(adView)), false);
         layout.addView(gameView);
         // Add the AdMob view
         RelativeLayout.LayoutParams adParams = 

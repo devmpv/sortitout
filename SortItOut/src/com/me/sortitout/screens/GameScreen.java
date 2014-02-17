@@ -18,8 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.me.sortitout.ApplicationHandler;
 import com.me.sortitout.Assets;
+import com.me.sortitout.GameApp;
 import com.me.sortitout.GameObject;
 import com.me.sortitout.GestureHandler;
 import com.me.sortitout.InputHandler;
@@ -32,7 +32,6 @@ public class GameScreen implements Screen {
 	private SpriteBatch batch;
 	private GestureHandler gestureHandler = new GestureHandler();
 	private GameObject game;
-	private ApplicationHandler appHandler;
 	private InputMultiplexer multiplexer;
 	private OrthographicCamera camera;
 	//private Box2DDebugRenderer debugRenderer;
@@ -43,14 +42,9 @@ public class GameScreen implements Screen {
 	private Button buttonGravity;
     private Button buttonExit;
     	
-	public GameScreen(ApplicationHandler applicationHandler) {
-		appHandler = applicationHandler;
-		game = applicationHandler.getGameObject();
-		create();
-	}
-	public void create() {	
-
-		float buttonSize = GameObject.BLOCK_HALF_PIX + GameObject.BLOCK_HALF_PIX/2; 
+	public GameScreen() {
+		float buttonSize = GameObject.BLOCK_HALF_PIX + GameObject.BLOCK_HALF_PIX/2;
+		game = GameApp.gameObject;
 		stage = new Stage();
 	    Table gameScene = new Table();
 	    Table gameControls = new Table();
@@ -76,11 +70,15 @@ public class GameScreen implements Screen {
 								Gdx.input.setInputProcessor(multiplexer);
 								label1.setVisible(true);
 							} else {
-								appHandler.showMenu();
+								GameApp.handler.setScreen(GameApp.menuScreen);
 							}
 							gameOverDialog.hide();
 						}
-					}.text("You win!").button(" Menu ", false).button(" New ", true).key(Keys.ENTER, true).key(Keys.ESCAPE, false);
+					}.text("You win!")
+					.button(" Menu ", false)
+					.button(" New ", true)
+					.key(Keys.ENTER, true)
+					.key(Keys.ESCAPE, false);
 		label1 = new Label("", Assets.skin, "gamelabel");
 		label1.setAlignment(Align.center);
 		label2 = new Label("", Assets.skin, "gamelabel");
@@ -119,7 +117,7 @@ public class GameScreen implements Screen {
 			public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
 			//super.touchDown(event, x, y, pointer, button);
 				Assets.playSnd(Assets.buttonSound);
-				appHandler.showMenu();
+				GameApp.handler.setScreen(GameApp.menuScreen);
 			}
 		});
 		
@@ -133,12 +131,12 @@ public class GameScreen implements Screen {
 		//batch.setShader(shader);
 		batch.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		//Initializing main class
-		gestureHandler.Init(appHandler);
+		gestureHandler.Init();
 		//Input processor for gesture detection
 
 		multiplexer = new InputMultiplexer();
 		multiplexer.addProcessor(new GestureDetector(gestureHandler));
-		multiplexer.addProcessor(new InputHandler(appHandler));
+		multiplexer.addProcessor(new InputHandler());
 		multiplexer.addProcessor(stage);
 		Gdx.input.setInputProcessor(multiplexer);
 		//Physics debug renderer
@@ -149,6 +147,10 @@ public class GameScreen implements Screen {
 		//Debug physics
 		//debugMatrix=new Matrix4(camera.combined);
 		//debugMatrix.scale(game.BOX_TO_WORLD, game.BOX_TO_WORLD, 1f);
+	}
+	public void create() {	
+
+		
 	}
 
 	
@@ -199,8 +201,8 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void pause() {
-		appHandler.showMenu();
-		appHandler.getMenuScreen().pause();
+		GameApp.handler.setScreen(GameApp.menuScreen);
+		GameApp.menuScreen.pause();
 	}
 
 	@Override

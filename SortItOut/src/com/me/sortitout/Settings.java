@@ -11,7 +11,7 @@ import com.badlogic.gdx.Gdx;
 public class Settings {
         public static boolean soundEnabled = true;
         public static boolean musicEnabled = true;
-        public final static int[] highscores = new int[] {100, 80, 50, 30, 10};
+        public final static Integer[] highscores = new Integer[] {100, 80, 50, 30, 10};
         public final static String file = ".sortitout";
 
         public static void load () {
@@ -52,7 +52,7 @@ public class Settings {
                 }
         }
 
-        public static void addScore (int score) {
+        public static void addScore ( String name, int score) {
                 for (int i = 0; i < 5; i++) {
                         if (highscores[i] < score) {
                                 for (int j = 4; j > i; j--)

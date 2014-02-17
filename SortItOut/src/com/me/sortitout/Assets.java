@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class Assets {
@@ -60,7 +61,8 @@ public class Assets {
 	public static final String TIME_FORMAT = "%s:%s";
 	//Skin
 	public static Skin skin;
-	
+	//UI
+	public static List list;
 	public static void Load() {
 		//Music
 		menuMusic = Gdx.audio.newMusic(Gdx.files.internal("music/menu.mp3"));
@@ -75,6 +77,8 @@ public class Assets {
 		//Skin
 		skin = new Skin(Gdx.files.internal("data/skin.json"));
         skin.getFont("normaltext").setScale(Gdx.graphics.getWidth()/480);
+        //Score list
+        list = new List(Settings.highscores, skin);
 	}
 	
 	public static void dispose() {
