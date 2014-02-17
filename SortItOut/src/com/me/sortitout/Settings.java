@@ -11,8 +11,10 @@ import com.badlogic.gdx.Gdx;
 public class Settings {
         public static boolean soundEnabled = true;
         public static boolean musicEnabled = true;
-        public final static Integer[] highscores = new Integer[] {100, 80, 50, 30, 10};
+        public final static Integer[] highscores = new Integer[] {100, 200, 300, 400, 500};
+        public final static String[] scorenames = new String[] {"Cartman", "Kyle", "Kenny", "Stan", "Butters"};
         public final static String file = ".sortitout";
+        public static String name = "Player";
 
         public static void load () {
                 BufferedReader in = null;
@@ -22,6 +24,7 @@ public class Settings {
                         musicEnabled = Boolean.parseBoolean(in.readLine());
                         for (int i = 0; i < 5; i++) {
                                 highscores[i] = Integer.parseInt(in.readLine());
+                                scorenames[i] = in.readLine();
                         }
                 } catch (Throwable e) {
                         // :( It's ok we have defaults
@@ -41,6 +44,7 @@ public class Settings {
                         out.write(Boolean.toString(musicEnabled).concat("\n"));
                         for (int i = 0; i < 5; i++) {
                                 out.write(Integer.toString(highscores[i]).concat("\n"));
+                                out.write(scorenames[i].concat("\n"));
                         }
 
                 } catch (Throwable e) {
@@ -52,12 +56,15 @@ public class Settings {
                 }
         }
 
-        public static void addScore ( String name, int score) {
+        public static void addScore (String name, int score) {
                 for (int i = 0; i < 5; i++) {
-                        if (highscores[i] < score) {
-                                for (int j = 4; j > i; j--)
+                        if (highscores[i] > score) {
+                                for (int j = 4; j > i; j--) {
                                         highscores[j] = highscores[j - 1];
+                                        scorenames[j] = scorenames[j - 1];
+                                }
                                 highscores[i] = score;
+                                scorenames[i] = name;
                                 break;
                         }
                 }

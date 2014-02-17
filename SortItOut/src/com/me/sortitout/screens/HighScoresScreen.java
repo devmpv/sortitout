@@ -21,6 +21,7 @@ public class HighScoresScreen implements Screen {
 
 	private Stage stage;
 	private Label label1;
+	
 	public HighScoresScreen() {
 		float buttonWidth=GameObject.BLOCK_SIZE_PIX+GameObject.BLOCK_HALF_PIX;
 		float buttonHeight=GameObject.BLOCK_HALF_PIX;
@@ -37,7 +38,7 @@ public class HighScoresScreen implements Screen {
         //scoresTable.setFillParent(true);
         scoresTable.setBackground(Assets.skin.getDrawable("empty"));
 		final TextButton buttonExit = new TextButton("Continue", Assets.skin);
-		scoresTable.add(new Label("High scores:", Assets.skin, "default")).row();
+		scoresTable.add(new Label("High scores", Assets.skin, "default")).row();
 		scoresTable.add(widget).height(buttonHeight/2).row();
 		scoresTable.add(Assets.list).row();
         scoresTable.add(widget).height(buttonHeight/2).row();
@@ -67,15 +68,9 @@ public class HighScoresScreen implements Screen {
         });
 	}
 
-	public void create () {
-			
-			
-	}
-	
 	public void resize (int width, int height) {
 	        stage.setViewport(width, height, true);
 	}
-
 
 	public void dispose() {
 		stage.dispose();
@@ -93,12 +88,13 @@ public class HighScoresScreen implements Screen {
 
 	@Override
 	public void show() {
+		getScoreList();
 		Gdx.input.setInputProcessor(stage);
 		if (Settings.musicEnabled) {
 			Assets.playMusic(Assets.menuMusic);
 		}
 	}
-
+	
 	@Override
 	public void hide() {
 		Assets.pauseMusic();
@@ -115,5 +111,14 @@ public class HighScoresScreen implements Screen {
 		// TODO Auto-generated method stub
 		Assets.playMusic(Assets.menuMusic);
 	}
-
+	private void getScoreList() {
+		String[] list = new String[5];
+		for (int i = 0; i < 5; i++) {
+			list[i] = Integer.toString(Settings.highscores[i])
+					.concat("   (")
+					.concat(Settings.scorenames[i])
+					.concat(")");
+		}
+		Assets.list.setItems(list);
+	}
 }
