@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -23,7 +22,7 @@ public class HighScoresScreen implements Screen {
 	private Stage stage;
 	private Label label1;
 	public HighScoresScreen() {
-		float buttonWidth=GameObject.BLOCK_SIZE_PIX;
+		float buttonWidth=GameObject.BLOCK_SIZE_PIX+GameObject.BLOCK_HALF_PIX;
 		float buttonHeight=GameObject.BLOCK_HALF_PIX;
 		stage = new Stage();
 		label1 =new Label("Your score: ", Assets.skin, "default");
@@ -31,26 +30,22 @@ public class HighScoresScreen implements Screen {
         Table scoresTable = new Table();
         Table table = new Table();
         table.setFillParent(true);
-        table.debug();
+        
         table.setBackground(Assets.skin.getTiledDrawable("background"));
-        scoresTable.debug();
-        table.add(scoresTable).width(buttonWidth).row();
-        scoresTable.setFillParent(true);
+        
+        table.add(scoresTable).row();
+        //scoresTable.setFillParent(true);
         scoresTable.setBackground(Assets.skin.getDrawable("empty"));
-		final TextButton buttonExit = new TextButton("Menu", Assets.skin);
+		final TextButton buttonExit = new TextButton("Continue", Assets.skin);
 		scoresTable.add(new Label("High scores:", Assets.skin, "default")).row();
 		scoresTable.add(widget).height(buttonHeight/2).row();
-		scoresTable.add(Assets.list).center().row();
+		scoresTable.add(Assets.list).row();
         scoresTable.add(widget).height(buttonHeight/2).row();
         scoresTable.add(label1).height(buttonHeight/2).row();
-        scoresTable.add(widget).height(buttonHeight).row();
-        table.add(buttonExit).height(buttonHeight).width(buttonWidth).bottom();
+        table.add(widget).height(buttonHeight/2).row();
+        table.add(buttonExit).height(buttonHeight).width(buttonWidth);
         stage.addActor(table);
 
-        Assets.menuButton = new Button(Assets.skin, "button-mus");
-        Assets.menuButton.setChecked(!Settings.musicEnabled);
-        final Button sndMuteButton = new Button(Assets.skin, "button-snd");
-        sndMuteButton.setChecked(!Settings.soundEnabled);
         //Table buttonTable = new Table();
         //buttonTable.setFillParent(true);
         //stage.addActor(buttonTable);
@@ -61,21 +56,7 @@ public class HighScoresScreen implements Screen {
     			Assets.playSnd(Assets.buttonSound);
     			GameApp.handler.setScreen(GameApp.menuScreen);
         	}
-    	});	      
-        Assets.menuButton.addListener(new ClickListener() {
-    		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-    			//super.touchDown(event, x, y, pointer, button);
-    			Assets.playSnd(Assets.buttonSound);
-    			Settings.musicEnabled = !Assets.menuButton.isChecked();
-				Assets.playMusic(Assets.menuMusic);
-        	}
-    	});	        
-        sndMuteButton.addListener(new ClickListener() {
-    		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-    			//super.touchDown(event, x, y, pointer, button);
-    			Settings.soundEnabled = !sndMuteButton.isChecked();
-        	}
-    	});
+    	});	            
         stage.addListener(new InputListener() {
         	public boolean keyUp (InputEvent event, int keycode) {
         		if (keycode == Keys.BACK || keycode == Keys.ESCAPE) {
@@ -107,7 +88,7 @@ public class HighScoresScreen implements Screen {
 		label1.setText("Your score: "+GameApp.gameObject.getMoves());
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-        Table.drawDebug(stage); // Enables debug lines for tables.
+        //Table.drawDebug(stage); // Enables debug lines for tables.
 	}
 
 	@Override
