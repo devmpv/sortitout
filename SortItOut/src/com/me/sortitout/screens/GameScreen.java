@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Input.Peripheral;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
@@ -36,7 +34,6 @@ public class GameScreen implements Screen {
 	private OrthographicCamera camera;
 	//private Box2DDebugRenderer debugRenderer;
 	//private Matrix4 debugMatrix;
-	private Dialog gameOverDialog;
 	private Label label1;
 	private Label label2;
 	private Button buttonGravity;
@@ -62,23 +59,6 @@ public class GameScreen implements Screen {
 	    }else {
 	    	buttonGravity.setChecked(true);
 	    }
-	    gameOverDialog = new Dialog("", Assets.skin, "default") {
-						protected void result (Object obj) {
-							Assets.playSnd(Assets.buttonSound);
-							if (obj.equals(true)){								
-								game.shuffle();
-								Gdx.input.setInputProcessor(multiplexer);
-								label1.setVisible(true);
-							} else {
-								GameApp.handler.setScreen(GameApp.menuScreen);
-							}
-							gameOverDialog.hide();
-						}
-					}.text("You win!")
-					.button(" Menu ", false)
-					.button(" New ", true)
-					.key(Keys.ENTER, true)
-					.key(Keys.ESCAPE, false);
 		label1 = new Label("", Assets.skin, "gamelabel");
 		label1.setAlignment(Align.center);
 		label2 = new Label("", Assets.skin, "gamelabel");
@@ -212,7 +192,6 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void show() {
-		gameOverDialog.hide();
 		Gdx.input.setInputProcessor(multiplexer);		
 		if (Settings.musicEnabled) {
 			Assets.playMusic(Assets.gameMusic);
@@ -228,9 +207,5 @@ public class GameScreen implements Screen {
 	public void dispose() {
 		batch.dispose();
 		stage.dispose();
-	}
-	public void showDialog() {
-		Gdx.input.setInputProcessor(stage);
-		gameOverDialog.show(stage);
 	}
 }

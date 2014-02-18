@@ -22,7 +22,7 @@ public class MenuScreen implements Screen {
 
 	private Stage stage;
 	private Dialog exitDialog;
-	private TextButton buttonContinue;
+	private TextButton continueButton;
 	
 	public MenuScreen() {
 
@@ -48,22 +48,19 @@ public class MenuScreen implements Screen {
 				}
 			}.text("Exit game?").button(" Exit ", true).button(" Back ", false).key(Keys.ENTER, true)
 			.key(Keys.ESCAPE, false);
-        final TextButton button1 = new TextButton("New game", Assets.skin);
+        final TextButton newGameButton = new TextButton("New game", Assets.skin);
         final Widget widget1 = new Widget();
-        final TextButton button2 = new TextButton("Continue", Assets.skin);
-        
-        buttonContinue = button2;
-        button2.setDisabled(true);
-        final TextButton button3 = new TextButton("Exit", Assets.skin);
-        table.add(button1).width(buttonWidth).height(buttonHeight);
-        table.row();
-        table.add(widget1).height(buttonHeight/2);
-        table.row();
-        table.add(button2).width(buttonWidth).height(buttonHeight);
-        table.row();
-        table.add(widget1).height(buttonHeight/2);
-        table.row();
-        table.add(button3).width(buttonWidth).height(buttonHeight);
+        continueButton = new TextButton("Continue", Assets.skin);
+        continueButton.setDisabled(true);
+        final TextButton exitButton = new TextButton("Exit", Assets.skin);
+        final TextButton scoresButton = new TextButton("Scores", Assets.skin);
+        table.add(newGameButton).width(buttonWidth).height(buttonHeight).row();
+        table.add(widget1).height(buttonHeight/2).row();
+        table.add(continueButton).width(buttonWidth).height(buttonHeight).row();
+        table.add(widget1).height(buttonHeight/2).row();
+        table.add(scoresButton).width(buttonWidth).height(buttonHeight).row();
+        table.add(widget1).height(buttonHeight/2).row();
+        table.add(exitButton).width(buttonWidth).height(buttonHeight);
         
         Assets.menuButton = new Button(Assets.skin, "button-mus");
         Assets.menuButton.setChecked(!Settings.musicEnabled);
@@ -89,25 +86,32 @@ public class MenuScreen implements Screen {
     			Settings.soundEnabled = !sndMuteButton.isChecked();
         	}
     	});
-        button1.addListener(new ClickListener() {
+        newGameButton.addListener(new ClickListener() {
         		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
         			//super.touchDown(event, x, y, pointer, button);
         			GameApp.gameObject.shuffle();
-        			button2.setDisabled(false);
+        			continueButton.setDisabled(false);
         			Assets.playSnd(Assets.buttonSound);
         			GameApp.handler.setScreen(GameApp.gameScreen);
             	}
         	});
-        button2.addListener(new ClickListener() {
+        continueButton.addListener(new ClickListener() {
     		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
     			//super.touchDown(event, x, y, pointer, button);
-    			if (!button2.isDisabled()) {
+    			if (!continueButton.isDisabled()) {
     				Assets.playSnd(Assets.buttonSound);
     				GameApp.handler.setScreen(GameApp.gameScreen);
     			}
         	}
     	});
-        button3.addListener(new ClickListener() {
+        scoresButton.addListener(new ClickListener() {
+        	public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+    			//super.touchDown(event, x, y, pointer, button);
+        		Assets.playSnd(Assets.buttonSound);
+        		GameApp.handler.setScreen(GameApp.scoresScreen);
+        	}
+    	});
+        exitButton.addListener(new ClickListener() {
         	public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
     			//super.touchDown(event, x, y, pointer, button);
         		Assets.playSnd(Assets.buttonSound);
@@ -149,7 +153,7 @@ public class MenuScreen implements Screen {
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(stage);
-		buttonContinue.setDisabled(!GameApp.gameObject.isActive());
+		continueButton.setDisabled(!GameApp.gameObject.isActive());
 		if (Settings.musicEnabled) {
 			Assets.playMusic(Assets.menuMusic);
 		}

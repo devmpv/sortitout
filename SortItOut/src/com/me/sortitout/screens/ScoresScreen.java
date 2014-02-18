@@ -7,9 +7,12 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.me.sortitout.Assets;
@@ -17,39 +20,48 @@ import com.me.sortitout.GameApp;
 import com.me.sortitout.GameObject;
 import com.me.sortitout.Settings;
 
-public class HighScoresScreen implements Screen {
+public class ScoresScreen implements Screen {
 
 	private Stage stage;
 	private Label label1;
+	private Dialog nameDialog;
 	
-	public HighScoresScreen() {
-		float buttonWidth=GameObject.BLOCK_SIZE_PIX+GameObject.BLOCK_HALF_PIX;
-		float buttonHeight=GameObject.BLOCK_HALF_PIX;
+	public ScoresScreen() {
+		float exitButtonSize=GameObject.BLOCK_HALF_PIX+GameObject.BLOCK_HALF_PIX/2;
+		float itemSize=GameObject.BLOCK_HALF_PIX;
 		stage = new Stage();
 		label1 =new Label("Your score: ", Assets.skin, "default");
+		TextButton okButton = new TextButton("Ok", Assets.skin);
 		Widget widget = new Widget();
         Table scoresTable = new Table();
-        Table table = new Table();
-        table.setFillParent(true);
+        Table table1 = new Table();
         
-        table.setBackground(Assets.skin.getTiledDrawable("background"));
+        table1.setFillParent(true);
         
-        table.add(scoresTable).row();
+        table1.setBackground(Assets.skin.getTiledDrawable("background"));
+        table1.add(scoresTable).row();
         //scoresTable.setFillParent(true);
         scoresTable.setBackground(Assets.skin.getDrawable("empty"));
-		final TextButton buttonExit = new TextButton("Continue", Assets.skin);
+		final Button buttonExit = new Button(Assets.skin, "button-exit");
+		final TextField textField = new TextField(Settings.name, Assets.skin);
+		textField.setMaxLength(10);
 		scoresTable.add(new Label("High scores", Assets.skin, "default")).row();
-		scoresTable.add(widget).height(buttonHeight/2).row();
+		scoresTable.add(widget).height(itemSize/2).row();
 		scoresTable.add(Assets.list).row();
-        scoresTable.add(widget).height(buttonHeight/2).row();
-        scoresTable.add(label1).height(buttonHeight/2).row();
-        table.add(widget).height(buttonHeight/2).row();
-        table.add(buttonExit).height(buttonHeight).width(buttonWidth);
-        stage.addActor(table);
-
-        //Table buttonTable = new Table();
-        //buttonTable.setFillParent(true);
-        //stage.addActor(buttonTable);
+        scoresTable.add(widget).height(itemSize/2).row();
+        scoresTable.add(label1).height(itemSize/2).row();
+        table1.add(widget).height(itemSize/2).row();
+        table1.add(buttonExit).size(exitButtonSize);
+        
+        stage.addActor(table1);
+        nameDialog = new Dialog("", Assets.skin, "dialog"){
+			protected void result (Object obj) {
+				Settings.name = textField.getText();
+			}
+		};
+        nameDialog.getContentTable().add("Enter name").row();
+        nameDialog.getContentTable().add(textField).height(itemSize).width(exitButtonSize*3);
+        nameDialog.button(okButton, true);
         
         buttonExit.addListener(new ClickListener() {
     		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
@@ -93,6 +105,7 @@ public class HighScoresScreen implements Screen {
 		if (Settings.musicEnabled) {
 			Assets.playMusic(Assets.menuMusic);
 		}
+		nameDialog.show(stage);
 	}
 	
 	@Override
@@ -115,9 +128,8 @@ public class HighScoresScreen implements Screen {
 		String[] list = new String[5];
 		for (int i = 0; i < 5; i++) {
 			list[i] = Integer.toString(Settings.highscores[i])
-					.concat("   (")
-					.concat(Settings.scorenames[i])
-					.concat(")");
+					.concat("   ")
+					.concat(Settings.scorenames[i]);
 		}
 		Assets.list.setItems(list);
 	}

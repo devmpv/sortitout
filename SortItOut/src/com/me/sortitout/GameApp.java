@@ -4,8 +4,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.GdxNativesLoader;
 import com.me.sortitout.screens.GameScreen;
-import com.me.sortitout.screens.HighScoresScreen;
 import com.me.sortitout.screens.MenuScreen;
+import com.me.sortitout.screens.ScoresScreen;
 import com.me.sortitout.screens.SplashScreen;
 
 public class GameApp extends Game {
@@ -13,19 +13,24 @@ public class GameApp extends Game {
 	public static MenuScreen menuScreen;
 	public static GameScreen gameScreen;
 	public static GameObject gameObject;
-	public static HighScoresScreen hsScreen;
+	public static ScoresScreen scoresScreen;
 	
 	public static IReqHandler ExternalHandler;
 	public static GameApp handler;
 	
 	public GameApp(IReqHandler irh) {
 		GameApp.ExternalHandler = irh;
+		if (handler == null) {
+			handler = this;
+		}
 	}
+
 	public GameApp() {
 		if (handler == null) {
 			handler = this;
 		}
 	}
+
 	@Override
 	public void create() {
 		//Loading native libraries
@@ -45,7 +50,7 @@ public class GameApp extends Game {
 		
 		gameScreen = new GameScreen();
 		menuScreen = new MenuScreen();
-		hsScreen = new HighScoresScreen();
+		scoresScreen = new ScoresScreen();
 
 	}
 
@@ -54,7 +59,7 @@ public class GameApp extends Game {
 		Settings.save();
 		gameObject.dispose();
 		gameScreen.dispose();
-		hsScreen.dispose();
+		scoresScreen.dispose();
 		Assets.dispose();
 		super.dispose();
 		menuScreen.dispose();		

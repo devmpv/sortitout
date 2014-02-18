@@ -29,7 +29,10 @@
      },
      com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {  
       default: { font: normaltext, selection: none},  
-     },  
+     },
+     com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+      default: { font: normaltext, background: button-down, cursor: none, selection: none, fontColor: white},
+     },
      com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {  
       default: { up: button, down: button-down, disabled: button-disabled, font: normaltext, fontColor: white },  
      },

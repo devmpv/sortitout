@@ -9,7 +9,7 @@ public class Main {
 		cfg.title = "Sort It Out";
 		cfg.useGL20 = false;
 		cfg.width = 480;
-		cfg.height = 600;
+		cfg.height = 800;
 		cfg.samples = 4;
 		cfg.resizable = false;
 		cfg.vSyncEnabled = true;

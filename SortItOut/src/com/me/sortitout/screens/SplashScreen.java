@@ -15,14 +15,9 @@ import com.me.sortitout.tween.SpriteAccessor;
 
 public class SplashScreen implements Screen {
 	private float w, h;
-	private GameApp app;
 	private SpriteBatch spriteBatch;
     private Sprite splash;
     private TweenManager tweenManager;
-
-	public SplashScreen() {
-		app = GameApp.handler;
-	}
 
 	@Override
 	public void render(float delta) {
@@ -33,7 +28,7 @@ public class SplashScreen implements Screen {
         	splash.draw(spriteBatch);
         spriteBatch.end();
         if (tweenManager.getRunningTweensCount() == 0 || Gdx.input.justTouched()) 
-            app.setScreen(GameApp.menuScreen);
+            GameApp.handler.setScreen(GameApp.menuScreen);
 	}
 
 	@Override

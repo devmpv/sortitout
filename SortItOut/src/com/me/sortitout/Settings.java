@@ -20,6 +20,7 @@ public class Settings {
                 BufferedReader in = null;
                 try {
                         in = new BufferedReader(new InputStreamReader(Gdx.files.local(file).read()));
+                        name = in.readLine();
                         soundEnabled = Boolean.parseBoolean(in.readLine());
                         musicEnabled = Boolean.parseBoolean(in.readLine());
                         for (int i = 0; i < 5; i++) {
@@ -40,6 +41,7 @@ public class Settings {
                 BufferedWriter out = null;
                 try {
                         out = new BufferedWriter(new OutputStreamWriter(Gdx.files.local(file).write(false)));
+                        out.write(name.concat("\n"));
                         out.write(Boolean.toString(soundEnabled).concat("\n"));
                         out.write(Boolean.toString(musicEnabled).concat("\n"));
                         for (int i = 0; i < 5; i++) {
