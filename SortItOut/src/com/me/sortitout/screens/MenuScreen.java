@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.esotericsoftware.tablelayout.Cell;
 import com.me.sortitout.Assets;
 import com.me.sortitout.GameApp;
 import com.me.sortitout.GameObject;
@@ -46,8 +47,14 @@ public class MenuScreen implements Screen {
 						Assets.playSnd(Assets.buttonSound);
 					}
 				}
-			}.text("Exit game?").button(" Exit ", true).button(" Back ", false).key(Keys.ENTER, true)
+			}.text("Are you sure?")
+			.button(new Button(Assets.skin, "button-ok"), true)
+			.button(new Button(Assets.skin, "button-cancel"), false)
+			.key(Keys.ENTER, true)
 			.key(Keys.ESCAPE, false);
+		for ( Cell<?> cell : exitDialog.getButtonTable().getCells()) {
+			cell.size(buttonHeight);
+		} 
         final TextButton newGameButton = new TextButton("New game", Assets.skin);
         final Widget widget1 = new Widget();
         continueButton = new TextButton("Continue", Assets.skin);

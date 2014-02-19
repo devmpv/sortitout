@@ -25,13 +25,15 @@
       button-mus: {up: button-mus, down: button-mus, checked: button-mus-disabled},
       button-gra: {up: button-gra, down: button-gra, checked: button-gra-disabled, disabled: button-gra-disabled},
       button-exit: {up: button-exit, down: button-exit-down},
+      button-ok: {up: button-ok, down: button-ok-disabled},
+      button-cancel: {up: button-cancel, down: button-cancel-disabled},
       transparent: { },  
      },
      com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {  
       default: { font: normaltext, selection: none},  
      },
      com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
-      default: { font: normaltext, background: button-down, cursor: none, selection: none, fontColor: white},
+      default: { font: normaltext, background: button-down, cursor: cursor, selection: none, fontColor: white},
      },
      com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {  
       default: { up: button, down: button-down, disabled: button-disabled, font: normaltext, fontColor: white },  

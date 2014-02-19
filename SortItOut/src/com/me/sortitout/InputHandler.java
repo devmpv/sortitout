@@ -22,9 +22,6 @@ public class InputHandler implements InputProcessor {
 		if (keycode == Keys.BACK) {
 			GameApp.handler.setScreen(GameApp.menuScreen);
 		}
-		if (keycode == Keys.BACKSPACE) {
-			GameApp.handler.setScreen(GameApp.scoresScreen);
-		}
 		return false;
 	}
 

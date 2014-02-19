@@ -287,7 +287,8 @@ public class GameObject {
 	public void gameOver() {
 		Assets.playSnd(Assets.gameOverSound);
 		active = false;
-		Settings.addScore(Settings.name, moves);
+		
+		GameApp.scoresScreen.nameDialog.show(GameApp.scoresScreen.stage);
 		GameApp.handler.setScreen(GameApp.scoresScreen);
 	}
 	public void setAccelerometer(boolean a) {

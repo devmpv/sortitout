@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -22,16 +21,16 @@ import com.me.sortitout.Settings;
 
 public class ScoresScreen implements Screen {
 
-	private Stage stage;
+	public Stage stage;
 	private Label label1;
-	private Dialog nameDialog;
+	public Dialog nameDialog;
 	
 	public ScoresScreen() {
-		float exitButtonSize=GameObject.BLOCK_HALF_PIX+GameObject.BLOCK_HALF_PIX/2;
+		float buttonSize=GameObject.BLOCK_HALF_PIX+GameObject.BLOCK_HALF_PIX/2;
 		float itemSize=GameObject.BLOCK_HALF_PIX;
 		stage = new Stage();
 		label1 =new Label("Your score: ", Assets.skin, "default");
-		TextButton okButton = new TextButton("Ok", Assets.skin);
+		Button okButton = new Button(Assets.skin, "button-ok");		
 		Widget widget = new Widget();
         Table scoresTable = new Table();
         Table table1 = new Table();
@@ -48,21 +47,28 @@ public class ScoresScreen implements Screen {
 		scoresTable.add(new Label("High scores", Assets.skin, "default")).row();
 		scoresTable.add(widget).height(itemSize/2).row();
 		scoresTable.add(Assets.list).row();
-        scoresTable.add(widget).height(itemSize/2).row();
+        scoresTable.add(widget).height(itemSize).row();
         scoresTable.add(label1).height(itemSize/2).row();
-        table1.add(widget).height(itemSize/2).row();
-        table1.add(buttonExit).size(exitButtonSize);
+        scoresTable.add(widget).height(itemSize/2);
+        table1.add(widget).height(itemSize).row();
+        table1.add(buttonExit).size(buttonSize);
         
         stage.addActor(table1);
-        nameDialog = new Dialog("", Assets.skin, "dialog"){
-			protected void result (Object obj) {
-				Settings.name = textField.getText();
-			}
-		};
-        nameDialog.getContentTable().add("Enter name").row();
-        nameDialog.getContentTable().add(textField).height(itemSize).width(exitButtonSize*3);
-        nameDialog.button(okButton, true);
-        
+        nameDialog = new Dialog("", Assets.skin, "dialog");
+        nameDialog.getContentTable().add("New score!").row();
+        nameDialog.getContentTable().add(textField).height(itemSize).width(buttonSize*3);
+        nameDialog.getButtonTable().add(okButton).size(buttonSize);
+        //nameDialog.button(okButton, true);
+        okButton.addListener(new ClickListener() {
+    		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+    			//super.touchDown(event, x, y, pointer, button);
+    			Assets.playSnd(Assets.buttonSound);
+    			Settings.name = textField.getText();
+    			Settings.addScore(Settings.name, GameApp.gameObject.getMoves());
+    			getScoreList();
+    			nameDialog.hide();
+        	}
+    	});
         buttonExit.addListener(new ClickListener() {
     		public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
     			//super.touchDown(event, x, y, pointer, button);
@@ -105,7 +111,6 @@ public class ScoresScreen implements Screen {
 		if (Settings.musicEnabled) {
 			Assets.playMusic(Assets.menuMusic);
 		}
-		nameDialog.show(stage);
 	}
 	
 	@Override

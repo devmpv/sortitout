@@ -76,7 +76,7 @@ public class Assets {
 		buttonSound = Gdx.audio.newSound(Gdx.files.internal("sounds/button.mp3"));
 		//Skin
 		skin = new Skin(Gdx.files.internal("data/skin.json"));
-        skin.getFont("normaltext").setScale(Gdx.graphics.getWidth()/480);
+        skin.getFont("normaltext").setScale((float)Gdx.graphics.getWidth()/480);
         //Score list
         list = new List(Settings.highscores, skin);
 	}
