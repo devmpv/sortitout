@@ -15,18 +15,21 @@ public class Settings {
         public final static String[] scorenames = new String[] {"Cartman", "Kyle", "Kenny", "Stan", "Butters"};
         public final static String file = ".sortitout";
         public static String name = "Player";
+        private static String version = "0.21";
 
         public static void load () {
                 BufferedReader in = null;
                 try {
-                        in = new BufferedReader(new InputStreamReader(Gdx.files.local(file).read()));
-                        name = in.readLine();
+                	in = new BufferedReader(new InputStreamReader(Gdx.files.local(file).read()));
+                	if (version.equals(in.readLine())) {
+                		name = in.readLine();
                         soundEnabled = Boolean.parseBoolean(in.readLine());
                         musicEnabled = Boolean.parseBoolean(in.readLine());
                         for (int i = 0; i < 5; i++) {
                                 highscores[i] = Integer.parseInt(in.readLine());
                                 scorenames[i] = in.readLine();
                         }
+                    }
                 } catch (Throwable e) {
                         // :( It's ok we have defaults
                 } finally {
@@ -41,6 +44,7 @@ public class Settings {
                 BufferedWriter out = null;
                 try {
                         out = new BufferedWriter(new OutputStreamWriter(Gdx.files.local(file).write(false)));
+                        out.write(version.concat("\n"));
                         out.write(name.concat("\n"));
                         out.write(Boolean.toString(soundEnabled).concat("\n"));
                         out.write(Boolean.toString(musicEnabled).concat("\n"));

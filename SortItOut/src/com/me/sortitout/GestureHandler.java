@@ -71,8 +71,8 @@ public class GestureHandler implements GestureListener {
 		if (dist.len()<1) {
 			return false;
 		}
-		for (Body block : game.GetBlockList()) {
-				sprite = game.GetSpriteList().get((Integer) block.getUserData()); 
+		for (Body block : game.getBlockList()) {
+				sprite = game.getSpriteList().get((Integer) block.getUserData()); 
 				if (sprite.getBoundingRectangle().contains(tp.x, tp.y)){
 					vel.set(dist.div(GameObject.BOX_TO_WORLD))
 								.scl(50f)

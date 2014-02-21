@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class Assets {
 	
-	private static Assets inst;
 	//Sound
 	public static Sound 	
 			blockSound,
@@ -82,11 +81,8 @@ public class Assets {
 	}
 	
 	public static void dispose() {
-		if (inst!=null) {
-			inst.audioDispose();
+			audioDispose();
 			skin.dispose();
-			inst=null;			
-		}
 	}
 	public static void pauseMusic() {
 		menuMusic.pause();
@@ -108,7 +104,7 @@ public class Assets {
 	public static void playSnd (Sound sound, float volume, float pitch) {
 		if (Settings.soundEnabled) 	sound.play(volume, pitch, 0);
 	}
-	private void audioDispose(){
+	private static void audioDispose(){
 		//Music
 		gameMusic.stop();
 		menuMusic.stop();

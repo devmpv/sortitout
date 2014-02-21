@@ -31,11 +31,11 @@ public class GameObject {
 	private float width;
 	private float heigh;
 	//Body and spite lists
-	private ArrayList<Body> BlockList=new ArrayList<Body>(15);
-	private ArrayList<Sprite> SpriteList=new ArrayList<Sprite>(15);
+	private ArrayList<Body> blockList=new ArrayList<Body>(15);
+	private ArrayList<Sprite> spriteList=new ArrayList<Sprite>(15);
 	private ArrayList<Sprite> origSpriteList;
-	private ArrayList<Item> ItemList = new ArrayList<Item>(15);
-	private ArrayList<Rectangle> RecList = new ArrayList<Rectangle>(15);
+	private ArrayList<Item> itemList = new ArrayList<Item>(15);
+	private ArrayList<Rectangle> recList = new ArrayList<Rectangle>(15);
 	private Body activeBody;
 
 	//Resources
@@ -94,23 +94,23 @@ public class GameObject {
 		    //Assigning sprite
 		    sprite = atlas.createSprite("tx_fig_"+String.valueOf(i+1));
 		    sprite.setSize(Assets.BLOCK_SIZE*BOX_TO_WORLD, Assets.BLOCK_SIZE*BOX_TO_WORLD);
-			SpriteList.add(i, sprite);
+			spriteList.add(i, sprite);
 			//Shit but it works. Keep original central points of all rectangles
-			RecList.add(i, new Rectangle(Math.round((block.getPosition().x)*BOX_TO_WORLD), 
+			recList.add(i, new Rectangle(Math.round((block.getPosition().x)*BOX_TO_WORLD), 
 					Math.round((block.getPosition().y)*BOX_TO_WORLD),
 					1,
 					1));
 		    block.setUserData(Integer.valueOf(i));
-		    BlockList.add(i, block);
+		    blockList.add(i, block);
 		    //Filling ItemList with correct order
-		    ItemList.add(i,new Item(sprite, i));
+		    itemList.add(i,new Item(sprite, i));
 		}
-        setActiveItem(BlockList.get(0));
+        setActiveItem(blockList.get(0));
         //Adding empty rectangle with index 15 at position 4:4
-        RecList.add(15, new Rectangle(RecList.get(14).x+Assets.BLOCK_SIZE*BOX_TO_WORLD, RecList.get(14).y, 1,1));
+        recList.add(15, new Rectangle(recList.get(14).x+Assets.BLOCK_SIZE*BOX_TO_WORLD, recList.get(14).y, 1,1));
         //Cloning original SpriteList
         @SuppressWarnings("unchecked")
-        ArrayList<Sprite> orSpriteList = (ArrayList<Sprite>) SpriteList.clone();
+        ArrayList<Sprite> orSpriteList = (ArrayList<Sprite>) spriteList.clone();
         origSpriteList = orSpriteList;
         //
         contactHandler = new ContactHandler();
@@ -147,12 +147,12 @@ public class GameObject {
         //Dispose
         edgeBoxShape.dispose();
 	}
-	public ArrayList<Body> GetBlockList() {
-		return BlockList;
+	public ArrayList<Body> getBlockList() {
+		return blockList;
 	}
 	
-	public ArrayList<Sprite> GetSpriteList() {
-		return SpriteList;
+	public ArrayList<Sprite> getSpriteList() {
+		return spriteList;
 	}
 	
 	public int shuffle() {
@@ -181,7 +181,7 @@ public class GameObject {
 				for (int i=0; i<15; i++) {
 					tpmSpriteList.add(i, origSpriteList.get(clone.get(i)));
 				}
-				SpriteList = tpmSpriteList;
+				spriteList = tpmSpriteList;
 				defineSpritePositions();
 				itemPositionsChanged();
 				good = true;
@@ -230,7 +230,7 @@ public class GameObject {
 		return activeBody;
 	}
 	public ArrayList<Item> getItemList(){
-		return ItemList;
+		return itemList;
 	}
 	public boolean itemPositionsChanged() {
 		if ((TimeUtils.millis()-startTime) - gameTime*1000 < 100) {
@@ -240,10 +240,10 @@ public class GameObject {
 		Item item;
 		positionChanged  = false;
 		for (int i=0; i<15; i++){
-			item = ItemList.get(i);
+			item = itemList.get(i);
 			rec = item.sprite.getBoundingRectangle();
 			for (int j=0; j<=15; j++) { 			
-				if (rec.contains(RecList.get(j))) {
+				if (rec.contains(recList.get(j))) {
 					if (item.position!=j) {
 						item.position=j;
 						moves++;
@@ -257,8 +257,8 @@ public class GameObject {
 	}
 	public void defineSpritePositions() {
 		Sprite sprite;
-		for (Body block : BlockList) {
-			sprite = SpriteList.get((Integer) block.getUserData());
+		for (Body block : blockList) {
+			sprite = spriteList.get((Integer) block.getUserData());
 			sprite.setPosition(	(block.getPosition().x-Assets.BLOCK_HALF)*BOX_TO_WORLD, 
 								(block.getPosition().y-Assets.BLOCK_HALF)*BOX_TO_WORLD);
 			
@@ -292,8 +292,13 @@ public class GameObject {
 		GameApp.handler.setScreen(GameApp.scoresScreen);
 	}
 	public void setAccelerometer(boolean a) {
-		this.accelerometer = a;
-		world.setGravity(noGravity);
+		if (accelerometer != a) {
+			world.setGravity(noGravity);
+			for (Body body : blockList) {
+				body.setAwake(true);
+			}
+			this.accelerometer = a;
+		}
 	}
 	public boolean isActive() {
 		return active;

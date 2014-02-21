@@ -57,11 +57,12 @@ public class GameApp extends Game {
 	@Override
 	public void dispose() {
 		Settings.save();
+		super.dispose();
 		gameObject.dispose();
 		gameScreen.dispose();
 		scoresScreen.dispose();
+		menuScreen.dispose();
 		Assets.dispose();
-		super.dispose();
-		menuScreen.dispose();		
+		handler = null;
 	}
 }

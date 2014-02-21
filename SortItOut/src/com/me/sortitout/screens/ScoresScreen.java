@@ -66,6 +66,7 @@ public class ScoresScreen implements Screen {
     			Settings.name = textField.getText();
     			Settings.addScore(Settings.name, GameApp.gameObject.getMoves());
     			getScoreList();
+    			textField.getOnscreenKeyboard().show(false);
     			nameDialog.hide();
         	}
     	});
